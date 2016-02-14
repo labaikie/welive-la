@@ -4,11 +4,13 @@ var request       = require('request');
 
 module.exports = {
 
-  //
+
   // USING SINGLE PROMISE LAYER
-  //
   getApts : function(req, res, next) {
-    var location   = "downtown-los-angeles-los-angeles-ca"; // to be from req.
+    // TO BE MODIFIED : Location to be a part of the request
+    var location   = "west-hollywood-ca";
+    // var location   = "echo-park-los-angeles-ca";
+    //var location   = "downtown-los-angeles-los-angeles-ca";
     var listingUrl = "http://www.apartments.com/apartments/" + location + "/";
     var listing    = {
                         uri: listingUrl,
@@ -20,37 +22,35 @@ module.exports = {
       var apts = [];
       $('article').map(function(i, element) {
         var apt = {};
-        if($(element).hasClass('platinum') || $(element).hasClass('gold') || $(element).hasClass('silver')) {
-        var name    = $(element).children().first().text()
-            // url     = $(element).children()[0].attr('href'),
-            // address = $(element).children()[1].children()[1].children()[2].children()[0].text(),
-            // rent    = $(element).children()[1].children()[1].children()[3].children()[0].text(),
-            // unit    = $(element).children()[1].children()[1].children()[3].children()[1].text(),
-            // avail   = $(element).children()[1].children()[1].children()[3].children()[2].text(),
-            // contact = $(element).children()[1].children()[1].children()[4].children()[0].text(),
-            // update  = $(element).children()[1].children()[1].children()[4].children()[1].text()
-          if(name) {
-            apt.name = name;
-            // apt.url = url;
-            // apt.address = address;
-            // apt.rent = rent;
-            // apt.unit = unit;
-            // apt.availability = avail;
-            // apt.contact = contact;
-            // apt.lastupdated = update;
-            apts.push(apt);
-          }
-        } else if($(element).hasClass('bronze')) {
-
+        var name    = $(element).children().first().text(),
+            url     = $(element).attr('data-url'),
+            address = $(element).find('.streetAddress').text(),
+            rent    = $(element).find('.altRentDisplay').text(),
+            unit    = $(element).find('.unitLabel').text(),
+            avail   = $(element).find('.availabilityDisplay').text(),
+            contact = $(element).find('.contactInfo').children().first().text(),
+            update  = $(element).find('.lastUpdated').text(),
+            img     = $(element).find('.imageContainer').find('.meta').attr('content')
+        if(name && url && address && avail == 'Available Now') {
+          apt.name = name
+          apt.url = url
+          apt.address = address
+          apt.rent = rent
+          apt.unit = unit
+          apt.availability = avail
+          apt.contact = contact
+          apt.lastUpdated = update
+          apt.previewImage = img
+          apts.push(apt);
         }
       })
+      console.log(apts.length)
       res.json(apts)
     })
   }
 
-  //
+
   // USING SECOND PROMISE LAYER TO SCRAPE APT DATA
-  //
   // getApts : function(req, res, next) {
   //   var location   = "downtown-los-angeles-los-angeles-ca"; // to be from req.
   //   var listingUrl = "http://www.apartments.com/apartments/" + location + "/";
@@ -84,7 +84,5 @@ module.exports = {
   //     })
   //   })
   // }
-
-
 
 }
