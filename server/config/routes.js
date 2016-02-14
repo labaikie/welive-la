@@ -5,7 +5,8 @@ var router           = new express.Router();
 // REQUIRE CONTROLLERS
 //
 var usersController  = require('../controllers/users');
-var aptsController    = require('../controllers/apartments');
+var aptsController   = require('../controllers/apartments');
+var poiController    = require('../controllers/poi')
 
 //
 // ROUTES
@@ -21,6 +22,9 @@ router.get('/api', function(req, res) {
 
 // apartments route
 router.get('/apartments', aptsController.getApts)
+
+// POI route
+router.get('/poi', poiController.getPOI)
 
 // token authentication route
 router.post('api/user/login', usersController.authenticate);

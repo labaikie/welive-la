@@ -1,6 +1,5 @@
 var rp            = require('request-promise');
 var cheerio       = require('cheerio');
-var request       = require('request');
 
 module.exports = {
 
