@@ -6,7 +6,7 @@ var router           = new express.Router();
 //
 var usersController  = require('../controllers/users');
 var aptsController   = require('../controllers/apartments');
-var poiController    = require('../controllers/poi')
+var yelpController    = require('../controllers/yelp')
 
 //
 // ROUTES
@@ -14,7 +14,7 @@ var poiController    = require('../controllers/poi')
 
 // test routes - will delete later
 router.get('/', function(req, res) {
-  res.send('Hello! This server is API driven!');
+  res.send('Hello! This server is API driven!')
 });
 router.get('/api', function(req, res) {
   res.json({message: "Welcome to La's API"})
@@ -22,9 +22,10 @@ router.get('/api', function(req, res) {
 
 // apartments route
 router.get('/apartments', aptsController.getApts)
+      .get('/apartment/rating', yelpController.getAptRating)
 
 // POI route
-router.get('/poi', poiController.getPOI)
+router.get('/poi', yelpController.getPOI)
 
 // token authentication route
 router.post('api/user/login', usersController.authenticate);

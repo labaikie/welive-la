@@ -3,7 +3,6 @@ var cheerio       = require('cheerio');
 
 module.exports = {
 
-
   // USING SINGLE PROMISE LAYER TO SCRAPE BASIC APT DATA
   getApts : function(req, res, next) {
     // TO BE MODIFIED : Location to be a part of the request
@@ -45,6 +44,8 @@ module.exports = {
       })
       console.log(apts.length)
       res.json(apts)
+    }).catch(function(err){
+      res.json(err)
     })
   }
 
