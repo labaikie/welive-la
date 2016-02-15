@@ -10,12 +10,12 @@ angular.module('app.routes', [])
       controller: 'homeCtrl'
     })
 
-    .state('tabsController.showResult', {
-      url: '/result',
+    .state('tabsController.showSearch', {
+      url: '/search',
       views: {
-        'result': {
-          templateUrl: 'templates/showResult.html',
-          controller: 'showResultCtrl'
+        'search': {
+          templateUrl: 'templates/showSearch.html',
+          controller: 'showSearchCtrl'
         }
       }
     })
@@ -60,11 +60,9 @@ angular.module('app.routes', [])
 
     .state('menu', {
       url: '/side-menu',
-      abstract:true,
+      abstract: true,
       templateUrl: 'templates/menu.html'
-    })
-
-    ;
+    });
 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/');

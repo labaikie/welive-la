@@ -6,11 +6,12 @@ angular.module('app.controllers', [])
                             {name: 'Echo Park', la: true},
                             {name: 'West Hollywood', la: false}
                           ];
+  $scope.poi = ["-","Grocery", "Schools", "Restaurants", "Swimming Pools", "Gyms", "Nightlife"]
 
 })
 
-.controller('showResultCtrl', function(mapService, $scope) {
-    // mapService.getMap();
+.controller('showSearchCtrl', function(mapService, $scope) {
+    mapService.getMap('Echo Park, Los Angeles, CA', 'Grocery');
     // mapService.getMapData('Echo Park, Los Angeles, CA','Grocery');
 
 })

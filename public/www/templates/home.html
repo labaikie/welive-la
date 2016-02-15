@@ -3,17 +3,22 @@
         <h1>WELIVE LA</h1>
         <form class="list">
             <div class="spacer" style="width: 300px; height: 320px;"></div>
-            <label class="item item-select" name="Neighborhood">
-                <span class="input-label">Select Your Neighborhood</span>
+            <label class="item item-select" name="neighborhood">
+                <span class="input-label">Neighborhood?</span>
                 <select>
                     <option ng-repeat="i in neighborhoods">{{i.name}}</option>
                 </select>
             </label>
-            <label class="item item-input" name="POI">
-                <span class="input-label">Primary Points of Interest</span>
-                <input type="text" placeholder="Your Primary Points of Interest">
+            <label class="item item-input item-select" name="interestPts">
+                <span class="input-label">Points of Interest?</span>
+                <select>
+                  <option ng-repeat="i in poi">{{i}}</option>
+                </select>
             </label>
-            <a ui-sref="tabsController.showResult" class="button button-stable button-block  icon-right ion-search">Search Apartments</a>
+            <label class="item item-input" name="address">
+                <input type="text" placeholder="Address">
+            </label>
+            <a ui-sref="tabsController.showSearch" class="button button-stable button-block  icon-right ion-search">Search Apartments</a>
         </form>
     </ion-content>
 </ion-view>
