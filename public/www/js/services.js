@@ -7,13 +7,13 @@ angular.module('app.services', [])
       var aptPromise = $http({
         method: 'GET',
         url: 'http://localhost:8080/apartments', // || HOSTED SITE
-        data: {'location': {location}}
+        params: {location: location}
       })
       var poiPromise = $http({
         method: 'GET',
         url: 'http://localhost:8080/poi', // || HOSTED SITE
-        data: {'query': {poi}}
-      })
+        params: {query: poi, location: location}
+        })
       Promise.all([aptPromise, poiPromise]).then(function(data){
         console.log(data[0].data);
         console.log(data[1].data);

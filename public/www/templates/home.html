@@ -6,16 +6,14 @@
             <label class="item item-select" name="Neighborhood">
                 <span class="input-label">Select Your Neighborhood</span>
                 <select>
-                    <option>Downtown Los Angeles</option>
-                    <option>Echo Park</option>
-                    <option>West Hollywood</option>
+                    <option ng-repeat="i in neighborhoods">{{i.name}}</option>
                 </select>
             </label>
             <label class="item item-input" name="POI">
                 <span class="input-label">Primary Points of Interest</span>
                 <input type="text" placeholder="Your Primary Points of Interest">
             </label>
-            <a ui-sref="showResult" class="button button-stable button-block  icon-right ion-search">Search Apartments</a>
+            <a ui-sref="tabsController.showResult" class="button button-stable button-block  icon-right ion-search">Search Apartments</a>
         </form>
     </ion-content>
 </ion-view>

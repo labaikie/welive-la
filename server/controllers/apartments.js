@@ -5,11 +5,9 @@ module.exports = {
 
   // USING SINGLE PROMISE LAYER TO SCRAPE BASIC APT DATA
   getApts : function(req, res, next) {
-    console.log(req.data);
-    // TO BE MODIFIED : Location to be a part of the request
-    // var location   = "west-hollywood-ca"
-    var location   = "echo-park-los-angeles-ca";
-    //var location   = "downtown-los-angeles-los-angeles-ca";
+    var location   = req.query.location
+    location = location.toLowerCase().replace(/ /g, '-').replace(/,/g, '')
+    console.log(location);
     var listingUrl = "http://www.apartments.com/apartments/" + location + "/";
     var listing    = {
                         uri: listingUrl,

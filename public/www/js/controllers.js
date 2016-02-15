@@ -1,14 +1,18 @@
 angular.module('app.controllers', [])
 
 .controller('homeCtrl', function($scope) {
+  $scope.neighborhoods = [
+                            {name: 'Downtown Los Angeles', la: true},
+                            {name: 'Echo Park', la: true},
+                            {name: 'West Hollywood', la: false}
+                          ];
 
 })
 
-.controller('showResultCtrl', function(mapService, $document) {
-  var vm = this;
-    mapService.getMap();
-    mapService.getMapData('Echo Park','Grocery');
-  return vm;
+.controller('showResultCtrl', function(mapService, $scope) {
+    // mapService.getMap();
+    // mapService.getMapData('Echo Park, Los Angeles, CA','Grocery');
+
 })
 
 .controller('showApartmentCtrl', function($scope) {

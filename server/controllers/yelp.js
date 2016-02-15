@@ -12,8 +12,8 @@ var yelp = new Yelp({
 module.exports = {
 
   getPOI: function(req, res, next) {
-    var location = "Echo Park, Los Angeles, CA"
-    var query = "Grocery"
+    var location = req.query.location
+    var query = req.query.query
     yelp.search({term: query, location: location, limit: 10})
       .then(function(data) {
         res.json(data.businesses);
