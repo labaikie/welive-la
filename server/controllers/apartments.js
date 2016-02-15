@@ -5,7 +5,7 @@ module.exports = {
 
   // USING SINGLE PROMISE LAYER TO SCRAPE BASIC APT DATA
   getApts : function(req, res, next) {
-    console.log(req.body);
+    console.log(req.data);
     // TO BE MODIFIED : Location to be a part of the request
     // var location   = "west-hollywood-ca"
     var location   = "echo-park-los-angeles-ca";

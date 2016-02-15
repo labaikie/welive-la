@@ -15,7 +15,7 @@ module.exports = {
           var token = jwt.sign(user, app.get('superSecret'), {
             expiresInMinutes: 1440 // expires in 24hrs
           });
-          // return info including token as JSOM
+          // return info including token as JSON
           res.json({
             success: true,
             message: 'Token sent!',
