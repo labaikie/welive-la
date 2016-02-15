@@ -5,9 +5,10 @@ module.exports = {
 
   // USING SINGLE PROMISE LAYER TO SCRAPE BASIC APT DATA
   getApts : function(req, res, next) {
+    console.log(req.body);
     // TO BE MODIFIED : Location to be a part of the request
-    var location   = "west-hollywood-ca";
-    // var location   = "echo-park-los-angeles-ca";
+    // var location   = "west-hollywood-ca"
+    var location   = "echo-park-los-angeles-ca";
     //var location   = "downtown-los-angeles-los-angeles-ca";
     var listingUrl = "http://www.apartments.com/apartments/" + location + "/";
     var listing    = {
@@ -42,7 +43,7 @@ module.exports = {
           apts.push(apt);
         }
       })
-      console.log(apts.length)
+      // console.log(apts.length)
       res.json(apts)
     }).catch(function(err){
       res.json(err)
