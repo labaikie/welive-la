@@ -1,9 +1,6 @@
 angular.module('app.services', [])
 
 .factory('nHService', function() {
-
-  // var current;
-
   return {
     neighborhoods: [
                       {name: 'Downtown Los Angeles', la: true},
@@ -12,12 +9,6 @@ angular.module('app.services', [])
                       {name: 'Los Feliz', la: true}
                     ],
     current: null
-    // setCurrent: function(n){
-    //   current = n;
-    // },
-    // getCurrent: function(){
-    //   return current;
-    // }
   }
 })
 
@@ -101,10 +92,14 @@ angular.module('app.services', [])
             data.forEach(function(d) {
               var marker = createMarker('apartment', icon, d.lat, d.lng)
               aptMarkers.push(marker)
-              // addEventListener for distance service
+              // addEventListener for DISTANCE & INFO
               marker.addListener('click', function() {
+                // get distance
                 getDistance(marker.getPosition()).then(function(data){
                   console.log(data)
+                  // if success, display modal
+
+
                 });
               })
             })
@@ -116,6 +111,7 @@ angular.module('app.services', [])
         function geocode(address) {
           var geocoder = new google.maps.Geocoder()
           return $q(function (resolve, reject) {
+            var url_addr = encodeURIComponent(address);
             geocoder.geocode( {address: address + location}, function(results, status) {
               if (status == google.maps.GeocoderStatus.OK) {
                 var lat = results[0].geometry.location.lat()
