@@ -38,12 +38,11 @@ angular.module('app.services', [])
         function getDistance(origin){
           var service = new google.maps.DistanceMatrixService;
           var poiLL = [];
-          var distance;
           poiMarkers.forEach(function(marker) {
             var position = marker.getPosition()
             poiLL.push(position);
           })
-          return $q(function (resolve, reject) {
+          var distancePromise = $q(function (resolve, reject) {
             service.getDistanceMatrix({
               origins: [origin],
               destinations: poiLL,
@@ -55,14 +54,14 @@ angular.module('app.services', [])
               if(status !== google.maps.DistanceMatrixStatus.OK) {
                 alert('Error was: ' + status);
               } else {
-                // console.log(res.rows[0].elements);
                 resolve({distance: res.rows[0].elements})
               }
             })
           })
+          // returning promise for eventlistener in addAptMarker to grab
+          return distancePromise;
         }
 
-        // var poiMarkers = [];
         function addPOIMarkers(){
           // setting POI icon
           var icon = new google.maps.MarkerImage("./img/black-dot.png")
@@ -93,7 +92,9 @@ angular.module('app.services', [])
               aptMarkers.push(marker)
               // addEventListener for distance service
               marker.addListener('click', function() {
-                console.log(getDistance(marker.getPosition()));
+                getDistance(marker.getPosition()).then(function(data){
+                  console.log(data)
+                });
               })
             })
             // set markers on map
