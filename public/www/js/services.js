@@ -6,9 +6,12 @@ angular.module('app.services', [])
                       {name: 'Downtown Los Angeles', la: true},
                       {name: 'Echo Park', la: true},
                       {name: 'West Hollywood', la: false},
-                      {name: 'Los Feliz', la: true}
+                      {name: 'Los Feliz', la: true},
+                      {name: 'Silver Lake', la: true},
+                      {name: 'Atwater Village', la: true}
                     ],
-    current: null
+    current: null,
+    poi: null
   }
 })
 

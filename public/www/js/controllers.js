@@ -3,13 +3,15 @@ angular.module('app.controllers', [])
 .controller('homeCtrl', function($scope, nHService) {
   $scope.neighborhoods = nHService.neighborhoods;
   $scope.poi = ["-","Grocery", "Schools", "Restaurants", "Swimming Pools", "Gyms", "Nightlife"];
-  $scope.current;
   $scope.setCurrent = function(selected) {
     if(selected.la == true) {
       nHService.current = selected.name + ', Los Angeles, CA'
     } else {
       nHService.current = selected.name + ', CA'
     }
+  }
+  $scope.setPOI = function(selected) {
+    nHService.poi = selected
   }
 })
 
@@ -97,6 +99,7 @@ angular.module('app.controllers', [])
               // get distance
               getDistance(marker.getPosition()).then(function(data){
                 console.log(data)
+                $scope.data = data;
                 $scope.openModal();
               });
             })
@@ -184,14 +187,14 @@ angular.module('app.controllers', [])
   }
 
   // TESTER LINE
-  $scope.setMap(nHService.current, 'Grocery');
+  $scope.setMap(nHService.current, nHService.poi);
 
   // Define Modal
   $ionicModal.fromTemplateUrl('templates/preview-modal.html', {
     scope: $scope,
     animation: 'slide-in-up'
     }).then(function(modal) {
-      $scope = modal;
+      $scope.modal = modal;
     });
   $scope.openModal = function() {
     $scope.modal.show();

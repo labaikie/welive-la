@@ -10,8 +10,7 @@
             </label>
             <label class="item item-input item-select" name="interestPts">
                 <span class="input-label">Points of Interest?</span>
-                <select>
-                  <option ng-repeat="i in poi">{{i}}</option>
+                <select ng-model="poiSingle" ng-change="setPOI(poiSingle)" ng-options="i for i in poi">
                 </select>
             </label>
             <label class="item item-input" name="address">
