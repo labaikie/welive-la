@@ -25,38 +25,90 @@ angular.module('app.services', [])
         var bounds = new google.maps.LatLngBounds();
 
         // create and set apartment markers
+        var aptMarkers = [];
         addAptMarkers();
         // create and set poi markers
+        var poiMarkers = [];
         addPOIMarkers();
-        // set to fit the bounds
+        // Map Set to Fit Bounds
         map.fitBounds(bounds)
 
+        // Distance Service
+
+        function getDistance(origin){
+          var service = new google.maps.DistanceMatrixService;
+          var poiLL = [];
+          var distances;
+          poiMarkers.forEach(function(marker) {
+            var position = marker.getPosition()
+            poiLL.push(position);
+          })
+          service.getDistanceMatrix({
+            origins: [origin],
+            destinations: poiLL,
+            travelMode: google.maps.TravelMode.DRIVING,
+            unitSystem: google.maps.UnitSystem.METRIC,
+            avoidHighways: false,
+            avoidTolls: false
+          }, function(res, status) {
+            if(status !== google.maps.DistanceMatrixStatus.OK) {
+              alert('Error was: ' + status);
+            } else {
+              // console.log(res.rows[0].elements);
+              distances = res.rows[0].elements
+            }
+          })
+          console.log(distances)
+        }
+
+      //   return $q(function (resolve, reject) {
+      //   geocoder.geocode( {address: address + location}, function(results, status) {
+      //     if (status == google.maps.GeocoderStatus.OK) {
+      //       var lat = results[0].geometry.location.lat()
+      //       var lng = results[0].geometry.location.lng()
+      //       resolve({ lat: lat, lng: lng})
+      //     } else {
+      //       reject("Geocode unsuccessful")
+      //       console.log("Geocode unsuccessful because: " + status);
+      //     }
+      //   });
+      // })
+
+
+
+        // var poiMarkers = [];
         function addPOIMarkers(){
           // setting POI icon
           var icon = new google.maps.MarkerImage("./img/black-dot.png")
           // creating markers
-          var poiMarkers = [];
-          result.poi.forEach(function(poi){
+          var poi = result.poi;
+          poi.forEach(function(poi){
             var lat = poi.location.coordinate.latitude
             var lng = poi.location.coordinate.longitude
-            poiMarkers.push(createMarker(icon, lat, lng))
+            var marker = createMarker(poi.name, icon, lat, lng)
+            poiMarkers.push(marker)
           })
           setMarkers(map, poiMarkers);
         }
 
         function addAptMarkers(){
+          var apts = result.apartments;
           // setting apartment icon
           var icon = new google.maps.MarkerImage("./img/house.png")
           // pushing Async geocode promises to array
           var latLngPromises = [];
-          result.apartments.forEach(function(apt){
+          apts.forEach(function(apt){
             latLngPromises.push(geocode(apt.address))
           })
           // after the array of promises is fulfilled, create markers
           $q.all(latLngPromises).then(function(data){
-            var aptMarkers = [];
             data.forEach(function(d) {
-              aptMarkers.push(createMarker(icon, d.lat, d.lng))
+              var marker = createMarker('apartment', icon, d.lat, d.lng)
+              aptMarkers.push(marker)
+              // addEventListener for distance service
+              marker.addListener('click', function() {
+                getDistance(marker.getPosition());
+              })
             })
             // set markers on map
             setMarkers(map, aptMarkers);
@@ -79,11 +131,13 @@ angular.module('app.services', [])
           })
         }
 
-        function createMarker(icon, lat, lng) {
+        function createMarker(name, icon, lat, lng) {
           var latlng = new google.maps.LatLng(lat,lng)
           var marker = new google.maps.Marker({
             position: latlng,
-            icon: icon
+            icon: icon,
+            label: name,
+            title: name
           })
           bounds.extend(latlng)
           return marker;

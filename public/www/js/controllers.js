@@ -7,7 +7,8 @@ angular.module('app.controllers', [])
 })
 
 .controller('showSearchCtrl', function(mapService, $scope) {
-    $scope.neighborhood = 'Silver Lake, Los Angeles, CA'
+    $scope.neighborhood = 'Atwater Village, Los Angeles, CA'
+    // $scope.neighborhood = 'Venice, CA'
     mapService.getMap($scope.neighborhood, 'Grocery');
     // mapService.getMapData('Echo Park, Los Angeles, CA','Grocery');
 
