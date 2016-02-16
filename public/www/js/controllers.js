@@ -14,12 +14,45 @@ angular.module('app.controllers', [])
 })
 
 .controller('showSearchCtrl', function($scope, $http, $document, $q, nHService, $ionicModal) {
-    // getting service
-    mapService.getMap(nHService.current, 'Grocery');
+
+    $scope.apartments;
+    $scope.poi;
+    $scope.setMap = function(location, poi) {
+      // get map object data from APIs
+      $scope.getMapData(location, poi, function(result){
+        // for apartment objects, get additional info from YELP
+        var aptObjsNames = result.apartments.
+        console.log(result);
+      })
+
+    };
 
 
 
+    $scope.getMapData = function(location, poi, callback) {
+      var result = {apartments:'', poi:''}
+      var aptPromise = $http({
+        method: 'GET',
+        url: 'http://localhost:8080/apartments', // || HOSTED SITE
+        params: {location: location}
+      })
+      var poiPromise = $http({
+        method: 'GET',
+        url: 'http://localhost:8080/poi', // || HOSTED SITE
+        params: {query: poi, location: location}
+        })
+      Promise.all([aptPromise, poiPromise]).then(function(data){
+        result.apartments = data[0].data
+        result.poi = data[1].data
+        callback(result);
+      }).catch(function(err) {
+        console.log(err);
+      })
+    };
 
+    $scope.geocode = function(location, )
+    // Tester Line
+    $scope.setMap(nHService.current, 'Grocery');
 
 
 
