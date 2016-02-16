@@ -5,8 +5,8 @@
             <div class="spacer" style="width: 300px; height: 320px;"></div>
             <label class="item item-select" name="neighborhood">
                 <span class="input-label">Neighborhood?</span>
-                <select>
-                    <option ng-repeat="i in neighborhoods">{{i.name}}</option>
+                <select ng-options="i.name for i in neighborhoods">
+                  <!-- <option ng-options="i in neighborhoods">{{i.name}}</option> -->
                 </select>
             </label>
             <label class="item item-input item-select" name="interestPts">

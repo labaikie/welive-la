@@ -3,15 +3,17 @@ angular.module('app.controllers', [])
 .controller('homeCtrl', function($scope, nHService) {
   $scope.neighborhoods = nHService.neighborhoods;
   $scope.poi = ["-","Grocery", "Schools", "Restaurants", "Swimming Pools", "Gyms", "Nightlife"]
-
+  // $scope.setCurrent = function(neighborhood) {
+  //   if (neighborhood.la) {
+  //     nHService.current = neighborhood + ', Los Angeles, CA'
+  //   } else {
+  //     nHService.current = neighborhood + ', CA'
+  //   }
+  // }
 })
 
-.controller('showSearchCtrl', function(mapService, $scope) {
-    $scope.neighborhood = 'Atwater Village, Los Angeles, CA'
-    // $scope.neighborhood = 'Venice, CA'
-    mapService.getMap($scope.neighborhood, 'Grocery');
-    // mapService.getMapData('Echo Park, Los Angeles, CA','Grocery');
-
+.controller('showSearchCtrl', function($scope, mapService, nHService) {
+    mapService.getMap('Echo Park, Los Angeles, CA', 'Grocery');
 })
 
 .controller('showApartmentCtrl', function($scope) {
