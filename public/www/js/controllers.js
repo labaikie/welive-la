@@ -13,7 +13,7 @@ angular.module('app.controllers', [])
   }
 })
 
-.controller('showSearchCtrl', function($scope, mapService, nHService, $ionicModal) {
+.controller('showSearchCtrl', function($scope, $http, $document, $q, nHService, $ionicModal) {
     // getting service
     mapService.getMap(nHService.current, 'Grocery');
 
