@@ -38,43 +38,29 @@ angular.module('app.services', [])
         function getDistance(origin){
           var service = new google.maps.DistanceMatrixService;
           var poiLL = [];
-          var distances;
+          var distance;
           poiMarkers.forEach(function(marker) {
             var position = marker.getPosition()
             poiLL.push(position);
           })
-          service.getDistanceMatrix({
-            origins: [origin],
-            destinations: poiLL,
-            travelMode: google.maps.TravelMode.DRIVING,
-            unitSystem: google.maps.UnitSystem.METRIC,
-            avoidHighways: false,
-            avoidTolls: false
-          }, function(res, status) {
-            if(status !== google.maps.DistanceMatrixStatus.OK) {
-              alert('Error was: ' + status);
-            } else {
-              // console.log(res.rows[0].elements);
-              distances = res.rows[0].elements
-            }
+          return $q(function (resolve, reject) {
+            service.getDistanceMatrix({
+              origins: [origin],
+              destinations: poiLL,
+              travelMode: google.maps.TravelMode.DRIVING,
+              unitSystem: google.maps.UnitSystem.METRIC,
+              avoidHighways: false,
+              avoidTolls: false
+            }, function(res, status) {
+              if(status !== google.maps.DistanceMatrixStatus.OK) {
+                alert('Error was: ' + status);
+              } else {
+                // console.log(res.rows[0].elements);
+                resolve({distance: res.rows[0].elements})
+              }
+            })
           })
-          console.log(distances)
         }
-
-      //   return $q(function (resolve, reject) {
-      //   geocoder.geocode( {address: address + location}, function(results, status) {
-      //     if (status == google.maps.GeocoderStatus.OK) {
-      //       var lat = results[0].geometry.location.lat()
-      //       var lng = results[0].geometry.location.lng()
-      //       resolve({ lat: lat, lng: lng})
-      //     } else {
-      //       reject("Geocode unsuccessful")
-      //       console.log("Geocode unsuccessful because: " + status);
-      //     }
-      //   });
-      // })
-
-
 
         // var poiMarkers = [];
         function addPOIMarkers(){
@@ -107,7 +93,7 @@ angular.module('app.services', [])
               aptMarkers.push(marker)
               // addEventListener for distance service
               marker.addListener('click', function() {
-                getDistance(marker.getPosition());
+                console.log(getDistance(marker.getPosition()));
               })
             })
             // set markers on map
