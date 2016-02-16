@@ -1,5 +1,15 @@
 angular.module('app.services', [])
 
+.factory('nHService', function() {
+  return {
+    neighborhoods: [
+                      {name: 'Downtown Los Angeles', la: true},
+                      {name: 'Echo Park', la: true},
+                      {name: 'West Hollywood', la: false}
+                    ]
+  }
+})
+
 .factory('mapService', function($http, $document, $q){
   return {
 
@@ -9,14 +19,17 @@ angular.module('app.services', [])
         // initialize map
         var mapOptions = {
           center: new google.maps.LatLng(34.0483572,-118.2746524),
-          zoom: 10
+          zoom: 14
         }
         var map = new google.maps.Map(document.getElementById('map'), mapOptions)
+        var bounds = new google.maps.LatLngBounds();
 
         // create and set apartment markers
         addAptMarkers();
         // create and set poi markers
         addPOIMarkers();
+        // set to fit the bounds
+        map.fitBounds(bounds)
 
         function addPOIMarkers(){
           // setting POI icon
@@ -30,7 +43,6 @@ angular.module('app.services', [])
           })
           setMarkers(map, poiMarkers);
         }
-
 
         function addAptMarkers(){
           // setting apartment icon
@@ -68,10 +80,12 @@ angular.module('app.services', [])
         }
 
         function createMarker(icon, lat, lng) {
+          var latlng = new google.maps.LatLng(lat,lng)
           var marker = new google.maps.Marker({
-            position: new google.maps.LatLng(lat,lng),
+            position: latlng,
             icon: icon
           })
+          bounds.extend(latlng)
           return marker;
         }
 
@@ -104,7 +118,6 @@ angular.module('app.services', [])
         console.log(err);
       })
     },
-
 
     getDistance : function() {
       console.log('Calculate Distance')

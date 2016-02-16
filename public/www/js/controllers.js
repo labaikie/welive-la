@@ -1,17 +1,14 @@
 angular.module('app.controllers', [])
 
-.controller('homeCtrl', function($scope) {
-  $scope.neighborhoods = [
-                            {name: 'Downtown Los Angeles', la: true},
-                            {name: 'Echo Park', la: true},
-                            {name: 'West Hollywood', la: false}
-                          ];
+.controller('homeCtrl', function($scope, nHService) {
+  $scope.neighborhoods = nHService.neighborhoods;
   $scope.poi = ["-","Grocery", "Schools", "Restaurants", "Swimming Pools", "Gyms", "Nightlife"]
 
 })
 
 .controller('showSearchCtrl', function(mapService, $scope) {
-    mapService.getMap('Echo Park, Los Angeles, CA', 'Grocery');
+    $scope.neighborhood = 'Silver Lake, Los Angeles, CA'
+    mapService.getMap($scope.neighborhood, 'Grocery');
     // mapService.getMapData('Echo Park, Los Angeles, CA','Grocery');
 
 })
