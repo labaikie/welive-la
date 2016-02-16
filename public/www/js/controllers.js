@@ -17,6 +17,8 @@ angular.module('app.controllers', [])
 
 .controller('showSearchCtrl', function($scope, $http, $document, $q, nHService, $ionicModal) {
 
+  $scope.apartment = {distance: null, data: null}
+
   $scope.setMap = function(location, poi) {
     // get map object data from APIs
     $scope.getMapData(location, poi, function(result){
@@ -92,14 +94,17 @@ angular.module('app.controllers', [])
         // after the array of promises is fulfilled, create markers
         $q.all(latLngPromises).then(function(data){
           data.forEach(function(d) {
-            var marker = createMarker('apartment', icon, d.lat, d.lng)
+            var data = {what: 'yes', who: 'no'}; // NEED TO DEFINE
+            var marker = createMarker('apartment', icon, d.lat, d.lng, data)
             aptMarkers.push(marker)
             // addEventListener for DISTANCE & INFO
             marker.addListener('click', function() {
               // get distance
               getDistance(marker.getPosition()).then(function(data){
-                console.log(data)
-                $scope.data = data;
+                // console.log(data)
+                // console.log(marker.mData);
+                $scope.apartment.distance = data.distance;
+                $scope.apartment.data = marker.mData;
                 $scope.openModal();
               });
             })
@@ -126,12 +131,12 @@ angular.module('app.controllers', [])
         })
       }
 
-      function createMarker(name, icon, lat, lng) {
+      function createMarker(name, icon, lat, lng, data) {
         var latlng = new google.maps.LatLng(lat,lng)
         var marker = new google.maps.Marker({
           position: latlng,
           icon: icon,
-          label: name,
+          mData: data,
           title: name
         })
         bounds.extend(latlng)
@@ -214,6 +219,15 @@ angular.module('app.controllers', [])
   $scope.$on('modal.removed', function() {
     // Execute action
   });
+
+  $scope.setApt = function() {
+
+  }
+
+  $scope.add() = function() {
+    // when an object is passed in, save the current apartment's data,
+    // including distance to the database
+  }
 
 })
 

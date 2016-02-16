@@ -99,7 +99,7 @@ angular.module('app.services', [])
               marker.addListener('click', function() {
                 // get distance
                 getDistance(marker.getPosition()).then(function(data){
-                  console.log(data)
+                  // console.log(data.distance)
                   // if success, display modal
 
 
