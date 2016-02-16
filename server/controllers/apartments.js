@@ -41,8 +41,7 @@ module.exports = {
           apts.push(apt);
         }
       })
-      // console.log(apts.length)
-      res.json(apts)
+      res.json(apts);
     }).catch(function(err){
       res.json(err)
     })
