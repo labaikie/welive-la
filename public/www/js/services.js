@@ -1,12 +1,23 @@
 angular.module('app.services', [])
 
 .factory('nHService', function() {
+
+  // var current;
+
   return {
     neighborhoods: [
                       {name: 'Downtown Los Angeles', la: true},
                       {name: 'Echo Park', la: true},
-                      {name: 'West Hollywood', la: false}
-                    ]
+                      {name: 'West Hollywood', la: false},
+                      {name: 'Los Feliz', la: true}
+                    ],
+    current: null
+    // setCurrent: function(n){
+    //   current = n;
+    // },
+    // getCurrent: function(){
+    //   return current;
+    // }
   }
 })
 
