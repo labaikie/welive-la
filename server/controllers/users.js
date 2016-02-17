@@ -8,9 +8,11 @@ module.exports = {
     user.email = req.body.user.email;
     user.password = user.generateHash(req.body.user.password);
     user.save(function(err) {
-      if(err)
-        throw err;
-      return done(null, user);
+      if(err) {
+        res.send(err)
+      } else {
+        res.json({success: true, message: "signup successful"})
+      }
     })
   },
 
