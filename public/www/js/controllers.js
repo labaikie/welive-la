@@ -262,4 +262,4 @@ angular.module('app.controllers', [])
     Auth.logout();
     $state.go('home');
   };
-});
+})

@@ -113,8 +113,4 @@ angular.module('app.services', [])
   }
 })
 
-.config(function ($httpProvider) {
-  $httpProvider.interceptors.push('AuthInterceptor');
-});
-
 
