@@ -33,10 +33,6 @@ angular.module('app.routes', [])
         'analysis': {
           templateUrl: 'templates/showAnalysis.html',
           controller: 'showAnalysisCtrl'
-        },
-        'prompt': {
-          templateUrl: 'templates/prompt.html',
-          controller: 'promptCtrl'
         }
       }
     })

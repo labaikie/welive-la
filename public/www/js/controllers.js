@@ -227,7 +227,9 @@ angular.module('app.controllers', [])
 
 })
 
-.controller('showAnalysisCtrl', function($scope) {
+.controller('showAnalysisCtrl', function($rootScope, $scope, Auth) {
+ $scope.loggedIn = Auth.isLoggedIn();
+ $rootScope.$on()
 
 })
 
