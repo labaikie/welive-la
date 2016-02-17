@@ -17,17 +17,31 @@ angular.module('app.services', [])
 
 .service('AuthService', function($q, $http, USER_ROLES) {
   var LOCAL_TOKEN_KEY = 'yourTokenKey';
-  var username = '';
+  var email = '';
   var isAuthenticated = false;
   var role = '';
   var authToken;
 
+  // should change to API CALL to server '/user/authenticate'
   function loadUserCredentials() {
     var token = window.localStorage.getItem(LOCAL_TOKEN_KEY);
     if (token) {
       useCredentials(token);
     }
   }
+
+  function useCredentials(token) {
+    email = token.split('.')[0];
+    isAuthenticated = true;
+    authToken = token;
+
+    if (email == 'admin') {
+      role = USER_ROLES.admin
+    }
+    if (email == 'user') {
+      role = USER_ROLES.public
+  }
+
  )
 
 

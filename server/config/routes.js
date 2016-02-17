@@ -27,8 +27,10 @@ router.get('/apartments', aptsController.getApts)
 // POI route
 router.get('/poi', yelpController.getPOI)
 
+// USER routes
+router.get('/user/singup', usersController.new)
 // token authentication route
-router.post('api/user/login', usersController.authenticate);
+router.post('/user/authenticate', usersController.authenticate);
 
 // route middleware to verify a token
 router.use(function(req, res, next) {

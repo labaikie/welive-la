@@ -3,6 +3,14 @@ var jwt              = require('jsonwebtoken');
 
 module.exports = {
 
+  new : function(req, res) {
+    var user = new User({
+      email: req.body.email,
+      password: req.body.password
+    })
+    user.save()
+  }
+
   authenticate : function(req, res) {
     User.findOne({ name: req.body.email }, function (err, user) {
       if (err) throw err;
