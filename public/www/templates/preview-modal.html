@@ -1,15 +1,14 @@
 <ion-modal-view>
   <ion-header-bar>
-    <h1 class="title">Apartment 1</h1>
+    <h1 class="title">{{currentApt.name}}</h1>
   </ion-header-bar>
   <ion-content>
-    <span>{{apartment.data}}</span>
+    <span>{{currentApt.address}}</span>
     <ion-list>
-      <ion-item ng-repeat="d in apartment.distance">
+      <ion-item ng-repeat="d in currentApt.distance">
         Distance: {{d.distance.text}} Duration: {{d.duration.text}}
       </ion-item>
     </ion-list>
-    This is the apartment detail
     <button class="button button-energized" ng-click="closeModal()">Done</button>
     <button class="button button-positive" ng-click="add()">Save</button>
   </ion-content>

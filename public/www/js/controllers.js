@@ -45,6 +45,23 @@ angular.module('app.controllers', [])
           $scope.markers.push(marker)
           bounds.extend(marker.getPosition())
           marker.setMap(map);
+          // SETTING EVENT LISTENERS TO MARKERS
+          marker.addListener('click', function() {
+            // calculate distance & append to obj
+            getDistance(marker.getPosition()).then(function(distance){
+              marker.data.distance = []
+              distance = distance.distance
+              for (var i = 0; i < distance.length; i++) {
+                var distanceObj = {
+                  distance: distance[i],
+                  poi: $scope.poi[i].name
+                }
+                marker.data.distance.push(distanceObj)
+              }
+              $scope.currentApt = marker.data;
+              $scope.openModal();
+            });
+          })
         })
       })
       // INITIALIZE MAP
@@ -64,6 +81,33 @@ angular.module('app.controllers', [])
       })
       map.fitBounds(bounds);
     })
+
+    function getDistance(origin){
+      var service = new google.maps.DistanceMatrixService;
+      $scope.poiLL = [];
+      $scope.poi.forEach(function(poi) {
+        var position = poi.marker.getPosition()
+        $scope.poiLL.push(position);
+      })
+      var distancePromise = $q(function (resolve, reject) {
+        service.getDistanceMatrix({
+          origins: [origin],
+          destinations: $scope.poiLL,
+          travelMode: google.maps.TravelMode.DRIVING,
+          unitSystem: google.maps.UnitSystem.METRIC,
+          avoidHighways: false,
+          avoidTolls: false
+        }, function(res, status) {
+          if(status !== google.maps.DistanceMatrixStatus.OK) {
+            alert('Error was: ' + status);
+          } else {
+            resolve({distance: res.rows[0].elements})
+          }
+        })
+      })
+      // returning promise for eventlistener in addAptMarker to grab
+      return distancePromise;
+    }
 
     function createMarker(obj, type) {
       var params;
