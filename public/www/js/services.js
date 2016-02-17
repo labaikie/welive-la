@@ -15,6 +15,19 @@ angular.module('app.services', [])
   }
 })
 
-.factory()
+.service('AuthService', function($q, $http, USER_ROLES) {
+  var LOCAL_TOKEN_KEY = 'yourTokenKey';
+  var username = '';
+  var isAuthenticated = false;
+  var role = '';
+  var authToken;
+
+  function loadUserCredentials() {
+    var token = window.localStorage.getItem(LOCAL_TOKEN_KEY);
+    if (token) {
+      useCredentials(token);
+    }
+  }
+ )
 
 
