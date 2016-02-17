@@ -200,11 +200,11 @@ angular.module('app.controllers', [])
     // Execute action
   });
 
-  $scope.addApt() = function(apt) {
-    // when an object is passed in, save the current apartment's data,
+  // $scope.addApt() = function(apt) {
+  //   // when an object is passed in, save the current apartment's data,
 
-    // including distance to the database
-  }
+  //   // including distance to the database
+  // }
 
 })
 
