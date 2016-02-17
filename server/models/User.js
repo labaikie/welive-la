@@ -5,10 +5,9 @@ var bcrypt        = require('bcrypt');
 //
 // DEFINE USER SCHEMA
 //
-var userSchema = mongoose.Schema({
-  email: String,
-  password: String,
-  admin: Boolean
+var userSchema = new Schema({
+  email: { type: String, required: true, index: {unique: ture}},
+  password: { type: String, required: true, select: false }
 });
 
 //
@@ -28,5 +27,4 @@ userSchema.methods.validPassword = function(password) {
 //
 // EXPORT USER MODEL
 //
-var User = mongoose.model('User', userSchema);
-module.exports = User;
+module.exports = mongoose.model('User', userSchema);

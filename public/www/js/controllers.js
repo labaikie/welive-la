@@ -1,4 +1,4 @@
-angular.module('app.controllers', [])
+angular.module('app.controllers', ['http-auth-interceptor'])
 
 .controller('homeCtrl', function($scope, nHService) {
   $scope.neighborhoods = nHService.neighborhoods;
