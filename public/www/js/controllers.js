@@ -22,7 +22,8 @@ angular.module('app.controllers', [])
   $scope.setMap = function(location, poi) {
     // get map object data from APIs
     $scope.getMapData(location, poi, function(result){
-              // initialize map
+
+      // initialize map
       var mapOptions = {
         center: new google.maps.LatLng(34.0483572,-118.2746524),
         zoom: 14
@@ -93,6 +94,7 @@ angular.module('app.controllers', [])
         })
         // after the array of promises is fulfilled, create markers
         $q.all(latLngPromises).then(function(data){
+          console.log(apts);
           data.forEach(function(d) {
             var data = {what: 'yes', who: 'no'}; // NEED TO DEFINE
             var marker = createMarker('apartment', icon, d.lat, d.lng, data)
@@ -101,8 +103,6 @@ angular.module('app.controllers', [])
             marker.addListener('click', function() {
               // get distance
               getDistance(marker.getPosition()).then(function(data){
-                // console.log(data)
-                // console.log(marker.mData);
                 $scope.apartment.distance = data.distance;
                 $scope.apartment.data = marker.mData;
                 $scope.openModal();
