@@ -1,4 +1,4 @@
-angular.module('app.controllers', ['http-auth-interceptor'])
+angular.module('app.controllers', [])
 
 .controller('homeCtrl', function($scope, nHService) {
   $scope.neighborhoods = nHService.neighborhoods;
@@ -230,7 +230,7 @@ angular.module('app.controllers', ['http-auth-interceptor'])
 
 })
 
-.controller('loginCtrl', function($scope, $state, AuthenticationService) {
+.controller('loginCtrl', function($scope, $state, Auth) {
   $scope.message = '';
   $scope.user = {
     email: null,
@@ -238,7 +238,7 @@ angular.module('app.controllers', ['http-auth-interceptor'])
   };
 
   $scope.login = function() {
-    AuthenticationService.login($scope.user);
+    Auth.login($scope.user);
   };
 
   $scope.$on('event:auth-loginRequired', function(e, rejection) {
@@ -279,9 +279,9 @@ angular.module('app.controllers', ['http-auth-interceptor'])
   }
 })
 
-.controller('dashCtrl', function($scope, $state, $http, AuthenticationService) {
+.controller('dashCtrl', function($scope, $state, $http, Auth) {
   $scope.logout = function() {
-    AuthenticationService.logout();
+    Auth.logout();
     $state.go('home');
   };
 });

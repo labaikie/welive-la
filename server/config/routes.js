@@ -32,17 +32,17 @@ router.get('/apartment/rating', yelpController.getAptRating)
 router.get('/poi', yelpController.getPOI)
 
 // USER routes
-router.post('/user/singup', usersController.new)
+router.post('/api/user/singup', usersController.new)
 // token authentication route
-router.post('/user/authenticate', usersController.authenticate)
+router.post('/api/user/authenticate', usersController.authenticate)
 // logout
-router.post('/user/logout', usersController.logout)
+router.post('/api/user/logout', usersController.logout)
 // save listing
-router.post('/user/save-listing', usersController.saveListing)
+router.post('/api/user/save-listing', usersController.saveListing)
 // get listings
-router.get('/user/listings', usersController.getListings)
+router.get('/api/user/listings', usersController.getListings)
 // delete a listing
-router.post('user/listings/update', usersController.updateListings)
+router.post('/api/user/listings/update', usersController.updateListings)
 
 // route middleware to verify a token
 router.use(function(req, res, next) {

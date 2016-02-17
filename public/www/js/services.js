@@ -1,4 +1,4 @@
-angular.module('app.services', ['http-auth-interceptor'])
+angular.module('app.services', [])
 
 .factory('nHService', function() {
   return {
@@ -54,40 +54,49 @@ angular.module('app.services', ['http-auth-interceptor'])
   }
 })
 
-.factory('AuthenticationService', function($rootScope, authService, $http) { // DELETED USER_ROLES
+.factory('Auth', function($http, $q, AuthToken) { // DELETED USER_ROLES
   return {
     login: function(user) {
-      var authenticationUri = 'http://localhost:8080/user/authenticate' // OR DEPLOYED SITE
-      $http({
-        method: 'POST',
-        url: authenticationUri,
-        data: {user: user},
-        config: {ignoreAuthModule: true}
-      }).success(function(data, status, headers, config){
-        $http.defaults.headers.common.Authorization = data.token
-        authService.loginConfirmed(data, function(config) {
-          config.headers.Authorization = data.token;
-          return config
+      var authenticationUri = 'http://localhost:8080/api/user/authenticate' // OR DEPLOYED SITE
+      return $http.post(authenticationUri, {user: user}).success(function(data) {
+        AuthToken.setToken(data.token);
+        return data;
         })
-      }).error(function (data, status, headers, config) {
-        $rootScope.$broadcast('event:auth-login-failed', status);
-      });
     },
-    logout: function(user) {
-      var logoutUri = 'http://localhost:8080/user/logout' //
-      $http.post('https://logout', {}, { ignoreAuthModule: true })
-      .finally(function(data) {
-        delete $http.defaults.headers.common.Authorization;
-        $rootScope.$broadcast('event:auth-logout-complete');
-      });
+    logout: function() {
+      AuthToken.setToken();
     },
-    loginCancelled: function() {
-      authService.loginCancelled();
+    isLoggedIn: function() {
+      if(AuthToken.getToken())
+        return true;
+      else
+        return false;
+    },
+    getUser: function() {
+      var getUserUri = 'http://localhost:8080/api/user' // TOBE REVISED
+      if(AuthToken.getToken())
+        return $http.get(getUserUri)
+      else
+        return $q.reject({message: 'User has no token'});
     }
   }
 })
 
-.factory('AuthInterceptor', function ($rootScope, $q, AUTH_EVENTS) {
+.factory('AuthToken', function($window) {
+  return {
+    getToken: function() {
+      return $window.localStorage.getItem('token');
+    },
+    setToken: function(token) {
+      if(token)
+        $window.localStorage.setItem('token', token);
+      else
+        $window.localStorage.removeItem('token');
+    }
+  }
+})
+
+.factory('AuthInterceptor', function ($q, AuthToken) {
   return {
     responseError: function (response) {
       $rootScope.$broadcast({
