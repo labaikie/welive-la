@@ -54,12 +54,12 @@ angular.module('app.services', [])
   }
 })
 
-.factory('Auth', function($http, $q, AuthToken) { // DELETED USER_ROLES
+.factory('Auth', function($http, $q, AuthToken) {
   return {
     login: function(user) {
       var authenticationUri = 'http://localhost:8080/api/user/authenticate' // OR DEPLOYED SITE
       return $http.post(authenticationUri, {user: user}).success(function(data) {
-        AuthToken.setToken(data.token);
+        AuthToken.setToken(data.token)
         return data;
         })
     },
@@ -75,7 +75,7 @@ angular.module('app.services', [])
     getUser: function() {
       var getUserUri = 'http://localhost:8080/api/user' // TOBE REVISED
       if(AuthToken.getToken())
-        return $http.get(getUserUri)
+        return $http.get(getUserUri);
       else
         return $q.reject({message: 'User has no token'});
     }
@@ -96,16 +96,21 @@ angular.module('app.services', [])
   }
 })
 
-.factory('AuthInterceptor', function ($q, AuthToken) {
+.factory('AuthInterceptor', function ($q, $location, AuthToken) {
   return {
-    responseError: function (response) {
-      $rootScope.$broadcast({
-        401: AUTH_EVENTS.notAuthenticated,
-        403: AUTH_EVENTS.notAuthorized
-      }[response.status], response);
-      return $q.reject(response);
+    request: function(config) {
+      var token = AuthToken.getToken();
+      if(token)
+        config.headers['x-access-token'] = token;
+      return config
+    },
+    responseError : function(res) {
+      if(res.status == 403)
+        $location.path('/dash');
+        // $state.go('tabsController.dash');
+      return $q.reject(res);
     }
-  };
+  }
 })
 
 .config(function ($httpProvider) {

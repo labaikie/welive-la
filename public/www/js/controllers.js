@@ -241,28 +241,6 @@ angular.module('app.controllers', [])
     Auth.login($scope.user);
   };
 
-  $scope.$on('event:auth-loginRequired', function(e, rejection) {
-    $scope.loginModal.show();
-  });
-
-  $scope.$on('event:auth-loginConfirmed', function() {
-     $scope.email = null;
-     $scope.password = null;
-     $scope.loginModal.hide();
-  });
-
-  $scope.$on('event:auth-login-failed', function(e, status) {
-    var error = "Login failed.";
-    if (status == 401) {
-      error = "Invalid Email or Password.";
-    }
-    $scope.message = error;
-  });
-
-  $scope.$on('event:auth-logout-complete', function() {
-    $state.go('tabsController.search', {}, {reload: false, inherit: true}); // CHANGED FROM TUT
-  });
-
 })
 
 .controller('signupCtrl', function($scope, $state, $ionicPopup) {
