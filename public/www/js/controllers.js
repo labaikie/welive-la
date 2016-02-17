@@ -16,6 +16,7 @@ angular.module('app.controllers', [])
 })
 
 .controller('showSearchCtrl', function($scope, $http, $document, $q, nHService, $ionicModal) {
+
   $scope.apartment = {distance: null, data: null}
   $scope.apartments;
   $scope.poi;
@@ -27,10 +28,23 @@ angular.module('app.controllers', [])
       $scope.apartments = result.apartments;
       $scope.poi = result.poi;
       // ADD GEOCODES TO APARTMENTS
+      var Promises = [];
       $scope.apartments.forEach(function(apt) {
-        geocode(apt.address).then(function(geocode){
+        var promise = geocode(apt.address).then(function(geocode){
           apt.lat = geocode.lat
           apt.lng = geocode.lng
+          return apt
+        })
+        Promises.push(promise);
+      })
+      Promise.all(Promises).then(function(apts) {
+        $scope.apartments = apts
+        $scope.apartments.forEach(function(apt) {
+          var marker = createMarker(apt, true)
+          apt.marker = marker;
+          $scope.markers.push(marker)
+          bounds.extend(marker.getPosition())
+          marker.setMap(map);
         })
       })
       // INITIALIZE MAP
@@ -41,24 +55,14 @@ angular.module('app.controllers', [])
       var map = new google.maps.Map(document.getElementById('map'), mapOptions)
       var bounds = new google.maps.LatLngBounds();
       // CREATE MARKERS AND ADD MARKERS
-      $scope.apartments.forEach(function(apt) {
-        var marker = createMarker(apt, true)
-        apt.marker = marker;
-        $scope.markers.push(marker)
-      })
       $scope.poi.forEach(function(poi) {
         var marker = createMarker(poi, false)
         poi.marker = marker;
         $scope.markers.push(marker)
+        bounds.extend(marker.getPosition())
+        marker.setMap(map);
       })
-      console.log('here')
-      // EXTEND MAP BOUNDS AND SET MARKER
-      $scope.markers.forEach(function(marker){
-        // bounds.extend(marker.getPosition())
-          marker.setMap(map)
-
-      })
-      console.log($scope.markers);
+      map.fitBounds(bounds);
     })
 
     function createMarker(obj, type) {
@@ -124,6 +128,7 @@ angular.module('app.controllers', [])
 
   // TESTER LINE
   $scope.setMap(nHService.current, nHService.poi);
+
 
   // Define Modal
   $ionicModal.fromTemplateUrl('templates/preview-modal.html', {
