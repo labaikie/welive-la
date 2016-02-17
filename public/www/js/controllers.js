@@ -216,14 +216,78 @@ angular.module('app.controllers', [])
 
 })
 
-.controller('loginCtrl', function($scope) {
+.controller('loginCtrl', function($scope, $state, $ionicPopup, AuthService) {
+  $scope.data = {};
 
+  $scope.login = function(data) {
+    AuthService.login(data.email, data.password).then(function(authenticated) {
+      $state.go('dash', {}, {reload: true});
+      $scope.setCurrentUser(data.email);
+    }, function(err) {
+      var alertPopup = $ionicPopup.alert({
+        title: 'Login failed!',
+        template: 'Please check your credentials!'
+      });
+    });
+  };
 })
 
 .controller('signupCtrl', function($scope) {
 
 })
 
-.controller('dashCtrl', function($scope) {
+.controller('AppCtrl', function($scope, $state, $ionicPopup, AuthService, AUTH_EVENTS) {
+  $scope.username = AuthService.username();
 
+  $scope.$on(AUTH_EVENTS.notAuthorized, function(event) {
+    var alertPopup = $ionicPopup.alert({
+      title: 'Unauthorized!',
+      template: 'You are not allowed to access this resource.'
+    });
+  });
+
+  $scope.$on(AUTH_EVENTS.notAuthenticated, function(event) {
+    AuthService.logout();
+    $state.go('login');
+    var alertPopup = $ionicPopup.alert({
+      title: 'Session Lost!',
+      template: 'Sorry, You have to login again.'
+    });
+  });
+
+  $scope.setCurrentUser = function(name) {
+    $scope.user = email;
+  };
 })
+
+.controller('dashCtrl', function($scope, $state, $http, $ionicPopup, AuthService) {
+  $scope.logout = function() {
+    AuthService.logout();
+    $state.go('login');
+  };
+
+  $scope.performValidRequest = function() {
+    $http.get('http://localhost:8100/valid').then(
+      function(result) {
+        $scope.response = result;
+      });
+  };
+
+  $scope.performUnauthorizedRequest = function() {
+    $http.get('http://localhost:8100/notauthorized').then(
+      function(result) {
+        // No result here..
+      }, function(err) {
+        $scope.response = err;
+      });
+  };
+
+  $scope.performInvalidRequest = function() {
+    $http.get('http://localhost:8100/notauthenticated').then(
+      function(result) {
+        // No result here..
+      }, function(err) {
+        $scope.response = err;
+      });
+  };
+});

@@ -8,7 +8,7 @@ module.exports = {
       email: req.body.email,
       password: req.body.password
     })
-    user.save()
+    user.save() // revise to add if success, fail, response
   }
 
   authenticate : function(req, res) {

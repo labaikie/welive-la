@@ -4,10 +4,17 @@ angular.module('app.routes', [])
 
   $stateProvider
 
+  // states before log-in
     .state('home', {
       url: '/',
       templateUrl: 'templates/home.html',
       controller: 'homeCtrl'
+    })
+
+    .state('tabsController', {
+      url: '/tabs',
+      abstract: true,
+      templateUrl: 'templates/tabsController.html'
     })
 
     .state('tabsController.showSearch', {
@@ -20,34 +27,30 @@ angular.module('app.routes', [])
       }
     })
 
-    .state('showApartment', {
-      url: '/apartment/show',
-      templateUrl: 'templates/showApartment.html',
-      controller: 'showApartmentCtrl'
-    })
-
     .state('tabsController.showAnalysis', {
       url: '/analysis',
       views: {
-        'tab2': {
+        'analysis': {
           templateUrl: 'templates/showAnalysis.html',
           controller: 'showAnalysisCtrl'
+        }
+        'prompt': {
+          templateUrl: 'templates/prompt.html',
+          controller: 'promptCtrl'
         }
       }
     })
 
-    .state('tabsController', {
-      url: '/tabs',
-      abstract:true,
-      templateUrl: 'templates/tabsController.html'
-    })
-
-    .state('tabsController.login', {
-      url: '/login',
+    .state('tabsController.dash', {
+      url: '/dash',
       views: {
-        'tab3': {
+        'login': {
           templateUrl: 'templates/login.html',
           controller: 'loginCtrl'
+        }
+        'dash': {
+          templateUrl: 'templates/dashboard.html',
+          controller: 'dashCtrl'
         }
       }
     })
@@ -58,11 +61,19 @@ angular.module('app.routes', [])
       controller: 'signupCtrl'
     })
 
-    .state('dash', {
-      url: '/dash',
-      templateUrl: 'templates/dashboard.html',
-      controller: 'dashCtrl'
+    .state('menu', {
+      url: '/side-menu',
+      abstract: true,
+      templateUrl: 'templates/menu.html'
     })
+
+  // states after log-in
+
+    // .state('showApartment', {
+    //   url: '/apartment/show',
+    //   templateUrl: 'templates/showApartment.html',
+    //   controller: 'showApartmentCtrl'
+    // })
 
     .state('admin', {
       url: '/admin',
@@ -72,16 +83,10 @@ angular.module('app.routes', [])
       }
     })
 
-    .state('menu', {
-      url: '/side-menu',
-      abstract: true,
-      templateUrl: 'templates/menu.html'
-    });
-
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise(function($injector, $location) {
     var $state = $injector.get($state);
-    $state.go('dash');
+    $state.go('search');
   })
 
 });
