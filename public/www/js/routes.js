@@ -1,6 +1,6 @@
 angular.module('app.routes', [])
 
-.config(function($stateProvider, $urlRouterProvider, USER_ROLES) {
+.config(function($stateProvider, $urlRouterProvider) { //Deleted USER_ROLES
 
   $stateProvider
 
@@ -33,7 +33,7 @@ angular.module('app.routes', [])
         'analysis': {
           templateUrl: 'templates/showAnalysis.html',
           controller: 'showAnalysisCtrl'
-        }
+        },
         'prompt': {
           templateUrl: 'templates/prompt.html',
           controller: 'promptCtrl'
@@ -47,7 +47,7 @@ angular.module('app.routes', [])
         'login': {
           templateUrl: 'templates/login.html',
           controller: 'loginCtrl'
-        }
+        },
         'dash': {
           templateUrl: 'templates/dashboard.html',
           controller: 'dashCtrl'
@@ -75,13 +75,13 @@ angular.module('app.routes', [])
     //   controller: 'showApartmentCtrl'
     // })
 
-    .state('admin', {
-      url: '/admin',
-      templateUrl: 'templates/admin.html',
-      data: {
-        authorizedRoles: [USER_ROLES.admin]
-      }
-    })
+    // .state('admin', {
+    //   url: '/admin',
+    //   templateUrl: 'templates/admin.html',
+    //   data: {
+    //     authorizedRoles: [USER_ROLES.admin]
+    //   }
+    // })
 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise(function($injector, $location) {

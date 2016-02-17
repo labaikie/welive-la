@@ -54,7 +54,7 @@ angular.module('app.services', [])
   }
 })
 
-.service('AuthService', function($q, $http, USER_ROLES) {
+.service('AuthService', function($q, $http) { // DELETED USER_ROLES
   var LOCAL_TOKEN_KEY = 'laskilaskalasko';
   var email = '';
   var isAuthenticated = false;
@@ -74,12 +74,12 @@ angular.module('app.services', [])
     isAuthenticated = true;
     authToken = token;
 
-    if (email == 'admin') {
-      role = USER_ROLES.admin
-    }
-    if (email == 'user') {
-      role = USER_ROLES.public
-    }
+    // if (email == 'admin') {
+    //   role = USER_ROLES.admin
+    // }
+    // if (email == 'user') {
+    //   role = USER_ROLES.public
+    // }
     // Set the token as header for your requests!
     $http.defaults.headers.common['x-access-token'] = token;
   }
@@ -88,7 +88,7 @@ angular.module('app.services', [])
     authToken = undefined;
     username = '';
     isAuthenticated = false;
-    $http.defaults.headers.common['X-Auth-Token'] = undefined;
+    $http.defaults.headers.common['x-access-token'] = undefined;
     window.localStorage.removeItem(LOCAL_TOKEN_KEY);
   }
 
@@ -122,9 +122,9 @@ angular.module('app.services', [])
     logout: logout,
     isAuthorized: isAuthorized,
     isAuthenticated: function() {return isAuthenticated;},
-    username: function() {return username;},
-    role: function() {return role;}
-  };
+    email: function() {return user;},
+    // role: function() {return role;}
+  }
 })
 
 .factory('AuthInterceptor', function ($rootScope, $q, AUTH_EVENTS) {
