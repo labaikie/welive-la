@@ -4,11 +4,14 @@ var jwt              = require('jsonwebtoken');
 module.exports = {
 
   new : function(req, res) {
-    var user = new User({
-      email: req.body.email,
-      password: req.body.password
+    var user = new User();
+    user.email = req.body.user.email;
+    user.password = user.generateHash(req.body.user.password);
+    user.save(function(err) {
+      if(err)
+        throw err;
+      return done(null, user);
     })
-    user.save() // revise to add if success, fail, response
   },
 
   authenticate : function(req, res) {

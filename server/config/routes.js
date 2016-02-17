@@ -1,12 +1,16 @@
 var express          = require('express')
-var router           = new express.Router();
+var app              = express()
+var router           = new express.Router()
+// var passport         = require('passport')
+//                        app.use(passport.initialize())
+//                        require('../config/passport')(passport)
 
 //
 // REQUIRE CONTROLLERS
 //
 var usersController  = require('../controllers/users');
 var aptsController   = require('../controllers/apartments');
-var yelpController    = require('../controllers/yelp')
+var yelpController   = require('../controllers/yelp')
 
 //
 // ROUTES
