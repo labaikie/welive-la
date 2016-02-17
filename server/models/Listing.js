@@ -4,7 +4,7 @@ var Schema        = mongoose.Schema;
 //
 // DEFINE LISTING SCHEMA
 //
-var listingSchema = new Schema(
+var listingSchema = new Schema({
   user: String,
   listing: {
               name: String,
@@ -14,14 +14,12 @@ var listingSchema = new Schema(
               built: String,
               url: String
             }
-);
+});
 
 //
 // LISTING METHODS
 //
-listingSchema.methods.getOutput = function(input) {
-    return 'hi' + input;
-};
+
 
 //
 // EXPORT LISTING MODEL

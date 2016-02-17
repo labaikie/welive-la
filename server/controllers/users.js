@@ -37,7 +37,19 @@ module.exports = {
         }
       }
     })
-  }
+  },
+
+  getListing: function(req, res) {
+    User.findOne({email: req.body.user.email }, function(err, user) {
+      if(!err) res.json(user.listings)
+    })
+  },
+
+  saveListing: function(req, res) {
+    User.findOneAndUpdate({email: req.body.user.email}, {$addToSet: {listings: req.body.listing}},function(err, data) {
+        if(!err) res.json('success')
+    })
+  },
 
   logout : function(req, res) {
     //destroy token???

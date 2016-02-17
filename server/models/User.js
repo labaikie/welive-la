@@ -7,7 +7,8 @@ var bcrypt        = require('bcrypt');
 //
 var userSchema = new Schema({
   email: { type: String, required: true, index: {unique: ture}},
-  password: { type: String, required: true, select: false }
+  password: { type: String, required: true, select: false },
+  listings: []
 });
 
 //
