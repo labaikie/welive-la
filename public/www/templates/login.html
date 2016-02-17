@@ -1,18 +1,21 @@
 <ion-view title="Login">
+    <div class="modal">
+      {{message}}
+    </div>
     <ion-content overflow-scroll="true" padding="true" class="has-header">
         <form class="list">
             <ion-list>
                 <label class="item item-input" name="Email">
                     <span class="input-label">Email</span>
-                    <input type="text" placeholder="Email" ng-model="data.email">
+                    <input type="text" placeholder="Email" ng-model="user.email">
                 </label>
                 <label class="item item-input" name="Password">
                     <span class="input-label">Password</span>
-                    <input type="password" placeholder="Password" ng-model="data.password">
+                    <input type="password" placeholder="Password" ng-model="user.password">
                 </label>
             </ion-list>
             <div class="spacer" style="height: 40px;"></div>
-            <a ui-sref="tabsController.showSearch" class="button button-stable button-block" ng-click="login(data)">Log in</a>
+            <a ui-sref="tabsController.showSearch" class="button button-stable button-block" ng-click="login()">Log in</a>
             <a ui-sref="signup" class="button button-positive button-clear button-block ">Or create an account</a>
 <!--             <a href="#" onclick="window.open('/signup', '_system', 'location=yes'); return false;" class="button button-positive button-clear button-block ">Or create an account</a> -->
         </form>

@@ -22,15 +22,18 @@ router.get('/api', function(req, res) {
 
 // apartments route
 router.get('/apartments', aptsController.getApts)
-      .get('/apartment/rating', yelpController.getAptRating)
+router.get('/apartment/rating', yelpController.getAptRating)
 
 // POI route
 router.get('/poi', yelpController.getPOI)
 
 // USER routes
-router.get('/user/singup', usersController.new)
+router.post('/user/singup', usersController.new)
 // token authentication route
-router.post('/user/authenticate', usersController.authenticate);
+router.post('/user/authenticate', usersController.authenticate)
+// logout
+router.post('/user/logout', usersController.logout)
+
 
 // route middleware to verify a token
 router.use(function(req, res, next) {

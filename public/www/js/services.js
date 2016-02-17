@@ -1,4 +1,4 @@
-angular.module('app.services', [])
+angular.module('app.services', ['http-auth-interceptor'])
 
 .factory('nHService', function() {
   return {
@@ -54,76 +54,36 @@ angular.module('app.services', [])
   }
 })
 
-.service('AuthService', function($q, $http) { // DELETED USER_ROLES
-  var LOCAL_TOKEN_KEY = 'laskilaskalasko';
-  var email = '';
-  var isAuthenticated = false;
-  var role = '';
-  var authToken;
-
-  // should change to API CALL to server '/user/authenticate'
-  function loadUserCredentials() {
-    var token = window.localStorage.getItem(LOCAL_TOKEN_KEY);
-    if (token) {
-      useCredentials(token);
-    }
-  }
-
-  function useCredentials(token) {
-    email = token.split('.')[0];
-    isAuthenticated = true;
-    authToken = token;
-
-    // if (email == 'admin') {
-    //   role = USER_ROLES.admin
-    // }
-    // if (email == 'user') {
-    //   role = USER_ROLES.public
-    // }
-    // Set the token as header for your requests!
-    $http.defaults.headers.common['x-access-token'] = token;
-  }
-
-  function destroyUserCredentials() {
-    authToken = undefined;
-    username = '';
-    isAuthenticated = false;
-    $http.defaults.headers.common['x-access-token'] = undefined;
-    window.localStorage.removeItem(LOCAL_TOKEN_KEY);
-  }
-
-  var login = function(email, pw) {
-    return $q(function(resolve, reject) {
-      if ((email == 'admin' && pw == '1') || (email == 'user' && pw == '1')) {
-        // Make a request and receive your auth token from your server
-        storeUserCredentials(email + '.yourServerToken');
-        resolve('Login success.');
-      } else {
-        reject('Login Failed.');
-      }
-    });
-  };
-
-  var logout = function() {
-    destroyUserCredentials();
-  };
-
-  var isAuthorized = function(authorizedRoles) {
-    if (!angular.isArray(authorizedRoles)) {
-      authorizedRoles = [authorizedRoles];
-    }
-    return (isAuthenticated && authorizedRoles.indexOf(role) !== -1);
-  };
-
-  loadUserCredentials();
-
+.factory('AuthenticationService', function($rootScope, authService, $http) { // DELETED USER_ROLES
   return {
-    login: login,
-    logout: logout,
-    isAuthorized: isAuthorized,
-    isAuthenticated: function() {return isAuthenticated;},
-    email: function() {return user;},
-    // role: function() {return role;}
+    login: function(user) {
+      var authenticationUri = 'http://localhost:8080/user/authenticate' // OR DEPLOYED SITE
+      $http({
+        method: 'POST',
+        url: authenticationUri,
+        data: {user: user},
+        config: {ignoreAuthModule: true}
+      }).success(function(data, status, headers, config){
+        $http.defaults.headers.common.Authorization = data.token
+        authService.loginConfirmed(data, function(config) {
+          config.headers.Authorization = data.token;
+          return config
+        })
+      }).error(function (data, status, headers, config) {
+        $rootScope.$broadcast('event:auth-login-failed', status);
+      });
+    },
+    logout: function(user) {
+      var logoutUri = 'http://localhost:8080/user/logout' //
+      $http.post('https://logout', {}, { ignoreAuthModule: true })
+      .finally(function(data) {
+        delete $http.defaults.headers.common.Authorization;
+        $rootScope.$broadcast('event:auth-logout-complete');
+      });
+    },
+    loginCancelled: function() {
+      authService.loginCancelled();
+    }
   }
 })
 

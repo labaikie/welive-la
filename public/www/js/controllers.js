@@ -173,8 +173,7 @@ angular.module('app.controllers', [])
   // TESTER LINE
   $scope.setMap(nHService.current, nHService.poi);
 
-
-  // Define Modal
+  // MODAL FOR SHOW APT
   $ionicModal.fromTemplateUrl('templates/preview-modal.html', {
     scope: $scope,
     animation: 'slide-in-up'
@@ -206,6 +205,21 @@ angular.module('app.controllers', [])
     // including distance to the database
   }
 
+  // MODAL FOR LOG-IN
+  $ionicModal.fromTemplateUrl('templates/login.html', function(modal) {
+      $scope.loginModal = modal;
+    },
+    {
+      scope: $scope,
+      animation: 'slide-in-up',
+      focusFirstInput: true
+    }
+  );
+  //Be sure to cleanup the modal by removing it from the DOM
+  $scope.$on('$destroy', function() {
+    $scope.loginModal.remove();
+  });
+
 })
 
 .controller('showApartmentCtrl', function($scope) {
@@ -216,78 +230,58 @@ angular.module('app.controllers', [])
 
 })
 
-.controller('loginCtrl', function($scope, $state, $ionicPopup, AuthService) {
-  $scope.data = {};
+.controller('loginCtrl', function($scope, $state, AuthenticationService) {
+  $scope.message = '';
+  $scope.user = {
+    email: null,
+    password: null
+  };
 
-  $scope.login = function(data) {
-    AuthService.login(data.email, data.password).then(function(authenticated) {
-      $state.go('dash', {}, {reload: true});
-      $scope.setCurrentUser(data.email);
-    }, function(err) {
-      var alertPopup = $ionicPopup.alert({
-        title: 'Login failed!',
-        template: 'Please check your credentials!'
+  $scope.login = function() {
+    AuthenticationService.login($scope.user);
+  };
+
+  $scope.$on('event:auth-loginRequired', function(e, rejection) {
+    $scope.loginModal.show();
+  });
+
+  $scope.$on('event:auth-loginConfirmed', function() {
+     $scope.email = null;
+     $scope.password = null;
+     $scope.loginModal.hide();
+  });
+
+  $scope.$on('event:auth-login-failed', function(e, status) {
+    var error = "Login failed.";
+    if (status == 401) {
+      error = "Invalid Email or Password.";
+    }
+    $scope.message = error;
+  });
+
+  $scope.$on('event:auth-logout-complete', function() {
+    $state.go('tabsController.search', {}, {reload: false, inherit: true}); // CHANGED FROM TUT
+  });
+
+})
+
+.controller('signupCtrl', function($scope, $state, $ionicPopup) {
+  $scope.signup = function(user) {
+    var newUserUri = 'http://localhost:8080/user/signup' //OR DEPLOYED SITE
+    $http.post(newUserUri, {user: user}).success(function(data){
+      $state.go('tabsController.login');
+    }).error(function(err){
+      $ionicPopup.alert({
+        title: 'Unsuccessful',
+        template: 'Sign up was unsuccessful, please try again'
       });
-    });
-  };
+    })
+  }
 })
 
-.controller('signupCtrl', function($scope) {
-
-})
-
-.controller('AppCtrl', function($scope, $state, $ionicPopup, AuthService, AUTH_EVENTS) {
-  $scope.username = AuthService.username();
-
-  $scope.$on(AUTH_EVENTS.notAuthorized, function(event) {
-    var alertPopup = $ionicPopup.alert({
-      title: 'Unauthorized!',
-      template: 'You are not allowed to access this resource.'
-    });
-  });
-
-  $scope.$on(AUTH_EVENTS.notAuthenticated, function(event) {
-    AuthService.logout();
-    $state.go('login');
-    var alertPopup = $ionicPopup.alert({
-      title: 'Session Lost!',
-      template: 'Sorry, You have to login again.'
-    });
-  });
-
-  $scope.setCurrentUser = function(name) {
-    $scope.user = email;
-  };
-})
-
-.controller('dashCtrl', function($scope, $state, $http, $ionicPopup, AuthService) {
+.controller('dashCtrl', function($scope, $state, $http, AuthenticationService) {
   $scope.logout = function() {
-    AuthService.logout();
-    $state.go('login');
-  };
-
-  $scope.performValidRequest = function() {
-    $http.get('http://localhost:8100/valid').then(
-      function(result) {
-        $scope.response = result;
-      });
-  };
-
-  $scope.performUnauthorizedRequest = function() {
-    $http.get('http://localhost:8100/notauthorized').then(
-      function(result) {
-        // No result here..
-      }, function(err) {
-        $scope.response = err;
-      });
-  };
-
-  $scope.performInvalidRequest = function() {
-    $http.get('http://localhost:8100/notauthenticated').then(
-      function(result) {
-        // No result here..
-      }, function(err) {
-        $scope.response = err;
-      });
+    AuthenticationService.logout();
+    $state.go('home');
   };
 });

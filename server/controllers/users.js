@@ -9,15 +9,15 @@ module.exports = {
       password: req.body.password
     })
     user.save() // revise to add if success, fail, response
-  }
+  },
 
   authenticate : function(req, res) {
-    User.findOne({ name: req.body.email }, function (err, user) {
+    User.findOne({ email: req.body.user.email }, function (err, user) {
       if (err) throw err;
       if (!user) {
         res.json({success: false, message: "Authentication failed: no user"})
       } else if (user) {
-        if (user.password != req.body.password) {
+        if (user.password != req.body.user.password) {
             res.json({success: false, message: 'Authenticaton failed: wrong password'})
         } else { // create token
           var token = jwt.sign(user, app.get('superSecret'), {
@@ -32,6 +32,10 @@ module.exports = {
         }
       }
     })
+  }
+
+  logout : function(req, res) {
+    //destroy token???
   }
 
 }
