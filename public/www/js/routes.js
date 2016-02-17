@@ -1,6 +1,6 @@
 angular.module('app.routes', [])
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider, USER_ROLES) {
 
   $stateProvider
 
@@ -58,6 +58,20 @@ angular.module('app.routes', [])
       controller: 'signupCtrl'
     })
 
+    .state('dash', {
+      url: '/dash',
+      templateUrl: 'templates/dashboard.html',
+      controller: 'dashCtrl'
+    })
+
+    .state('admin', {
+      url: '/admin',
+      templateUrl: 'templates/admin.html',
+      data: {
+        authorizedRoles: [USER_ROLES.admin]
+      }
+    })
+
     .state('menu', {
       url: '/side-menu',
       abstract: true,
@@ -65,6 +79,9 @@ angular.module('app.routes', [])
     });
 
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/');
+  $urlRouterProvider.otherwise(function($injector, $location) {
+    var $state = $injector.get($state);
+    $state.go('dash');
+  })
 
 });

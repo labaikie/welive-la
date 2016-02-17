@@ -224,3 +224,6 @@ angular.module('app.controllers', [])
 
 })
 
+.controller('dashCtrl', function($scope) {
+
+})
