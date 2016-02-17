@@ -37,7 +37,12 @@ router.post('/user/singup', usersController.new)
 router.post('/user/authenticate', usersController.authenticate)
 // logout
 router.post('/user/logout', usersController.logout)
-
+// save listing
+router.post('/user/save-listing', usersController.saveListing)
+// get listings
+router.get('/user/listings', usersController.getListings)
+// delete a listing
+router.post('user/listings/update', usersController.updateListings)
 
 // route middleware to verify a token
 router.use(function(req, res, next) {

@@ -39,7 +39,7 @@ module.exports = {
     })
   },
 
-  getListing: function(req, res) {
+  getListings: function(req, res) {
     User.findOne({email: req.body.user.email }, function(err, user) {
       if(!err) res.json(user.listings)
     })
@@ -49,6 +49,10 @@ module.exports = {
     User.findOneAndUpdate({email: req.body.user.email}, {$addToSet: {listings: req.body.listing}},function(err, data) {
         if(!err) res.json('success')
     })
+  },
+
+  updateListings: function(req, res) {
+
   },
 
   logout : function(req, res) {
