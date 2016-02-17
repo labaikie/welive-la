@@ -58,6 +58,7 @@ angular.module('app.controllers', [])
                 }
                 marker.data.distance.push(distanceObj)
               }
+              console.log(marker.data);
               $scope.currentApt = marker.data;
               $scope.openModal();
             });
