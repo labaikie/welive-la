@@ -40,10 +40,6 @@ angular.module('app.routes', [])
     .state('tabsController.dash', {
       url: '/dash',
       views: {
-        'login': {
-          templateUrl: 'templates/login.html',
-          controller: 'loginCtrl'
-        },
         'dash': {
           templateUrl: 'templates/dashboard.html',
           controller: 'dashCtrl'

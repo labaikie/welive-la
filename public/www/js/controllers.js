@@ -15,12 +15,13 @@ angular.module('app.controllers', [])
   }
 })
 
-.controller('showSearchCtrl', function($scope, $http, $document, $q, nHService, $ionicModal) {
+.controller('showSearchCtrl', function($scope, $http, $document, $q, nHService, $ionicModal, Auth){
 
-  $scope.apartment = {distance: null, data: null}
+  $scope.apartment = {distance: null, data: null};
   $scope.apartments;
   $scope.poi;
   $scope.markers = [];
+
   $scope.setMap = function(location, poi) {
     // GET APT & POI OBJECTS FROM API
     $scope.getMapData(location, poi, function(result){
@@ -36,7 +37,8 @@ angular.module('app.controllers', [])
           return apt
         })
         Promises.push(promise);
-      })
+      });
+
       Promise.all(Promises).then(function(apts) {
         $scope.apartments = apts
         $scope.apartments.forEach(function(apt) {
@@ -64,13 +66,13 @@ angular.module('app.controllers', [])
             });
           })
         })
-      })
+      });
       // INITIALIZE MAP
       var mapOptions = {
         center: new google.maps.LatLng(34.0483572,-118.2746524),
         zoom: 14
-      }
-      var map = new google.maps.Map(document.getElementById('map'), mapOptions)
+      };
+      var map = new google.maps.Map(document.getElementById('map'), mapOptions);
       var bounds = new google.maps.LatLngBounds();
       // CREATE MARKERS AND ADD MARKERS
       $scope.poi.forEach(function(poi) {
@@ -79,7 +81,7 @@ angular.module('app.controllers', [])
         $scope.markers.push(marker)
         bounds.extend(marker.getPosition())
         marker.setMap(map);
-      })
+      });
       map.fitBounds(bounds);
     })
 
@@ -108,7 +110,7 @@ angular.module('app.controllers', [])
       })
       // returning promise for eventlistener in addAptMarker to grab
       return distancePromise;
-    }
+    };
 
     function createMarker(obj, type) {
       var params;
@@ -129,7 +131,7 @@ angular.module('app.controllers', [])
       }
       var marker = new google.maps.Marker(params)
       return marker
-    }
+    };
 
     function geocode(address) {
       var geocoder = new google.maps.Geocoder()
@@ -144,10 +146,9 @@ angular.module('app.controllers', [])
             reject("Geocode unsuccessful")
             console.log("Geocode unsuccessful because: " + status);
           }
-        });
+        })
       })
-    }
-
+    };
   };
 
   $scope.getMapData = function(location, poi, callback) {
@@ -180,7 +181,8 @@ angular.module('app.controllers', [])
     animation: 'slide-in-up'
     }).then(function(modal) {
       $scope.modal = modal;
-    });
+    })
+
   $scope.openModal = function() {
     $scope.modal.show();
   };
@@ -200,37 +202,67 @@ angular.module('app.controllers', [])
     // Execute action
   });
 
-  $scope.addApt() = function(apt) {
-    // when an object is passed in, save the current apartment's data,
+  // $scope.addApt = function(apt) {
+  //   if(!Auth.isLoggedIn()) {
+  //     $scope.loginModal
+  //   }
+  // }
 
-    // including distance to the database
+  $ionicModal.fromTemplateUrl('templates/login-modal.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+    }).then(function(modal) {
+      $scope.loginModal = modal;
+      $scope.promptLogin = function () {
+          if (!Auth.isLoggedIn()) {
+            $scope.loginModal.show()
+          } else {
+          }
+        }
+    })
+
+})
+
+
+.controller('showAnalysisCtrl', function($scope, Auth, $ionicModal) {
+  $scope.loggedIn = Auth.isLoggedIn();
+
+   // MODAL FOR LOG-IN
+  $ionicModal.fromTemplateUrl('templates/login.html', {
+      scope: $scope,
+      animation: 'slide-in-up'
+    }).then(function(modal) {
+      $scope.modal = modal;
+    });
+  $scope.openModal = function() {
+    $scope.modal.show();
   }
 
-  // MODAL FOR LOG-IN
-  $ionicModal.fromTemplateUrl('templates/login.html', function(modal) {
-      $scope.loginModal = modal;
-    },
-    {
-      scope: $scope,
-      animation: 'slide-in-up',
-      focusFirstInput: true
-    }
-  );
-  //Be sure to cleanup the modal by removing it from the DOM
+  $scope.closeModal = function() {
+    $scope.modal.hide();
+  }
+
   $scope.$on('$destroy', function() {
-    $scope.loginModal.remove();
+    $scope.modal.remove();
+  });
+  // Execute action on hide modal
+  $scope.$on('modal.hidden', function() {
+    // Execute action
+  });
+  // Execute action on remove modal
+  $scope.$on('modal.removed', function() {
+    // Execute action
   });
 
-})
-
-.controller('showApartmentCtrl', function($scope) {
 
 })
 
-.controller('showAnalysisCtrl', function($rootScope, $scope, Auth) {
- $scope.loggedIn = Auth.isLoggedIn();
- $rootScope.$on()
+.controller('dashCtrl', function($scope, $state, $http, Auth) {
 
+  $scope.logout = function() {
+    Auth.logout();
+    $state.go('home');
+  };
 })
 
 .controller('loginCtrl', function($scope, $state, Auth) {
@@ -260,9 +292,8 @@ angular.module('app.controllers', [])
   }
 })
 
-.controller('dashCtrl', function($scope, $state, $http, Auth) {
-  $scope.logout = function() {
-    Auth.logout();
-    $state.go('home');
-  };
+
+.controller('showApartmentCtrl', function($scope) {
+
 })
+
