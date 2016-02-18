@@ -56,6 +56,7 @@ angular.module('app.services', [])
 
 .factory('Auth', function($http, $q, AuthToken) {
   return {
+    user: null,
     login: function(user) {
       var authenticationUri = 'http://localhost:8080/api/user/authenticate' // OR DEPLOYED SITE
       return $http.post(authenticationUri, {user: user}).success(function(data) {

@@ -27,12 +27,13 @@ module.exports = {
             res.json({success: false, message: 'Authenticaton failed: wrong password'})
         } else { // create token
           var token = jwt.sign(user, config.secret, {
-            expiresInMinutes: 1440 // expires in 24hrs
+            expiresIn: 3600 // expires in 1hr
           });
           // return info including token as JSON
           res.json({
             success: true,
             message: 'Token sent!',
+            user: user,
             token: token
           });
         }
@@ -47,8 +48,11 @@ module.exports = {
   },
 
   addListing: function(req, res) {
+    console.log('add listing')
+    console.log(req)
     User.findOneAndUpdate({email: req.body.user.email}, {$addToSet: {listings: req.body.apt}},function(err, data) {
-        if(!err) res.json('success')
+        console.log('add listing invoked')
+        if(!err) res.send('success')
     })
   },
 

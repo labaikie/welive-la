@@ -44,7 +44,6 @@ angular.module('app.controllers', [])
         $scope.apartments = apts
         $scope.apartments.forEach(function(apt) {
           var marker = createMarker(apt, true)
-          apt.marker = marker;
           $scope.markers.push(marker)
           bounds.extend(marker.getPosition())
           marker.setMap(map);
@@ -61,7 +60,6 @@ angular.module('app.controllers', [])
                 }
                 marker.data.distance.push(distanceObj)
               }
-              // console.log(marker.data);
               $scope.currentApt = marker.data;
               $scope.openModal();
             });
@@ -78,7 +76,7 @@ angular.module('app.controllers', [])
       // CREATE MARKERS AND ADD MARKERS
       $scope.poi.forEach(function(poi) {
         var marker = createMarker(poi, false)
-        poi.marker = marker;
+        poi.marker = marker
         $scope.markers.push(marker)
         bounds.extend(marker.getPosition())
         marker.setMap(map);
@@ -212,8 +210,11 @@ angular.module('app.controllers', [])
     if(!Auth.isLoggedIn()) {
       $scope.loginModal.show();
     } else {
-      console.log(data);
-      $http.post(addAptUri, {user: user, apt: apt}).then(function(data) {
+      $scope.loginModal.remove();
+        console.log(apt)
+        console.log(Auth.user)
+        console.log('remove successful and getting here');
+      $http.post(addAptUri, {user: Auth.user, apt: apt}).then(function(data) {
         console.log(data);
       })
     }
@@ -271,11 +272,11 @@ angular.module('app.controllers', [])
   };
 
   $scope.login = function() {
-    var data = Auth.login($scope.user);
-    if(data) {
-      console.log('getting here')
-      $state.go('tabsController.showSearch')
-    }
+    Auth.login($scope.user).success(function(data) {
+      Auth.user = data.user;
+      $scope.modal.remove();
+      $state.go('tabsController.showSearch');
+    })
   };
 
   $scope.goSignup = function() {
