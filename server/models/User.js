@@ -7,7 +7,7 @@ var bcrypt        = require('bcrypt');
 //
 var userSchema = new Schema({
   email: { type: String, required: true, index: {unique: true}},
-  password: { type: String, required: true, select: false },
+  password: { type: String, required: true },
   listings: []
 });
 
@@ -23,6 +23,7 @@ userSchema.methods.generateHash = function(password) {
 // checking if password is valid
 userSchema.methods.validPassword = function(password) {
     return bcrypt.compareSync(password, this.password);
+
 };
 
 //

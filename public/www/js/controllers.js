@@ -262,7 +262,7 @@ angular.module('app.controllers', [])
   };
 })
 
-.controller('loginCtrl', function($scope, $state, Auth) {
+.controller('loginCtrl', function($scope, $state, Auth, $location) {
   $scope.message = '';
   $scope.user = {
     email: null,
@@ -270,7 +270,6 @@ angular.module('app.controllers', [])
   };
 
   $scope.login = function() {
-
     Auth.login($scope.user);
   };
 

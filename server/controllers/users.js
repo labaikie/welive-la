@@ -1,5 +1,6 @@
 var User             = require('../models/User');
 var jwt              = require('jsonwebtoken');
+var config           = require('../config/config')
 
 module.exports = {
 
@@ -22,10 +23,10 @@ module.exports = {
       if (!user) {
         res.json({success: false, message: "Authentication failed: no user"})
       } else if (user) {
-        if (user.password != req.body.user.password) {
+        if (!user.validPassword(req.body.user.password)) {
             res.json({success: false, message: 'Authenticaton failed: wrong password'})
         } else { // create token
-          var token = jwt.sign(user, app.get('superSecret'), {
+          var token = jwt.sign(user, config.secret, {
             expiresInMinutes: 1440 // expires in 24hrs
           });
           // return info including token as JSON

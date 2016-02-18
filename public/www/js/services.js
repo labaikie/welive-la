@@ -59,8 +59,11 @@ angular.module('app.services', [])
     login: function(user) {
       var authenticationUri = 'http://localhost:8080/api/user/authenticate' // OR DEPLOYED SITE
       return $http.post(authenticationUri, {user: user}).success(function(data) {
+        console.log(data)
         AuthToken.setToken(data.token)
         return data;
+        }).error(function(err) {
+          console.log(err);
         })
     },
     logout: function() {
