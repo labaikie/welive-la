@@ -212,6 +212,7 @@ angular.module('app.controllers', [])
     if(!Auth.isLoggedIn()) {
       $scope.loginModal.show();
     } else {
+      console.log(data);
       $http.post(addAptUri, {user: user, apt: apt}).then(function(data) {
         console.log(data);
       })
@@ -254,7 +255,7 @@ angular.module('app.controllers', [])
 
 })
 
-.controller('dashCtrl', function($scope, $state, $http, Auth) {
+.controller('dashCtrl', function($scope, $http, Auth, $location, $state) {
 
   $scope.logout = function() {
     Auth.logout();
@@ -270,7 +271,11 @@ angular.module('app.controllers', [])
   };
 
   $scope.login = function() {
-    Auth.login($scope.user);
+    var data = Auth.login($scope.user);
+    if(data) {
+      console.log('getting here')
+      $state.go('tabsController.showSearch')
+    }
   };
 
   $scope.goSignup = function() {
