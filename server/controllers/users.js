@@ -41,11 +41,11 @@ module.exports = {
     })
   },
 
-  getListings: function(req, res) {
-    User.findOne({email: req.body.user.email }, function(err, user) {
-      if(!err) res.json(user.listings)
-    })
-  },
+  // getListings: function(req, res) {
+  //   User.findOne({email: req.body.user.email }, function(err, user) {
+  //     if(!err) res.json(user.listings)
+  //   })
+  // },
 
   addListing: function(req, res) {
     User.findOneAndUpdate({email: req.body.user.email}, {$addToSet: {listings: req.body.apt}},function(err, data) {

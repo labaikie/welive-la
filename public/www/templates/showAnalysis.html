@@ -1,6 +1,9 @@
 <ion-view title="Show Analysis">
-    <ion-content overflow-scroll="true" padding="false">
+    <ion-content overflow-scroll="true" padding="false" ng-init="getUserApts()">
         <div class="spacer" style="width: 320px; height: 21px;"></div>
-        <div>Hi</div>
+        <div class="row">
+          <button ng-click="openModal(chooseCritModal)" class="col">Add Criteria</button>
+          <button ng-click="openModal(chooseAptModal)" class="col col-75">Choose Your Apts</button>
+        </div>
     </ion-content>
 </ion-view>

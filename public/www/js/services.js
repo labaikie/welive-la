@@ -55,19 +55,18 @@ angular.module('app.services', [])
 })
 
 .factory('Auth', function($http, $q, AuthToken) {
-  var currentUser;
-  return {
+  var auth = {
     login: function(user) {
       var authenticationUri = 'http://localhost:8080/api/user/authenticate' // OR DEPLOYED SITE
       return $http.post(authenticationUri, {user: user}).success(function(data) {
         AuthToken.setToken(data.token);
-        currentUser = data.user
+        auth.currentUser = data.user
         return data;
         }).error(function(err) {
           console.log(err);
         })
     },
-    currentUser: currentUser,
+    currentUser: {},
     logout: function() {
       AuthToken.setToken();
     },
@@ -85,6 +84,7 @@ angular.module('app.services', [])
         return $q.reject({message: 'User has no token'});
     }
   }
+  return auth
 })
 
 .factory('AuthToken', function($window) {

@@ -163,12 +163,12 @@ angular.module('app.controllers', [])
     var result = {apartments:'', poi:''}
     var aptPromise = $http({
       method: 'GET',
-      url: 'http://localhost:8080/apartments', // || HOSTED SITE
+      url: 'http://localhost:8080/apartments', // || OR DEPLOYED
       params: {location: location}
     })
     var poiPromise = $http({
       method: 'GET',
-      url: 'http://localhost:8080/poi', // || HOSTED SITE
+      url: 'http://localhost:8080/poi', // || OR DEPLOYED
       params: {query: poi, location: location}
       })
     Promise.all([aptPromise, poiPromise]).then(function(data){
@@ -215,12 +215,11 @@ angular.module('app.controllers', [])
     })
 
   $scope.addApt = function(apt) {
-    var addAptUri = 'http://localhost:8080/api/user/listing/add' // OR DEPLOY
+    var addAptUri = 'http://localhost:8080/api/user/listing/add' // OR DEPLOYED
     if(!Auth.isLoggedIn()) {
       $scope.loginModal.show();
     } else {
       $http.post(addAptUri, {user: Auth.currentUser, apt: apt}).then(function(data) {
-        console.log(data.data.listings[-1]);
         $ionicPopup.alert({
           title: 'Apartment Saved',
           template: 'Save a couple more to compare'
@@ -236,7 +235,7 @@ angular.module('app.controllers', [])
 
   $scope.login = function() {
     Auth.login($scope.user).success(function(data) {
-      Auth.currentUser = data.user;
+      // Auth.currentUser = data.user;
       $scope.loginModal.remove();
     })
   };
@@ -249,12 +248,38 @@ angular.module('app.controllers', [])
 
 })
 
-.controller('showAnalysisCtrl', function($scope, Auth, $ionicModal) {
+.controller('showAnalysisCtrl', function($scope, $http, Auth, $ionicModal) {
   $scope.loggedIn = Auth.isLoggedIn();
+  $scope.listings = Auth.currentUser.listings;
+  $scope.choice = [];
+
+  // MODAL FOR ADDING CHOICE
+  $ionicModal.fromTemplateUrl('templates/choose-apt-modal.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+    }).then(function(modal) {
+      $scope.chooseAptModal = modal;
+    });
+
+  // MODAL FOR ADDING CHOICE
+  $ionicModal.fromTemplateUrl('templates/choose-criteria-modal.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+    }).then(function(modal) {
+      $scope.chooseCritModal = modal;
+    });
+
+  $scope.closeModal = function(modal) {
+    modal.remove()
+  };
+  $scope.openModal = function(modal) {
+    modal.show()
+  };
 
 })
 
 .controller('dashCtrl', function($scope, $http, Auth, $state) {
+  $scope.loggedIn = Auth.isLoggedIn();
   $scope.logout = function() {
     Auth.logout();
     $state.go('home');
