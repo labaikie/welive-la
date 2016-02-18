@@ -10,8 +10,8 @@
           <div class="col" ng-repeat="c in choice">
             <img src="{{c.previewImage}}" style="width: 50px; height: 50px">
             <span>{{c.name}}</span>
-            <div ng-repeat="d in c.distance">{{d.poi}}-{{d.distance.duration}}</div>
-            <button ng-click="makeNote(c)">Notes</button>
+            <div ng-repeat="d in c.distance">{{d.poi}}-{{d.distance.duration.text}}</div>
+            <button ng-click="noteModal.show()">Notes</button>
           </div>
         </div>
         <div class="row" ng-if="criterias" ng-repeat="c in criterias">
