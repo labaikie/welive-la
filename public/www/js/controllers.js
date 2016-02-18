@@ -1,6 +1,6 @@
 angular.module('app.controllers', [])
 
-.controller('homeCtrl', function($scope, nHService) {
+.controller('homeCtrl', function($scope, nHService, $ionicPopup, $state) {
   $scope.neighborhoods = nHService.neighborhoods;
   $scope.poi = ["-","Grocery", "Schools", "Restaurants", "Swimming Pools", "Gyms", "Nightlife"];
   $scope.setCurrent = function(selected) {
@@ -9,13 +9,22 @@ angular.module('app.controllers', [])
     } else {
       nHService.current = selected.name + ', CA'
     }
-  }
+  };
   $scope.setPOI = function(selected) {
     nHService.poi = selected
+  };
+  $scope.checkEntries = function() {
+    if($scope.currentNH == null || $scope.currentPOI == null) {
+      $ionicPopup.alert({
+        template: 'Please specify your search'
+      })
+    } else {
+      $state.go('tabsController.showSearch')
+    }
   }
 })
 
-.controller('showSearchCtrl', function($scope, $http, $document, $q, nHService, $ionicModal, Auth, $state, $location){
+.controller('showSearchCtrl', function($scope, $http, $document, $q, nHService, $ionicModal, Auth, $state, $location, $ionicPopup){
   $scope.currentNH = nHService.current;
   $scope.currentPOI = nHService.poi;
   $scope.apartment = {distance: null, data: null};
@@ -206,18 +215,34 @@ angular.module('app.controllers', [])
     })
 
   $scope.addApt = function(apt) {
-    var addAptUri = 'http://localhost:8080/user/listing/add' // OR DEPLOY
+    var addAptUri = 'http://localhost:8080/api/user/listing/add' // OR DEPLOY
     if(!Auth.isLoggedIn()) {
       $scope.loginModal.show();
     } else {
-      $scope.loginModal.remove();
-        console.log(apt)
-        console.log(Auth.user)
-        console.log('remove successful and getting here');
-      $http.post(addAptUri, {user: Auth.user, apt: apt}).then(function(data) {
-        console.log(data);
+      $http.post(addAptUri, {user: Auth.currentUser, apt: apt}).then(function(data) {
+        console.log(data.data.listings[-1]);
+        $ionicPopup.alert({
+          title: 'Apartment Saved',
+          template: 'Save a couple more to compare'
+        })
       })
     }
+  };
+
+  $scope.user = {
+    email: null,
+    password: null
+  };
+
+  $scope.login = function() {
+    Auth.login($scope.user).success(function(data) {
+      Auth.currentUser = data.user;
+      $scope.loginModal.remove();
+    })
+  };
+
+  $scope.goSignup = function() {
+    $location.path('/signup');
   }
 
 })
@@ -226,38 +251,9 @@ angular.module('app.controllers', [])
 .controller('showAnalysisCtrl', function($scope, Auth, $ionicModal) {
   $scope.loggedIn = Auth.isLoggedIn();
 
-   // MODAL FOR LOG-IN
-  $ionicModal.fromTemplateUrl('templates/login.html', {
-      scope: $scope,
-      animation: 'slide-in-up'
-    }).then(function(modal) {
-      $scope.modal = modal;
-    });
-  $scope.openModal = function() {
-    $scope.modal.show();
-  }
-
-  $scope.closeModal = function() {
-    $scope.modal.hide();
-  }
-
-  $scope.$on('$destroy', function() {
-    $scope.modal.remove();
-  });
-  // Execute action on hide modal
-  $scope.$on('modal.hidden', function() {
-    // Execute action
-  });
-  // Execute action on remove modal
-  $scope.$on('modal.removed', function() {
-    // Execute action
-  });
-
-
 })
 
-.controller('dashCtrl', function($scope, $http, Auth, $location, $state) {
-
+.controller('dashCtrl', function($scope, $http, Auth, $state) {
   $scope.logout = function() {
     Auth.logout();
     $state.go('home');
@@ -265,24 +261,6 @@ angular.module('app.controllers', [])
 })
 
 .controller('loginCtrl', function($scope, $state, Auth, $location) {
-  $scope.message = '';
-  $scope.user = {
-    email: null,
-    password: null
-  };
-
-  $scope.login = function() {
-    Auth.login($scope.user).success(function(data) {
-      Auth.user = data.user;
-      $scope.modal.remove();
-      $state.go('tabsController.showSearch');
-    })
-  };
-
-  $scope.goSignup = function() {
-    $location.path('/signup');
-  }
-
 })
 
 .controller('signupCtrl', function($scope, $state, $ionicPopup) {

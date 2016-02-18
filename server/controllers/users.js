@@ -48,11 +48,8 @@ module.exports = {
   },
 
   addListing: function(req, res) {
-    console.log('add listing')
-    console.log(req)
     User.findOneAndUpdate({email: req.body.user.email}, {$addToSet: {listings: req.body.apt}},function(err, data) {
-        console.log('add listing invoked')
-        if(!err) res.send('success')
+        if(!err) res.send(data)
     })
   },
 
