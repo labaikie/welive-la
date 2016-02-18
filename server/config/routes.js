@@ -32,13 +32,13 @@ router.get('/apartment/rating', yelpController.getAptRating)
 router.get('/poi', yelpController.getPOI)
 
 // USER routes
-router.post('/api/user/singup', usersController.new)
+router.post('/api/user/new', usersController.new)
 // token authentication route
 router.post('/api/user/authenticate', usersController.authenticate)
 // logout
 router.post('/api/user/logout', usersController.logout)
 // save listing
-router.post('/api/user/save-listing', usersController.saveListing)
+router.post('/api/user/listing/add', usersController.addListing)
 // get listings
 router.get('/api/user/listings', usersController.getListings)
 // delete a listing

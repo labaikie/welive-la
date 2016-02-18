@@ -59,21 +59,6 @@ angular.module('app.routes', [])
       templateUrl: 'templates/menu.html'
     })
 
-  // states after log-in
-
-    // .state('showApartment', {
-    //   url: '/apartment/show',
-    //   templateUrl: 'templates/showApartment.html',
-    //   controller: 'showApartmentCtrl'
-    // })
-
-    // .state('admin', {
-    //   url: '/admin',
-    //   templateUrl: 'templates/admin.html',
-    //   data: {
-    //     authorizedRoles: [USER_ROLES.admin]
-    //   }
-    // })
 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/')

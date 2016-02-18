@@ -1,5 +1,5 @@
 <ion-modal-view>
-    <ion-content overflow-scroll="true" padding="true" class="has-header">
+    <ion-content overflow-scroll="true" padding="true" class="has-header" ng-controller="loginCtrl">
         <form class="list">
             <ion-list>
                 <label class="item item-input" name="Email">
@@ -12,8 +12,8 @@
                 </label>
             </ion-list>
             <div class="spacer" style="height: 40px;"></div>
-            <a ui-sref="tabsController.showSearch" class="button button-stable button-block" ng-click="login()">Log in</a>
-            <a ui-sref="signup" class="button button-positive button-clear button-block ">Or create an account</a>
+            <a class="button button-stable button-block" ng-click="login({email: user.email, password: user.password})">Log in</a>
+            <a class="button button-positive button-clear button-block" ng-click="goSignup()">Or create an account</a>
         </form>
     </ion-content>
 </ion-modal-view>

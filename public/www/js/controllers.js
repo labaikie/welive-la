@@ -15,8 +15,9 @@ angular.module('app.controllers', [])
   }
 })
 
-.controller('showSearchCtrl', function($scope, $http, $document, $q, nHService, $ionicModal, Auth){
-
+.controller('showSearchCtrl', function($scope, $http, $document, $q, nHService, $ionicModal, Auth, $state, $location){
+  $scope.currentNH = nHService.current;
+  $scope.currentPOI = nHService.poi;
   $scope.apartment = {distance: null, data: null};
   $scope.apartments;
   $scope.poi;
@@ -60,7 +61,7 @@ angular.module('app.controllers', [])
                 }
                 marker.data.distance.push(distanceObj)
               }
-              console.log(marker.data);
+              // console.log(marker.data);
               $scope.currentApt = marker.data;
               $scope.openModal();
             });
@@ -172,9 +173,6 @@ angular.module('app.controllers', [])
     })
   };
 
-  // TESTER LINE
-  $scope.setMap(nHService.current, nHService.poi);
-
   // MODAL FOR SHOW APT
   $ionicModal.fromTemplateUrl('templates/preview-modal.html', {
     scope: $scope,
@@ -202,24 +200,23 @@ angular.module('app.controllers', [])
     // Execute action
   });
 
-  // $scope.addApt = function(apt) {
-  //   if(!Auth.isLoggedIn()) {
-  //     $scope.loginModal
-  //   }
-  // }
-
   $ionicModal.fromTemplateUrl('templates/login-modal.html', {
     scope: $scope,
     animation: 'slide-in-up'
     }).then(function(modal) {
       $scope.loginModal = modal;
-      $scope.promptLogin = function () {
-          if (!Auth.isLoggedIn()) {
-            $scope.loginModal.show()
-          } else {
-          }
-        }
     })
+
+  $scope.addApt = function(apt) {
+    var addAptUri = 'http://localhost:8080/user/listing/add' // OR DEPLOY
+    if(!Auth.isLoggedIn()) {
+      $scope.loginModal.show();
+    } else {
+      $http.post(addAptUri, {user: user, apt: apt}).then(function(data) {
+        console.log(data);
+      })
+    }
+  }
 
 })
 
@@ -273,14 +270,19 @@ angular.module('app.controllers', [])
   };
 
   $scope.login = function() {
+
     Auth.login($scope.user);
   };
+
+  $scope.goSignup = function() {
+    $location.path('/signup');
+  }
 
 })
 
 .controller('signupCtrl', function($scope, $state, $ionicPopup) {
   $scope.signup = function(user) {
-    var newUserUri = 'http://localhost:8080/user/signup' //OR DEPLOYED SITE
+    var newUserUri = 'http://localhost:8080/user/new' //OR DEPLOYED SITE
     $http.post(newUserUri, {user: user}).success(function(data){
       $state.go('tabsController.login');
     }).error(function(err){

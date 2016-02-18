@@ -45,8 +45,8 @@ module.exports = {
     })
   },
 
-  saveListing: function(req, res) {
-    User.findOneAndUpdate({email: req.body.user.email}, {$addToSet: {listings: req.body.listing}},function(err, data) {
+  addListing: function(req, res) {
+    User.findOneAndUpdate({email: req.body.user.email}, {$addToSet: {listings: req.body.apt}},function(err, data) {
         if(!err) res.json('success')
     })
   },
