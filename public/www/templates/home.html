@@ -1,9 +1,13 @@
 <ion-view title="Home" hide-nav-bar="true">
     <ion-content overflow-scroll="true" padding="true">
-        <h1 style="text-align:center">WELIVE LA</h1>
+      <div id="home">
+        <div class="bar bar-light" id="home-logo">
+          <h1 id="home-logo-main">WELIVE</h1>
+          <h3>LA</h3>
+        </div>
         <form class="list">
-            <div class="spacer" style="width: 300px; height: 360px;"></div>
-            <label class="item item-select" name="neighborhood">
+            <div class="spacer" style="width: 300px; height: 420px;"></div>
+            <label class="item item-input item-select" name="neighborhood">
                 <span class="input-label">Neighborhood?</span>
                 <select ng-model="current" ng-change="setCurrent(current)" ng-options="n.name for n in neighborhoods">
                 </select>
@@ -14,9 +18,10 @@
                 </select>
             </label>
             <label class="item item-input" name="address">
-                <input type="text" placeholder="Address">
+                <input ng-if="poiSingle" type="text" placeholder="Address">
             </label>
-            <a ng-click="checkEntries()" class="button button-stable button-block  icon-right ion-search">Search Apartments</a>
+            <a ng-click="checkEntries()" class="button button-energized button-block  icon-right ion-search">Search Apartments</a>
         </form>
+      </div>
     </ion-content>
 </ion-view>

@@ -10,9 +10,9 @@ $stable:                          #f8f8f8 !default;
 $positive:                        #387ef5 !default;
 $calm:                            #11c1f3 !default;
 $balanced:                        #33cd5f !default;
-$energized:                       #ffc900 !default;
+$energized:                       #C0184E;
 $assertive:                       #ef473a !default;
-$royal:                           #886aea !default;
+$royal:                           #738B8E !default;
 $dark:                            #444 !default;
 */
 /*!
@@ -9088,3 +9088,23 @@ a.button {
   opacity: 0;
   -webkit-transition-duration: 0s;
   transition-duration: 0s; }
+
+#home {
+  background: url(../img/watercolor.jpg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  height: 246px;
+  margin: auto;
+  z-index: 2;
+  position: relative; }
+
+#home-logo {
+  position: absolute;
+  height: 110px;
+  top: 70%;
+  text-align: center;
+  font-size: 2em; }
+
+#home-logo-main {
+  font-size: 3em; }
