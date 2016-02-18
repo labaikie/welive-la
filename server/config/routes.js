@@ -1,12 +1,16 @@
 var express          = require('express')
-var router           = new express.Router();
+var app              = express()
+var router           = new express.Router()
+// var passport         = require('passport')
+//                        app.use(passport.initialize())
+//                        require('../config/passport')(passport)
 
 //
 // REQUIRE CONTROLLERS
 //
 var usersController  = require('../controllers/users');
 var aptsController   = require('../controllers/apartments');
-var yelpController    = require('../controllers/yelp')
+var yelpController   = require('../controllers/yelp')
 
 //
 // ROUTES
@@ -22,13 +26,23 @@ router.get('/api', function(req, res) {
 
 // apartments route
 router.get('/apartments', aptsController.getApts)
-      .get('/apartment/rating', yelpController.getAptRating)
+router.get('/apartment/rating', yelpController.getAptRating)
 
 // POI route
 router.get('/poi', yelpController.getPOI)
 
+// USER routes
+router.post('/api/user/new', usersController.new)
 // token authentication route
-router.post('api/user/login', usersController.authenticate);
+router.post('/api/user/authenticate', usersController.authenticate)
+// logout
+router.post('/api/user/logout', usersController.logout)
+// save listing
+router.post('/api/user/listing/add', usersController.addListing)
+// get listings
+router.get('/api/user/listings', usersController.getListings)
+// delete a listing
+router.post('/api/user/listings/update', usersController.updateListings)
 
 // route middleware to verify a token
 router.use(function(req, res, next) {

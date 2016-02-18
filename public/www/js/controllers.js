@@ -1,6 +1,6 @@
 angular.module('app.controllers', [])
 
-.controller('homeCtrl', function($scope, nHService) {
+.controller('homeCtrl', function($scope, nHService, $ionicPopup, $state) {
   $scope.neighborhoods = nHService.neighborhoods;
   $scope.poi = ["-","Grocery", "Schools", "Restaurants", "Swimming Pools", "Gyms", "Nightlife"];
   $scope.setCurrent = function(selected) {
@@ -9,18 +9,29 @@ angular.module('app.controllers', [])
     } else {
       nHService.current = selected.name + ', CA'
     }
-  }
+  };
   $scope.setPOI = function(selected) {
     nHService.poi = selected
+  };
+  $scope.checkEntries = function() {
+    if($scope.currentNH == null || $scope.currentPOI == null) {
+      $ionicPopup.alert({
+        template: 'Please specify your search'
+      })
+    } else {
+      $state.go('tabsController.showSearch')
+    }
   }
 })
 
-.controller('showSearchCtrl', function($scope, $http, $document, $q, nHService, $ionicModal) {
-
-  $scope.apartment = {distance: null, data: null}
+.controller('showSearchCtrl', function($scope, $http, $document, $q, nHService, $ionicModal, Auth, $state, $location, $ionicPopup){
+  $scope.currentNH = nHService.current;
+  $scope.currentPOI = nHService.poi;
+  $scope.apartment = {distance: null, data: null};
   $scope.apartments;
   $scope.poi;
   $scope.markers = [];
+
   $scope.setMap = function(location, poi) {
     // GET APT & POI OBJECTS FROM API
     $scope.getMapData(location, poi, function(result){
@@ -36,12 +47,12 @@ angular.module('app.controllers', [])
           return apt
         })
         Promises.push(promise);
-      })
+      });
+
       Promise.all(Promises).then(function(apts) {
         $scope.apartments = apts
         $scope.apartments.forEach(function(apt) {
           var marker = createMarker(apt, true)
-          apt.marker = marker;
           $scope.markers.push(marker)
           bounds.extend(marker.getPosition())
           marker.setMap(map);
@@ -63,22 +74,22 @@ angular.module('app.controllers', [])
             });
           })
         })
-      })
+      });
       // INITIALIZE MAP
       var mapOptions = {
         center: new google.maps.LatLng(34.0483572,-118.2746524),
         zoom: 14
-      }
-      var map = new google.maps.Map(document.getElementById('map'), mapOptions)
+      };
+      var map = new google.maps.Map(document.getElementById('map'), mapOptions);
       var bounds = new google.maps.LatLngBounds();
       // CREATE MARKERS AND ADD MARKERS
       $scope.poi.forEach(function(poi) {
         var marker = createMarker(poi, false)
-        poi.marker = marker;
+        poi.marker = marker
         $scope.markers.push(marker)
         bounds.extend(marker.getPosition())
         marker.setMap(map);
-      })
+      });
       map.fitBounds(bounds);
     })
 
@@ -107,7 +118,7 @@ angular.module('app.controllers', [])
       })
       // returning promise for eventlistener in addAptMarker to grab
       return distancePromise;
-    }
+    };
 
     function createMarker(obj, type) {
       var params;
@@ -128,7 +139,7 @@ angular.module('app.controllers', [])
       }
       var marker = new google.maps.Marker(params)
       return marker
-    }
+    };
 
     function geocode(address) {
       var geocoder = new google.maps.Geocoder()
@@ -143,10 +154,9 @@ angular.module('app.controllers', [])
             reject("Geocode unsuccessful")
             console.log("Geocode unsuccessful because: " + status);
           }
-        });
+        })
       })
-    }
-
+    };
   };
 
   $scope.getMapData = function(location, poi, callback) {
@@ -170,17 +180,14 @@ angular.module('app.controllers', [])
     })
   };
 
-  // TESTER LINE
-  $scope.setMap(nHService.current, nHService.poi);
-
-
-  // Define Modal
+  // MODAL FOR SHOW APT
   $ionicModal.fromTemplateUrl('templates/preview-modal.html', {
     scope: $scope,
     animation: 'slide-in-up'
     }).then(function(modal) {
       $scope.modal = modal;
-    });
+    })
+
   $scope.openModal = function() {
     $scope.modal.show();
   };
@@ -200,27 +207,78 @@ angular.module('app.controllers', [])
     // Execute action
   });
 
-  // $scope.addApt() = function(apt) {
-  //   // when an object is passed in, save the current apartment's data,
+  $ionicModal.fromTemplateUrl('templates/login-modal.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+    }).then(function(modal) {
+      $scope.loginModal = modal;
+    })
 
-  //   // including distance to the database
-  // }
+  $scope.addApt = function(apt) {
+    var addAptUri = 'http://localhost:8080/api/user/listing/add' // OR DEPLOY
+    if(!Auth.isLoggedIn()) {
+      $scope.loginModal.show();
+    } else {
+      $http.post(addAptUri, {user: Auth.currentUser, apt: apt}).then(function(data) {
+        console.log(data.data.listings[-1]);
+        $ionicPopup.alert({
+          title: 'Apartment Saved',
+          template: 'Save a couple more to compare'
+        })
+      })
+    }
+  };
+
+  $scope.user = {
+    email: null,
+    password: null
+  };
+
+  $scope.login = function() {
+    Auth.login($scope.user).success(function(data) {
+      Auth.currentUser = data.user;
+      $scope.loginModal.remove();
+    })
+  };
+
+  $scope.goSignup = function() {
+    $location.path('/signup');
+  }
 
 })
+
+
+.controller('showAnalysisCtrl', function($scope, Auth, $ionicModal) {
+  $scope.loggedIn = Auth.isLoggedIn();
+
+})
+
+.controller('dashCtrl', function($scope, $http, Auth, $state) {
+  $scope.logout = function() {
+    Auth.logout();
+    $state.go('home');
+  };
+})
+
+.controller('loginCtrl', function($scope, $state, Auth, $location) {
+})
+
+.controller('signupCtrl', function($scope, $state, $ionicPopup) {
+  $scope.signup = function(user) {
+    var newUserUri = 'http://localhost:8080/user/new' //OR DEPLOYED SITE
+    $http.post(newUserUri, {user: user}).success(function(data){
+      $state.go('tabsController.login');
+    }).error(function(err){
+      $ionicPopup.alert({
+        title: 'Unsuccessful',
+        template: 'Sign up was unsuccessful, please try again'
+      });
+    })
+  }
+})
+
 
 .controller('showApartmentCtrl', function($scope) {
-
-})
-
-.controller('showAnalysisCtrl', function($scope) {
-
-})
-
-.controller('loginCtrl', function($scope) {
-
-})
-
-.controller('signupCtrl', function($scope) {
 
 })
 

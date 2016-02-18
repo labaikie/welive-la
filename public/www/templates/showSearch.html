@@ -1,7 +1,6 @@
-<ion-view title="Show Search">
+<ion-view title="Show Search" hide-nav-bar="true">
     <ion-content overflow-scroll="true" padding="false" scroll="false">
-        <div class="spacer head-spacer" style="width: 320px; height: 10px;"></div>
-        <div id="map" style="height: 610px; border: 1px solid black"></div>
+        <div id="map" style="height: 620px" ng-init="setMap(currentNH, currentPOI)"></div>
     </ion-content>
 </ion-view>
 
