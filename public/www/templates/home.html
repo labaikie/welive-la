@@ -5,18 +5,18 @@
             <div class="spacer" style="width: 300px; height: 360px;"></div>
             <label class="item item-select" name="neighborhood">
                 <span class="input-label">Neighborhood?</span>
-                <select ng-model="currentNH" ng-change="setCurrent(currentNH)" ng-options="n.name for n in neighborhoods">
+                <select ng-model="current" ng-change="setCurrent(current)" ng-options="n.name for n in neighborhoods">
                 </select>
             </label>
             <label class="item item-input item-select" name="interestPts">
                 <span class="input-label">Points of Interest?</span>
-                <select ng-model="currentPOI" ng-change="setPOI(poiSingle)" ng-options="i for i in poi">
+                <select ng-model="poiSingle" ng-change="setPOI(poiSingle)" ng-options="i for i in poi">
                 </select>
             </label>
             <label class="item item-input" name="address">
                 <input type="text" placeholder="Address">
             </label>
-            <a ng-click="checkEntries()"class="button button-stable button-block  icon-right ion-search">Search Apartments</a>
+            <a ng-click="checkEntries()" class="button button-stable button-block  icon-right ion-search">Search Apartments</a>
         </form>
     </ion-content>
 </ion-view>

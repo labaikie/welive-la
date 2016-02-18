@@ -14,14 +14,14 @@ angular.module('app.controllers', [])
     nHService.poi = selected
   };
   $scope.checkEntries = function() {
-    if($scope.currentNH == null || $scope.currentPOI == null) {
-      $ionicPopup.alert({
-        template: 'Please specify your search'
-      })
-    } else {
+    // if($scope.current) {
       $state.go('tabsController.showSearch')
-    }
-  }
+    // } else {
+    //   $ionicPopup.alert({
+    //     template: 'Please specify your search'
+    //   })
+    // }
+  };
 })
 
 .controller('showSearchCtrl', function($scope, $http, $document, $q, nHService, $ionicModal, Auth, $state, $location, $ionicPopup){
@@ -242,11 +242,12 @@ angular.module('app.controllers', [])
   };
 
   $scope.goSignup = function() {
-    $location.path('/signup');
+    $scope.loginModal.remove();
+    $scope.modal.hide();
+    $state.go('signup');
   }
 
 })
-
 
 .controller('showAnalysisCtrl', function($scope, Auth, $ionicModal) {
   $scope.loggedIn = Auth.isLoggedIn();
@@ -260,25 +261,21 @@ angular.module('app.controllers', [])
   };
 })
 
-.controller('loginCtrl', function($scope, $state, Auth, $location) {
-})
+.controller('signupCtrl', function($scope, $state, $ionicPopup, $http) {
+  $scope.user = {
+    email: '',
+    password: ''
+  }
 
-.controller('signupCtrl', function($scope, $state, $ionicPopup) {
   $scope.signup = function(user) {
-    var newUserUri = 'http://localhost:8080/user/new' //OR DEPLOYED SITE
-    $http.post(newUserUri, {user: user}).success(function(data){
-      $state.go('tabsController.login');
+    var newUserUri = 'http://localhost:8080/api/user/new' //OR DEPLOYED SITE
+    $http.post(newUserUri, {user: $scope.user}).success(function(data){
+      $state.go('tabsController.showSearch');
     }).error(function(err){
       $ionicPopup.alert({
-        title: 'Unsuccessful',
-        template: 'Sign up was unsuccessful, please try again'
+        title: 'Sign up unsuccessful',
+        template: 'Please try again'
       });
     })
   }
 })
-
-
-.controller('showApartmentCtrl', function($scope) {
-
-})
-
