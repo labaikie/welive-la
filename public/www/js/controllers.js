@@ -252,6 +252,7 @@ angular.module('app.controllers', [])
   $scope.loggedIn = Auth.isLoggedIn();
   $scope.listings = Auth.currentUser.listings;
   $scope.choice = [];
+  $scope.poi = [];
 
   // MODAL FOR ADDING CHOICE
   $ionicModal.fromTemplateUrl('templates/choose-apt-modal.html', {
@@ -269,12 +270,60 @@ angular.module('app.controllers', [])
       $scope.chooseCritModal = modal;
     });
 
-  $scope.closeModal = function(modal) {
-    modal.remove()
-  };
+  // MODAL FOR NOTING
+  $ionicModal.fromTemplateUrl('templates/note-modal.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+    }).then(function(modal) {
+      $scope.noteModal = modal;
+    });
+
   $scope.openModal = function(modal) {
     modal.show()
   };
+  $scope.closeModal = function(modal) {
+    modal.hide()
+  };
+
+  $scope.isChecked = false;
+  $scope.checkedOrNot = function (listing, isChecked, index) {
+      if (isChecked) {
+          $scope.choice.push(listing);
+      } else {
+          var _index = $scope.choice.indexOf(listing);
+          $scope.choice.splice(_index, 1);
+      }
+  };
+  // $scope.chooseListing = function(modal) {
+  //   var listings = $scope.listings;
+  //   // console.log(listings);
+  //   listings.forEach(function(listing) {
+  //     console.log(listing.isChecked)
+  //     if(listing.isChecked) $scope.choice.push(listing)
+  //   })
+  //   console.log($scope.choice)
+  //   $scope.closeModal(modal)
+  // }
+
+  $scope.populatePOI = function(modal) {
+    var choices = $scope.choice;
+    choices.forEach(function(choice) {
+      var poi = choice.distance;
+      poi.forEach(function(p) {
+        if($scope.poi.indexOf(p) < 0) {
+          $scope.poi.push(p)
+        }
+      })
+    })
+    $scope.closeModal(modal)
+  }
+
+  $scope.criterias = [];
+  $scope.setCritera = function(modal) {
+    if($scope.criteria) {
+      $scope.criterias.push($scope.criteria)
+    }
+  }
 
 })
 

@@ -3,7 +3,12 @@
     <h1 class="title">Choose Apartments to Compare</h1>
   </ion-header-bar>
   <ion-content>
+    <ion-list>
+      <ion-checkbox ng-repeat="listing in listings" ng-model="isChecked" ng-change="checkedOrNot(listing, isChecked, $index)" ng-init='isChecked=false'>
+      <img src="{{listing.previewImage}}" style="width: 50px; height: 50px">{{listing.name}} - {{listing.rent}}
+      </ion-checkbox>
+    </ion-list>
     <button class="button button-energized" ng-click="closeModal(chooseAptModal)">Done</button>
-    <button class="button button-positive" ng-click="">Save</button>
+    <button class="button button-positive" ng-click="populatePOI(chooseAptModal)">Save</button>
   </ion-content>
 </ion-modal-view>
