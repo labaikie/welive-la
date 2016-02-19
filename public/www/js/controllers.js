@@ -161,14 +161,16 @@ angular.module('app.controllers', [])
 
   $scope.getMapData = function(location, poi, callback) {
     var result = {apartments:'', poi:''}
+    var aptUrl = 'http://localhost:8080/apartments' || 'http://http://ec2-54-191-169-152.us-west-2.compute.amazonaws.com:8080/apartments'
     var aptPromise = $http({
       method: 'GET',
-      url: 'http://localhost:8080/apartments', // || OR DEPLOYED
+      url: aptUrl,
       params: {location: location}
     })
+    var poiUrl = 'http://localhost:8080/poi' || 'http://http://ec2-54-191-169-152.us-west-2.compute.amazonaws.com:8080/poi'
     var poiPromise = $http({
       method: 'GET',
-      url: 'http://localhost:8080/poi', // || OR DEPLOYED
+      url: poiUrl,
       params: {query: poi, location: location}
       })
     Promise.all([aptPromise, poiPromise]).then(function(data){
@@ -215,7 +217,7 @@ angular.module('app.controllers', [])
     })
 
   $scope.addApt = function(apt) {
-    var addAptUri = 'http://localhost:8080/api/user/listing/add' // OR DEPLOYED
+    var addAptUri = 'http://localhost:8080/api/user/listing/add' || 'http://http://ec2-54-191-169-152.us-west-2.compute.amazonaws.com:8080/api/user/listing/add'
     if(!Auth.isLoggedIn()) {
       $scope.loginModal.show();
     } else {
@@ -351,7 +353,7 @@ angular.module('app.controllers', [])
   }
 
   $scope.signup = function(user) {
-    var newUserUri = 'http://localhost:8080/api/user/new' //OR DEPLOYED SITE
+    var newUserUri = 'http://localhost:8080/api/user/new' || 'http://http://ec2-54-191-169-152.us-west-2.compute.amazonaws.com:8080/api/user/new'
     $http.post(newUserUri, {user: $scope.user}).success(function(data){
       $state.go('tabsController.showSearch');
     }).error(function(err){
