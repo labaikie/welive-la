@@ -1,5 +1,10 @@
 <ion-view title="Signup" hide-nav-bar="true">
     <ion-content overflow-scroll="true" padding="true" scroll="false" style="background-color: #C6D5C9">
+        <div class="spacer" style="width 320px; height: 80px"></div>
+          <div class="card">
+            <h3 class="modal-title title">Join Us</h3>
+          </div>
+        <div class="spacer" style="width 300px; height: 80px"></div>
         <form class="list">
             <ion-list>
                 <label class="item item-input" name="Email">
@@ -11,8 +16,7 @@
                     <input ng-model="user.password" type="text" placeholder="Password">
                 </label>
             </ion-list>
-            <button ng-click="signup()" class="button button-stable button-block ">Sign up</button>
-            <a ui-sref="signup" class="button button-positive button-clear button-block ">I already have an account</a>
+            <button ng-click="signup" class="button button-stable button-block ">Sign up</button>
             <a ui-sref="tabsController.showSearch" class="button button-positive button-clear button-block ">Or back to search</a>
         </form>
     </ion-content>

@@ -4,7 +4,6 @@ angular.module('app.routes', [])
 
   $stateProvider
 
-  // states before log-in
     .state('home', {
       url: '/',
       templateUrl: 'templates/home.html',

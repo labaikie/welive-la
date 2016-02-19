@@ -225,7 +225,7 @@ angular.module('app.controllers', [])
 
   $scope.login = function() {
     Auth.login($scope.user).success(function(data) {
-      // Auth.currentUser = data.user;
+      Auth.currentUser = data.user;
       $scope.loginModal.remove();
     })
   };
@@ -238,17 +238,26 @@ angular.module('app.controllers', [])
 
 })
 
-.controller('showAnalysisCtrl', function($scope, $http, Auth, $ionicModal, loginModal) {
+.controller('showAnalysisCtrl', function($scope, $http, Auth, $ionicModal, loginModal, $state) {
 
   $scope.loggedIn = Auth.isLoggedIn();
-  $scope.redirect = function(){
-    if(!$scope.loggedIn) {
-      var modalPromise = loginModal.define($scope);
-        modalPromise.then(function(modal) {
-          $scope.loginModal = modal;
-          $scope.loginModal.show();
-        })
-    }
+  if(!$scope.loggedIn) {
+    var modalPromise = loginModal.initialize($scope);
+      modalPromise.then(function(modal) {
+        $scope.loginModal = modal;
+        $scope.loginModal.show();
+      })
+  };
+  $scope.login = function() {
+    $scope.user = {email: '', password: ''};
+    Auth.login($scope.user).success(function(data) {
+      $scope.loginModal.remove()
+      $scope.listings = Auth.currentUser.listings;
+    })
+  };
+  $scope.goSignup = function() {
+    $scope.loginModal.hide()
+    $state.go('signup')
   };
   $scope.listings = Auth.currentUser.listings;
   $scope.choice = [];
@@ -320,13 +329,16 @@ angular.module('app.controllers', [])
 .controller('dashCtrl', function($scope, $http, Auth, $state, loginModal, $q) {
   $scope.loggedIn = Auth.isLoggedIn();
   $scope.login = function() {
-    var modalPromise = loginModal.define($scope);
+    var modalPromise = loginModal.initialize($scope);
     modalPromise.then(function(modal) {
       $scope.loginModal = modal;
       $scope.loginModal.show();
     })
   };
-  // $scope.goSignup = loginModal.signUp($scope.loginModal);
+  $scope.goSignup = function(){
+    $scope.loginModal.hide()
+    $state.go('signup')
+  }
 
   $scope.logout = function() {
     Auth.logout();

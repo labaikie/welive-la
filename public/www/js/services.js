@@ -55,7 +55,7 @@ angular.module('app.services', [])
 .factory('Auth', function($http, $q, AuthToken) {
   var auth = {
     login: function(user) {
-      var authenticationUri = 'http://localhost:8080/api/user/authenticate' // OR DEPLOYED SITE
+      var authenticationUri = 'http://localhost:8080/api/user/authenticate' || 'http://http://ec2-54-191-169-152.us-west-2.compute.amazonaws.com:8080/api/user/authenticate'
       return $http.post(authenticationUri, {user: user}).success(function(data) {
         AuthToken.setToken(data.token);
         auth.currentUser = data.user
@@ -73,13 +73,6 @@ angular.module('app.services', [])
         return true;
       else
         return false;
-    },
-    getUser: function() {
-      var getUserUri = 'http://localhost:8080/api/user' // TOBE REVISED
-      if(AuthToken.getToken())
-        return $http.get(getUserUri);
-      else
-        return $q.reject({message: 'User has no token'});
     }
   }
   return auth
@@ -118,7 +111,7 @@ angular.module('app.services', [])
 
 .factory('loginModal', function($ionicModal, $state) {
  return {
-    define: function(scope) {
+    initialize: function(scope) {
       var modal = $ionicModal.fromTemplateUrl('templates/login-modal.html', {
         scope: scope,
         animation: 'slide-in-up'
@@ -126,11 +119,8 @@ angular.module('app.services', [])
           return modal
         })
       return modal;
-    },
-    signUp: function(modal) {
-      modal.remove();
-      $state.go('signup')
     }
+
     // show: function(modal) {
     //   modal.show();
     // },
