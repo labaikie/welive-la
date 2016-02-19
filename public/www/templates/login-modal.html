@@ -1,4 +1,4 @@
-<ion-modal-view>
+<ion-modal-view padding="true">
     <ion-content overflow-scroll="true" padding="true" style='background-color: #C6D5C9'>
         <form class="list">
             <ion-list>
@@ -11,9 +11,9 @@
                     <input type="password" placeholder="Password" ng-model="user.password">
                 </label>
             </ion-list>
+            <div class="spacer" style="height: 40px;"></div>
+            <a class="button button-energized button-block" ng-click="login()">Log in</a>
+            <button class="button button-clear button-block" ng-click="goSignup()">Or create an account</button>
         </form>
-        <div class="spacer" style="height: 40px;"></div>
-        <a class="button button-energized button-block" ng-click="login()">Log in</a>
-        <button class="button button-clear button-block" ng-click="goSignup()">Or create an account</button>
     </ion-content>
 </ion-modal-view>

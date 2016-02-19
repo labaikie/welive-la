@@ -196,18 +196,6 @@ angular.module('app.controllers', [])
   $scope.closeModal = function() {
     $scope.modal.hide();
   };
-  //Cleanup the modal when we're done with it!
-  $scope.$on('$destroy', function() {
-    $scope.modal.remove();
-  });
-  // Execute action on hide modal
-  $scope.$on('modal.hidden', function() {
-    // Execute action
-  });
-  // Execute action on remove modal
-  $scope.$on('modal.removed', function() {
-    // Execute action
-  });
 
   $ionicModal.fromTemplateUrl('templates/login-modal.html', {
     scope: $scope,
@@ -243,7 +231,7 @@ angular.module('app.controllers', [])
   };
 
   $scope.goSignup = function() {
-    $scope.loginModal.remove();
+    $scope.loginModal.hide();
     $scope.modal.hide();
     $state.go('signup');
   }
@@ -252,6 +240,11 @@ angular.module('app.controllers', [])
 
 .controller('showAnalysisCtrl', function($scope, $http, Auth, $ionicModal) {
   $scope.loggedIn = Auth.isLoggedIn();
+  $scope.redirect = function(){
+    if(!$scope.loggedIn) {
+      $scope.openModal($scope.loginModal)
+    }
+  };
   $scope.listings = Auth.currentUser.listings;
   $scope.choice = [];
   $scope.poi = [];
@@ -264,7 +257,7 @@ angular.module('app.controllers', [])
       $scope.chooseAptModal = modal;
     });
 
-  // MODAL FOR ADDING CHOICE
+  // MODAL FOR ADDING CRITERIA
   $ionicModal.fromTemplateUrl('templates/choose-criteria-modal.html', {
     scope: $scope,
     animation: 'slide-in-up'
@@ -296,16 +289,6 @@ angular.module('app.controllers', [])
           $scope.choice.splice(_index, 1);
       }
   };
-  // $scope.chooseListing = function(modal) {
-  //   var listings = $scope.listings;
-  //   // console.log(listings);
-  //   listings.forEach(function(listing) {
-  //     console.log(listing.isChecked)
-  //     if(listing.isChecked) $scope.choice.push(listing)
-  //   })
-  //   console.log($scope.choice)
-  //   $scope.closeModal(modal)
-  // }
 
   $scope.populatePOI = function(modal) {
     var choices = $scope.choice;
