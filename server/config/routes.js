@@ -40,7 +40,7 @@ router.post('/api/user/logout', usersController.logout)
 // save listing
 router.post('/api/user/listing/add', usersController.addListing)
 // get listings
-// router.get('/api/user/listings', usersController.getListings)
+router.post('/api/user/listings', usersController.getListings)
 // delete a listing
 router.post('/api/user/listings/update', usersController.updateListings)
 

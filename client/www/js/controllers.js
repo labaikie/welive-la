@@ -161,13 +161,13 @@ angular.module('app.controllers', [])
 
   $scope.getMapData = function(location, poi, callback) {
     var result = {apartments:'', poi:''}
-    var aptUrl = 'http://localhost:8080/apartments' || 'http://http://ec2-54-191-169-152.us-west-2.compute.amazonaws.com:8080/apartments'
+    var aptUrl = 'http://localhost:8080/apartments' || 'http://ec2-54-191-169-152.us-west-2.compute.amazonaws.com:8080/apartments'
     var aptPromise = $http({
       method: 'GET',
       url: aptUrl,
       params: {location: location}
     })
-    var poiUrl = 'http://localhost:8080/poi' || 'http://http://ec2-54-191-169-152.us-west-2.compute.amazonaws.com:8080/poi'
+    var poiUrl = 'http://localhost:8080/poi' || 'http://ec2-54-191-169-152.us-west-2.compute.amazonaws.com:8080/poi'
     var poiPromise = $http({
       method: 'GET',
       url: poiUrl,
@@ -205,7 +205,7 @@ angular.module('app.controllers', [])
     })
 
   $scope.addApt = function(apt) {
-    var addAptUri = 'http://localhost:8080/api/user/listing/add' || 'http://http://ec2-54-191-169-152.us-west-2.compute.amazonaws.com:8080/api/user/listing/add'
+    var addAptUri = 'http://localhost:8080/api/user/listing/add' || 'http://ec2-54-191-169-152.us-west-2.compute.amazonaws.com:8080/api/user/listing/add'
     if(Auth.isLoggedIn()==false) {
       $scope.loginModal.show();
     } else {
@@ -239,15 +239,27 @@ angular.module('app.controllers', [])
 })
 
 .controller('showAnalysisCtrl', function($scope, $http, Auth, $ionicModal, loginModal, $state) {
-
   $scope.loggedIn = Auth.isLoggedIn();
-  if($scope.loggedIn != true) {
-    var modalPromise = loginModal.initialize($scope);
-      modalPromise.then(function(modal) {
-        $scope.loginModal = modal;
-        $scope.loginModal.show();
+  $scope.getUserApts = function(){
+    if($scope.loggedIn != true) {
+      var modalPromise = loginModal.initialize($scope);
+        modalPromise.then(function(modal) {
+          $scope.loginModal = modal;
+          $scope.loginModal.show();
       })
+    } else {
+      var email = Auth.currentUser.email;
+      var listingsUri = 'http://localhost:8080/api/user/listings' || 'http://ec2-54-191-169-152.us-west-2.compute.amazonaws.com:8080/api/user/listings'
+      $http({
+        method: 'POST',
+        url: listingsUri,
+        data: {email: email}
+      }).success(function(data) {
+        $scope.listings = data;
+      })
+    }
   };
+
   $scope.login = function() {
     $scope.user = {email: '', password: ''};
     Auth.login($scope.user).success(function(data) {
@@ -259,7 +271,7 @@ angular.module('app.controllers', [])
     $scope.loginModal.hide()
     $state.go('signup')
   };
-  $scope.listings = Auth.currentUser.listings;
+  // $scope.listings = Auth.currentUser.listings;
   $scope.choice = [];
   $scope.poi = [];
 
@@ -353,7 +365,7 @@ angular.module('app.controllers', [])
   }
 
   $scope.signup = function(user) {
-    var newUserUri = 'http://localhost:8080/api/user/new' || 'http://http://ec2-54-191-169-152.us-west-2.compute.amazonaws.com:8080/api/user/new'
+    var newUserUri = 'http://localhost:8080/api/user/new' || 'http://ec2-54-191-169-152.us-west-2.compute.amazonaws.com:8080/api/user/new'
     $http.post(newUserUri, {user: $scope.user}).success(function(data){
       $state.go('tabsController.showSearch');
     }).error(function(err){
