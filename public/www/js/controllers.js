@@ -14,13 +14,13 @@ angular.module('app.controllers', [])
     nHService.poi = selected
   };
   $scope.checkEntries = function() {
-    // if($scope.current) {
+    if(nHService.current != null) {
       $state.go('tabsController.showSearch')
-    // } else {
-    //   $ionicPopup.alert({
-    //     template: 'Please specify your search'
-    //   })
-    // }
+    } else {
+      $ionicPopup.alert({
+        template: 'Please specify your search'
+      })
+    }
   };
 })
 
