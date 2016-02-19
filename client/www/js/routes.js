@@ -1,6 +1,7 @@
 angular.module('app.routes', [])
 
-.config(function($stateProvider, $urlRouterProvider) { //Deleted USER_ROLES
+.config(function($stateProvider, $urlRouterProvider, $httpProvider) { //Deleted USER_ROLES
+  $httpProvider.interceptors.push('AuthInterceptor')
 
   $stateProvider
 

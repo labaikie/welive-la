@@ -209,11 +209,14 @@ angular.module('app.controllers', [])
     if(Auth.isLoggedIn()==false) {
       $scope.loginModal.show();
     } else {
-      $http.post(addAptUri, {user: Auth.currentUser, apt: apt}).then(function(data) {
+      $http.post(addAptUri, {user: Auth.currentUser, apt: apt})
+      .then(function(data) {
         $ionicPopup.alert({
           title: 'Apartment Saved',
           template: 'Save a couple more to compare'
         })
+      }, function (err) {
+        console.log(err)
       })
     }
   };

@@ -48,6 +48,7 @@ module.exports = {
   },
 
   addListing: function(req, res) {
+    console.log("response's header addlisting: ",res.header);
     User.findOneAndUpdate({email: req.body.user.email}, {$addToSet: {listings: req.body.apt}},function(err, data) {
         if(!err) res.send(data)
     })

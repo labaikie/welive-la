@@ -59,6 +59,7 @@ angular.module('app.services', [])
       return $http.post(authenticationUri, {user: user}).success(function(data) {
         AuthToken.setToken(data.token);
         auth.currentUser = data.user
+        console.log(data.token)
         return data;
         }).error(function(err) {
           console.log(err);

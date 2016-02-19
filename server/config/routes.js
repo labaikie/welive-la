@@ -1,6 +1,7 @@
 var express          = require('express')
 var app              = express()
 var router           = new express.Router()
+var jwt              = require('jsonwebtoken')
 // var passport         = require('passport')
 //                        app.use(passport.initialize())
 //                        require('../config/passport')(passport)
@@ -35,15 +36,6 @@ router.get('/poi', yelpController.getPOI)
 router.post('/api/user/new', usersController.new)
 // token authentication route
 router.post('/api/user/authenticate', usersController.authenticate)
-// logout
-router.post('/api/user/logout', usersController.logout)
-// save listing
-router.post('/api/user/listing/add', usersController.addListing)
-// get listings
-router.post('/api/user/listings', usersController.getListings)
-// delete a listing
-router.post('/api/user/listings/update', usersController.updateListings)
-
 // route middleware to verify a token
 router.use(function(req, res, next) {
   // check header or url parameters or post parameters for token
@@ -68,5 +60,14 @@ router.use(function(req, res, next) {
     });
   }
 });
+// logout
+router.post('/api/user/logout', usersController.logout)
+// save listing
+router.post('/api/user/listing/add', usersController.addListing)
+// get listings
+router.post('/api/user/listings', usersController.getListings)
+// delete a listing
+router.post('/api/user/listings/update', usersController.updateListings)
+
 
 module.exports = router;
