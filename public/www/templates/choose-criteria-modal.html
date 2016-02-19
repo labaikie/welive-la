@@ -8,7 +8,9 @@
       <select id="criteria-poi" ng-model="criteria" ng-options="p.poi for p in poi">
       </select>
     </ion-list>
-    <button class="button button-energized" ng-click="closeModal(chooseCritModal)">Done</button>
-    <button class="button button-positive" ng-click="setCriteria(chooseCritModal)">Save</button>
+    <div class="row">
+      <button class="col button button-energized" ng-click="closeModal(chooseCritModal)">Done</button>
+      <button class="col button button-positive" ng-click="setCriteria(chooseCritModal)">Save</button>
+    </div>
   </ion-content>
 </ion-modal-view>

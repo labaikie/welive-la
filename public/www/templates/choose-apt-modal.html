@@ -8,7 +8,9 @@
       <img src="{{listing.previewImage}}" style="width: 50px; height: 50px">{{listing.name}} - {{listing.rent}}
       </ion-checkbox>
     </ion-list>
-    <button class="button icon-left ion-chevron-left button-energized" ng-click="closeModal(chooseAptModal)">Back</button>
-    <button class="button button-positive" ng-click="populatePOI(chooseAptModal)">Selection Complete</button>
+    <div class="row">
+      <button class="col button icon-left ion-chevron-left button-energized" ng-click="closeModal(chooseAptModal)">Back</button>
+      <button class="col button button-positive" ng-click="populatePOI(chooseAptModal)">Selection Complete</button>
+    </div>
   </ion-content>
 </ion-modal-view>

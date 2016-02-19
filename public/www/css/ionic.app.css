@@ -9112,3 +9112,10 @@ a.button {
 
 .modal-title {
   text-align: center; }
+
+.distance-data {
+  font-size: 8px; }
+
+#note {
+  width: 100%;
+  min-height: 200px; }
