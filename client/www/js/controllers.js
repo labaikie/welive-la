@@ -206,7 +206,7 @@ angular.module('app.controllers', [])
 
   $scope.addApt = function(apt) {
     var addAptUri = 'http://localhost:8080/api/user/listing/add' || 'http://http://ec2-54-191-169-152.us-west-2.compute.amazonaws.com:8080/api/user/listing/add'
-    if(!Auth.isLoggedIn()) {
+    if(Auth.isLoggedIn()==false) {
       $scope.loginModal.show();
     } else {
       $http.post(addAptUri, {user: Auth.currentUser, apt: apt}).then(function(data) {
@@ -241,7 +241,7 @@ angular.module('app.controllers', [])
 .controller('showAnalysisCtrl', function($scope, $http, Auth, $ionicModal, loginModal, $state) {
 
   $scope.loggedIn = Auth.isLoggedIn();
-  if(!$scope.loggedIn) {
+  if($scope.loggedIn != true) {
     var modalPromise = loginModal.initialize($scope);
       modalPromise.then(function(modal) {
         $scope.loginModal = modal;

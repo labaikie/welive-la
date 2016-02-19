@@ -57,6 +57,7 @@ angular.module('app.services', [])
     login: function(user) {
       var authenticationUri = 'http://localhost:8080/api/user/authenticate' || 'http://http://ec2-54-191-169-152.us-west-2.compute.amazonaws.com:8080/api/user/authenticate'
       return $http.post(authenticationUri, {user: user}).success(function(data) {
+        console.log(data)
         AuthToken.setToken(data.token);
         auth.currentUser = data.user
         return data;
