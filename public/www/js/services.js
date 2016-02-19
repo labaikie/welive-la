@@ -118,4 +118,23 @@ angular.module('app.services', [])
   }
 })
 
+.factory('loginModal', function() {
+ return {
+    defineModal: function(scope) {
+      $ionicModal.fromTemplateUrl('templates/login-modal.html', {
+        scope: scope,
+        animation: 'slide-in-up'
+        }).then(function(modal) {
+          scope.loginModal = modal;
+        })
+    },
+    showModal: function(modal) {
+      modal.show();
+    },
+    hideModal: function(modal) {
+      modal.remove();
+    }
+  }
+})
+
 

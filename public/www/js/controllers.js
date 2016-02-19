@@ -329,6 +329,9 @@ angular.module('app.controllers', [])
 
 .controller('dashCtrl', function($scope, $http, Auth, $state) {
   $scope.loggedIn = Auth.isLoggedIn();
+  $scope.login = function() {
+    $state.go('tabsController.showSearch')
+  }
   $scope.logout = function() {
     Auth.logout();
     $state.go('home');

@@ -1,18 +1,14 @@
 <ion-view view-title="Dashboard" name="dashboard-view">
-  <ion-nav-buttons side="right">
-    <!-- <button class="button icon-left ion-log-out button-stable" ng-click="logout()">Logout</button> -->
-  </ion-nav-buttons>
-
   <ion-content class="padding">
     <div class="row"><div class="col text-center">
       <h3 class="title">Dashboard</h3>
       <br><br><br>
       <div ng-if="loggedIn">
-      <button class="button icon-left ion-log-out button-stable" ng-click="logout()">Logout</button>
+      <button class="button icon-left ion-log-out button-stable" ng-click="logout()">Log-out</button>
       <br><br>
       </div>
       <div ng-if="!loggedIn">
-        <button class="button icon-left ion-log-in button-stable" ng-click="login()">Logout</button>
+        <button class="button icon-left ion-log-in button-stable" ng-click="login()">Log-in</button>
       </div>
     </div></div>
   </ion-content>
