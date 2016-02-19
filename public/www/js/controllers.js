@@ -18,7 +18,7 @@ angular.module('app.controllers', [])
       $state.go('tabsController.showSearch')
     } else {
       $ionicPopup.alert({
-        template: 'Please specify your search'
+        template: '<div>Please specify your search</div>'
       })
     }
   };

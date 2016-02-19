@@ -1,12 +1,13 @@
 <ion-view title="Home" hide-nav-bar="true">
     <ion-content overflow-scroll="true" padding="true">
+      <div class="spacer" style="width: 300px; height: 95px"></div>
       <div id="home">
         <div class="bar bar-light" id="home-logo">
           <h1 id="home-logo-main">WELIVE</h1>
           <h3>LA</h3>
         </div>
         <form class="list">
-            <div class="spacer" style="width: 300px; height: 420px;"></div>
+            <div class="spacer" style="width: 300px; height:320px;"></div>
             <label class="item item-input item-select" name="neighborhood">
                 <span class="input-label">Neighborhood?</span>
                 <select ng-model="current" ng-change="setCurrent(current)" ng-options="n.name for n in neighborhoods">

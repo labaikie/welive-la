@@ -9100,11 +9100,12 @@ a.button {
   position: relative; }
 
 #home-logo {
+  color: #32454F !important;
   position: absolute;
   height: 110px;
   top: 70%;
   text-align: center;
-  font-size: 2em; }
+  font-size: 1.9em; }
 
 #home-logo-main {
   font-size: 3em; }

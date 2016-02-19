@@ -3,9 +3,9 @@ angular.module('app.services', [])
 .factory('nHService', function() {
   return {
     neighborhoods: [
-                      {name: 'Echo Park', la: true},
-                      {name: 'Silver Lake', la: true},
-                      {name: 'Atwater Village', la: true},
+                      {name:'Echo Park', la: true},
+                      {name:'Silver Lake', la: true},
+                      {name:'Atwater Village', la: true},
                       {name:'Annandale', la:false},
                       {name:'Beverlywood', la:true},
                       {name:'Boyle Heights', la:true},
@@ -17,7 +17,6 @@ angular.module('app.services', [])
                       {name:'Downtown Los Angles', la:true},
                       {name:'Eagle Rock', la:true},
                       {name:'East Hollywood', la:true},
-                      {name:'Echo Park', la:true},
                       {name:'Greater Culver City', la:true},
                       {name:'Highland Park', la:true},
                       {name:'Hollywood', la:false},
@@ -34,7 +33,6 @@ angular.module('app.services', [])
                       {name:'Park Mesa Heights', la:true},
                       {name:'Pico-Robertson', la:true},
                       {name:'Poly High', la:true},
-                      {name:'Silver Lake', la:true},
                       {name:'South Central La', la:true},
                       {name:'Southeast Los Angeles', la:true},
                       {name:'Vermont Harbor', la:true},

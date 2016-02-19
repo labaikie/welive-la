@@ -1,7 +1,7 @@
 // SYMBOLS //
 $main-ft: 'PT Sans Caption', sans-serif;
 $accent-ft: 'Marck Script', cursive;
-$charcoal: #32454F;
+$charcoal: #32454F !important;
 $hotred: #C0184E;
 $bluegrey: #738B8E;
 $lilac: #9A91C2;
@@ -21,14 +21,17 @@ $offwhite: #C6D5C9;
 }
 
 #home-logo {
+  color: $charcoal;
   position: absolute;
   height: 110px;
   top: 70%;
   text-align: center;
-  font-size: 2em;
+  font-size: 1.9em;
 }
 
 #home-logo-main {
   font-size: 3em;
 }
+
+// APT PREVIEW //
 
