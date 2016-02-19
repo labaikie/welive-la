@@ -118,22 +118,27 @@ angular.module('app.services', [])
   }
 })
 
-.factory('loginModal', function() {
+.factory('loginModal', function($ionicModal, $state) {
  return {
-    defineModal: function(scope) {
-      $ionicModal.fromTemplateUrl('templates/login-modal.html', {
+    define: function(scope) {
+      var modal = $ionicModal.fromTemplateUrl('templates/login-modal.html', {
         scope: scope,
         animation: 'slide-in-up'
         }).then(function(modal) {
-          scope.loginModal = modal;
+          return modal
         })
+      return modal;
     },
-    showModal: function(modal) {
-      modal.show();
-    },
-    hideModal: function(modal) {
+    signUp: function(modal) {
       modal.remove();
+      $state.go('signup')
     }
+    // show: function(modal) {
+    //   modal.show();
+    // },
+    // hide: function(modal) {
+    //   modal.remove();
+    // }
   }
 })
 

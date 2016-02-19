@@ -327,11 +327,17 @@ angular.module('app.controllers', [])
 
 })
 
-.controller('dashCtrl', function($scope, $http, Auth, $state) {
+.controller('dashCtrl', function($scope, $http, Auth, $state, loginModal, $q) {
   $scope.loggedIn = Auth.isLoggedIn();
   $scope.login = function() {
-    $state.go('tabsController.showSearch')
-  }
+    var modalPromise = loginModal.define($scope);
+    modalPromise.then(function(modal) {
+      $scope.loginModal = modal;
+      $scope.loginModal.show();
+    })
+  };
+  // $scope.goSignup = loginModal.signUp($scope.loginModal);
+
   $scope.logout = function() {
     Auth.logout();
     $state.go('home');
