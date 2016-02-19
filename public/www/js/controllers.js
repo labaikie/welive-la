@@ -238,11 +238,16 @@ angular.module('app.controllers', [])
 
 })
 
-.controller('showAnalysisCtrl', function($scope, $http, Auth, $ionicModal) {
+.controller('showAnalysisCtrl', function($scope, $http, Auth, $ionicModal, loginModal) {
+
   $scope.loggedIn = Auth.isLoggedIn();
   $scope.redirect = function(){
     if(!$scope.loggedIn) {
-      $scope.openModal($scope.loginModal)
+      var modalPromise = loginModal.define($scope);
+        modalPromise.then(function(modal) {
+          $scope.loginModal = modal;
+          $scope.loginModal.show();
+        })
     }
   };
   $scope.listings = Auth.currentUser.listings;
