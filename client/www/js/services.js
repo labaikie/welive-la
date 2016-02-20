@@ -54,18 +54,20 @@ angular.module('app.services', [])
 
 .factory('Auth', function($http, $q, AuthToken) {
   var auth = {
+    currentUser: {},
     login: function(user) {
       var authenticationUri = 'http://localhost:8080/api/user/authenticate' || 'http://ec2-54-191-169-152.us-west-2.compute.amazonaws.com:8080/api/user/authenticate'
-      return $http.post(authenticationUri, {user: user}).success(function(data) {
-        AuthToken.setToken(data.token);
-        auth.currentUser = data.user
-        console.log(data.token)
-        return data;
-        }).error(function(err) {
-          console.log(err);
-        })
+      var login = $http.post(authenticationUri, {user: user}).success(function(data) {
+        if(data.success) {
+          AuthToken.setToken(data.token);
+          auth.currentUser = data.user
+          return data;
+        } else {
+          return data;
+        }
+      })
+      return login;
     },
-    currentUser: {},
     logout: function() {
       AuthToken.setToken();
     },
@@ -110,25 +112,41 @@ angular.module('app.services', [])
   }
 })
 
-.factory('loginModal', function($ionicModal, $state) {
- return {
+.factory('loginService', function($ionicModal, $state, $ionicPopup, Auth) {
+  var loginService = {
+    modal: {},
     initialize: function(scope) {
-      var modal = $ionicModal.fromTemplateUrl('templates/login-modal.html', {
+      $ionicModal.fromTemplateUrl('templates/login-modal.html', {
         scope: scope,
         animation: 'slide-in-up'
         }).then(function(modal) {
-          return modal
+          loginService.modal = modal
+          loginService.modal.show();
         })
-      return modal;
+    },
+    login: function(user) {
+      Auth.login(user).success(function(data) {
+        if(data.success) {
+          $ionicPopup.alert({
+            title: 'Log-in Successful',
+            template: 'Now you have access to more services'
+          });
+          loginService.modal.remove();
+        } else {
+          $ionicPopup.alert({
+            title: 'Log-in Unsuccessful',
+            template: data.message
+          });
+        }
+      })
+    },
+    goSignup: function(modal) {
+      longService.modal.hide();
+      if(modal) modal.hide();
+      $state.go('signup');
     }
-
-    // show: function(modal) {
-    //   modal.show();
-    // },
-    // hide: function(modal) {
-    //   modal.remove();
-    // }
   }
+  return loginService
 })
 
 

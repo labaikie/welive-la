@@ -24,7 +24,7 @@ angular.module('app.controllers', [])
   };
 })
 
-.controller('showSearchCtrl', function($scope, $http, $document, $q, nHService, $ionicModal, Auth, $state, $location, $ionicPopup){
+.controller('showSearchCtrl', function($scope, $http, $document, $q, nHService, $ionicModal, Auth, $state, loginService){
   $scope.currentNH = nHService.current;
   $scope.currentPOI = nHService.poi;
   $scope.apartment = {distance: null, data: null};
@@ -197,17 +197,10 @@ angular.module('app.controllers', [])
     $scope.modal.hide();
   };
 
-  $ionicModal.fromTemplateUrl('templates/login-modal.html', {
-    scope: $scope,
-    animation: 'slide-in-up'
-    }).then(function(modal) {
-      $scope.loginModal = modal;
-    })
-
   $scope.addApt = function(apt) {
     var addAptUri = 'http://localhost:8080/api/user/listing/add' || 'http://ec2-54-191-169-152.us-west-2.compute.amazonaws.com:8080/api/user/listing/add'
     if(Auth.isLoggedIn()==false) {
-      $scope.loginModal.show();
+      loginService.initialize($scope)
     } else {
       $http.post(addAptUri, {user: Auth.currentUser, apt: apt})
       .then(function(data) {
@@ -216,32 +209,30 @@ angular.module('app.controllers', [])
           template: 'Save a couple more to compare'
         })
       }, function (err) {
-        console.log(err)
+        $ionicPopup.alert({
+          title: 'Apartment Saved',
+          template: 'Save a couple more to compare'
+        })
       })
     }
   };
 
   $scope.user = {
-    email: null,
-    password: null
+    email: '',
+    password: ''
   };
 
   $scope.login = function() {
-    Auth.login($scope.user).success(function(data) {
-      Auth.currentUser = data.user;
-      $scope.loginModal.remove();
-    })
+    loginService.login($scope.user)
   };
 
   $scope.goSignup = function() {
-    $scope.loginModal.hide();
-    $scope.modal.hide();
-    $state.go('signup');
-  }
+    loginService.goSignup($scope.modal)
+  };
 
 })
 
-.controller('showAnalysisCtrl', function($scope, $http, Auth, $ionicModal, loginModal, $state) {
+.controller('showAnalysisCtrl', function($scope, $http, Auth, $ionicModal, loginService, $state) {
   $scope.loggedIn = Auth.isLoggedIn();
   $scope.getUserApts = function(){
     if($scope.loggedIn != true) {
@@ -341,7 +332,7 @@ angular.module('app.controllers', [])
 
 })
 
-.controller('dashCtrl', function($scope, $http, Auth, $state, loginModal, $q) {
+.controller('dashCtrl', function($scope, $http, Auth, $state, loginService, $q) {
   $scope.loggedIn = Auth.isLoggedIn();
   $scope.login = function() {
     var modalPromise = loginModal.initialize($scope);
