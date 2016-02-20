@@ -24,7 +24,7 @@ angular.module('app.controllers', [])
   };
 })
 
-.controller('showSearchCtrl', function($scope, $http, $document, $q, nHService, $ionicModal, Auth, $state, loginService){
+.controller('showSearchCtrl', function($scope, $http, $document, $q, nHService, $ionicModal, Auth, $state, loginService, $ionicPopup){
   $scope.currentNH = nHService.current;
   $scope.currentPOI = nHService.poi;
   $scope.apartment = {distance: null, data: null};
@@ -227,7 +227,7 @@ angular.module('app.controllers', [])
   };
 
   $scope.goSignup = function() {
-    loginService.goSignup($scope.modal)
+    loginService.goSignup($scope)
   };
 
 })
@@ -352,21 +352,22 @@ angular.module('app.controllers', [])
   };
 })
 
-.controller('signupCtrl', function($scope, $state, $ionicPopup, $http) {
-  $scope.user = {
-    email: '',
-    password: ''
-  }
-
-  $scope.signup = function(user) {
+.controller('signupCtrl', function($scope, $state, $ionicPopup, $http, loginService) {
+  $scope.user = { email: '', password: ''};
+  $scope.signup = function() {
     var newUserUri = 'http://localhost:8080/api/user/new' || 'http://ec2-54-191-169-152.us-west-2.compute.amazonaws.com:8080/api/user/new'
     $http.post(newUserUri, {user: $scope.user}).success(function(data){
-      $state.go('tabsController.showSearch');
-    }).error(function(err){
-      $ionicPopup.alert({
-        title: 'Sign up unsuccessful',
-        template: 'Please try again'
-      });
+      console.log(data);
+      if(data.success) {
+        loginService.login($scope.user)
+        $state.go('tabsController.showSearch')
+      } else {
+        console.log('getting sign in error');
+        $ionicPopup.alert({
+          title: 'Sign up unsuccessful',
+          template: 'Please try again'
+        })
+      }
     })
-  }
+  };
 })

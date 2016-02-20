@@ -128,10 +128,10 @@ angular.module('app.services', [])
       Auth.login(user).success(function(data) {
         if(data.success) {
           $ionicPopup.alert({
-            title: 'Log-in Successful',
+            title: 'Sign-in Successful',
             template: 'Now you have access to more services'
           });
-          loginService.modal.remove();
+          loginService.modal.remove()
         } else {
           $ionicPopup.alert({
             title: 'Log-in Unsuccessful',
@@ -140,9 +140,10 @@ angular.module('app.services', [])
         }
       })
     },
-    goSignup: function(modal) {
-      longService.modal.hide();
-      if(modal) modal.hide();
+    goSignup: function(scope) {
+      var modal = loginService.modal;
+      modal.hide();
+      if(scope.modal) scope.modal.hide();
       $state.go('signup');
     }
   }

@@ -6,15 +6,20 @@ module.exports = {
 
   new : function(req, res) {
     var user = new User();
+    EMAIL = /\S+@\S+\.\S+/
     user.email = req.body.user.email;
     user.password = user.generateHash(req.body.user.password);
-    user.save(function(err) {
-      if(err) {
-        res.send(err)
-      } else {
-        res.json({success: true, message: "signup successful"})
-      }
-    })
+    if(user.email == EMAIL && user.password) {
+      user.save(function(err) {
+        if(err) {
+          res.send(err)
+        } else {
+          res.json({success: true, message: "signup successful"})
+        }
+      })
+    } else {
+      res.json({success: false, message: "signup unsuccessful: please check email and password"})
+    }
   },
 
   authenticate : function(req, res) {
