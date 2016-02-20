@@ -357,12 +357,10 @@ angular.module('app.controllers', [])
   $scope.signup = function() {
     var newUserUri = 'http://localhost:8080/api/user/new' || 'http://ec2-54-191-169-152.us-west-2.compute.amazonaws.com:8080/api/user/new'
     $http.post(newUserUri, {user: $scope.user}).success(function(data){
-      console.log(data);
       if(data.success) {
         loginService.login($scope.user)
         $state.go('tabsController.showSearch')
       } else {
-        console.log('getting sign in error');
         $ionicPopup.alert({
           title: 'Sign up unsuccessful',
           template: 'Please try again'

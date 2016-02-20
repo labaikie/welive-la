@@ -6,10 +6,10 @@ module.exports = {
 
   new : function(req, res) {
     var user = new User();
-    EMAIL = /\S+@\S+\.\S+/
     user.email = req.body.user.email;
     user.password = user.generateHash(req.body.user.password);
-    if(user.email == EMAIL && user.password) {
+    var validEmail = /\S+@\S+\.\S+/
+    if(validEmail.test(user.email) && user.password) {
       user.save(function(err) {
         if(err) {
           res.send(err)
