@@ -1,27 +1,28 @@
 <ion-view title="Show Analysis" cache-view="false">
     <ion-content overflow-scroll="true" padding="false" ng-init="getUserApts()">
-        <div class="spacer" style="width: 320px; height: 21px;"></div>
         <div class="row">
-          <button class="button button-outline button-energized col" ng-click="openModal(chooseCritModal)">Criteria</button>
-          <button class="button button-energized col col-75"ng-click="openModal(chooseAptModal)">Choose Apartments</button>
+          <button class="button button-energized col"ng-click="openModal(chooseAptModal)">Choose Apartments</button>
         </div>
-        <div class="row">
-          <div class="col"></div>
-          <div class="col" ng-repeat="c in choice">
-            <div class="card">
+        <div class="list">
+          <div class="item item-divider row">
+            <div class="col col-25">Apartments</div>
+            <div class="col">Distance</div>
+            <div class="col">Price</div>
+            <div class="col">Rating</div>
+          </div>
+          <div class="item row" ng-repeat="c in choice">
+            <div class="col col-25">
               <img src="{{c.previewImage}}" style="width: 50px; height: 50px">
               <span>{{c.name}}</span>
             </div>
-            <ul class="list">
-              <li class="item distance-data" ng-repeat="d in c.distance">
-                {{d.poi}}-{{d.distance.duration.text}}
-              </li>
-            </ul>
-            <button ng-click="noteModal.show()">Notes</button>
+            <div class="col">
+            </div>
+            <div class="col">
+              <button ng-click="noteModal.show()">Notes</button>
+            </div>
+            <div class="col">
+            </div>
           </div>
-        </div>
-        <div class="row" ng-if="criterias" ng-repeat="c in criterias">
-          <div col ng-model="{{c.poi}}">{{c.poi}}</div>
         </div>
     </ion-content>
 </ion-view>

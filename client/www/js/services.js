@@ -114,7 +114,7 @@ angular.module('app.services', [])
   }
 })
 
-.factory('loginService', function($ionicModal, $state, $ionicPopup, Auth) {
+.factory('loginService', function($ionicModal, $state, $stateParams, $ionicPopup, Auth) {
   var loginService = {
     modal: {},
     initialize: function(scope) {
@@ -134,7 +134,7 @@ angular.module('app.services', [])
             template: 'Now you have access to more services'
           });
           loginService.modal.remove();
-          // $state.go($state.current, {}, {reload: true, inherit: true})
+          // $state.go($state.current, $stateParams, {reload: true, inherit: true})
         } else {
           $ionicPopup.alert({
             title: 'Log-in Unsuccessful',

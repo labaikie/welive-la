@@ -1,6 +1,6 @@
 var User             = require('../models/User');
 var jwt              = require('jsonwebtoken');
-var config           = require('../config/config')
+var config           = require('../config/config');
 
 module.exports = {
 
@@ -47,13 +47,14 @@ module.exports = {
   },
 
   getListings: function(req, res) {
+    console.log('getting listings', res.header)
     User.findOne({email: req.body.email }, function(err, user) {
+      console.log(user)
       if(!err) res.json(user.listings)
     })
   },
 
   addListing: function(req, res) {
-    console.log("response's header addlisting: ",res.header);
     User.findOneAndUpdate({email: req.body.user.email}, {$addToSet: {listings: req.body.apt}},function(err, data) {
         if(!err) res.send(data)
     })

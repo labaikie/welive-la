@@ -1,17 +1,15 @@
-var express          = require('express')
-var app              = express()
-var router           = new express.Router()
-var jwt              = require('jsonwebtoken')
-// var passport         = require('passport')
-//                        app.use(passport.initialize())
-//                        require('../config/passport')(passport)
+var express          = require('express');
+var app              = express();
+var router           = new express.Router();
+var jwt              = require('jsonwebtoken');
+var config           = require('../config/config');
 
 //
 // REQUIRE CONTROLLERS
 //
 var usersController  = require('../controllers/users');
 var aptsController   = require('../controllers/apartments');
-var yelpController   = require('../controllers/yelp')
+var yelpController   = require('../controllers/yelp');
 
 //
 // ROUTES
@@ -43,7 +41,7 @@ router.use(function(req, res, next) {
   // decode token
   if (token) {
     // verifies secret and checks exp
-    jwt.verify(token, app.get('superSecret'), function(err, decoded) {
+    jwt.verify(token, config.secret, function(err, decoded) {
       if (err) {
         return res.json({ success: false, message: 'Failed to authenticate token.' });
       } else {
@@ -59,7 +57,7 @@ router.use(function(req, res, next) {
         message: 'No token provided.'
     });
   }
-});
+})
 // logout
 router.post('/api/user/logout', usersController.logout)
 // save listing

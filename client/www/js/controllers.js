@@ -218,11 +218,9 @@ angular.module('app.controllers', [])
   };
 
   $scope.user = { email: '', password: ''};
-
   $scope.login = function() {
     loginService.login($scope.user)
   };
-
   $scope.goSignup = function() {
     loginService.goSignup($scope)
   };
@@ -242,6 +240,7 @@ angular.module('app.controllers', [])
         url: listingsUri,
         data: {email: email}
       }).success(function(data) {
+        console.log(data);
         $scope.listings = data;
       })
     }
@@ -250,6 +249,7 @@ angular.module('app.controllers', [])
   $scope.user = {email: '', password: ''};
   $scope.login = function() {
     loginService.login($scope.user)
+    $state.go('tabsController.showSearch', {}, {reload: true, inherit: true})
   };
   $scope.goSignup = function() {
     loginService.goSignup($scope)
@@ -291,12 +291,12 @@ angular.module('app.controllers', [])
 
   $scope.isChecked = false;
   $scope.checkedOrNot = function (listing, isChecked, index) {
-      if (isChecked) {
-          $scope.choice.push(listing);
-      } else {
-          var _index = $scope.choice.indexOf(listing);
-          $scope.choice.splice(_index, 1);
-      }
+    if (isChecked) {
+        $scope.choice.push(listing);
+    } else {
+        var _index = $scope.choice.indexOf(listing);
+        $scope.choice.splice(_index, 1);
+    }
   };
 
   $scope.populatePOI = function(modal) {
