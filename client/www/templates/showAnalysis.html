@@ -1,26 +1,42 @@
 <ion-view title="Show Analysis" cache-view="false">
     <ion-content overflow-scroll="true" padding="false" ng-init="getUserApts()">
         <div class="row">
-          <button class="button button-energized col"ng-click="openModal(chooseAptModal)">Choose Apartments</button>
+          <button class="button button-energized col" ng-click="openModal(chooseAptModal)">Choose Apartments</button>
         </div>
         <div class="list">
           <div class="item item-divider row">
-            <div class="col col-25">Apartments</div>
-            <div class="col">Distance</div>
-            <div class="col">Price</div>
-            <div class="col">Rating</div>
+            <div class="col col-25">
+              <div class="table-header">Apts</div>
+            </div>
+            <div class="table-header col">
+              <div class="table-header">Distance To</div>
+              <select id="criteria-poi" ng-model="criteria" ng-options="p.poi for p in poi" ng-change="getDistance(criteria.poi)">
+              </select>
+            </div>
+            <div class="table-header col">
+              <div class="table-header">Price</div>
+            </div>
+            <div class="table-header col">
+              <div class="table-header">Rating</div>
+            </div>
           </div>
           <div class="item row" ng-repeat="c in choice">
-            <div class="col col-25">
-              <img src="{{c.previewImage}}" style="width: 50px; height: 50px">
-              <span>{{c.name}}</span>
-            </div>
-            <div class="col">
-            </div>
-            <div class="col">
+            <div class="analysis-data col col-25">
+              <img class="analysis-thumb" src="{{c.previewImage}}">
+              <div class="analysis-name">{{c.name}}</div>
               <button ng-click="noteModal.show()">Notes</button>
             </div>
-            <div class="col">
+            <div class="analysis-data col">
+              <div ng-if="c.currentDistance">
+              {{c.currentDistance.distance.text}}
+              {{c.currentDistance.duration.text}}
+              </div>
+            </div>
+            <div class="analysis-data col">
+              <div>{{c.rent}}</div>
+            </div>
+            <div class="analysis-data col">
+              <div># stars</div>
             </div>
           </div>
         </div>

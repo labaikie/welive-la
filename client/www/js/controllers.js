@@ -202,7 +202,7 @@ angular.module('app.controllers', [])
     if(Auth.isLoggedIn()==false) {
       loginService.initialize($scope)
     } else {
-      $http.post(addAptUri, {user: Auth.currentUser, apt: apt})
+      $http.post(addAptUri, {user: Auth.getUser(), apt: apt})
       .then(function(data) {
         $ionicPopup.alert({
           title: 'Apartment Saved',
@@ -233,19 +233,17 @@ angular.module('app.controllers', [])
     if($scope.loggedIn == false) {
       loginService.initialize($scope);
     } else {
-      var email = Auth.currentUser.email;
+      var email = Auth.getUser().email;
       var listingsUri = 'http://localhost:8080/api/user/listings' || 'http://ec2-54-191-169-152.us-west-2.compute.amazonaws.com:8080/api/user/listings'
       $http({
         method: 'POST',
         url: listingsUri,
         data: {email: email}
       }).success(function(data) {
-        console.log(data);
         $scope.listings = data;
       })
     }
   };
-
   $scope.user = {email: '', password: ''};
   $scope.login = function() {
     loginService.login($scope.user)
@@ -255,23 +253,12 @@ angular.module('app.controllers', [])
     loginService.goSignup($scope)
   };
 
-  $scope.choice = [];
-  $scope.poi = [];
-
   // MODAL FOR ADDING CHOICE
   $ionicModal.fromTemplateUrl('templates/choose-apt-modal.html', {
     scope: $scope,
     animation: 'slide-in-up'
     }).then(function(modal) {
       $scope.chooseAptModal = modal;
-    });
-
-  // MODAL FOR ADDING CRITERIA
-  $ionicModal.fromTemplateUrl('templates/choose-criteria-modal.html', {
-    scope: $scope,
-    animation: 'slide-in-up'
-    }).then(function(modal) {
-      $scope.chooseCritModal = modal;
     });
 
   // MODAL FOR NOTING
@@ -289,6 +276,7 @@ angular.module('app.controllers', [])
     modal.hide()
   };
 
+  $scope.choice = [];
   $scope.isChecked = false;
   $scope.checkedOrNot = function (listing, isChecked, index) {
     if (isChecked) {
@@ -299,6 +287,7 @@ angular.module('app.controllers', [])
     }
   };
 
+  $scope.poi = [];
   $scope.populatePOI = function(modal) {
     var choices = $scope.choice;
     choices.forEach(function(choice) {
@@ -310,21 +299,27 @@ angular.module('app.controllers', [])
       })
     })
     $scope.closeModal(modal)
-  }
+  };
 
-  $scope.criterias = [];
-  $scope.setCritera = function(modal) {
-    if($scope.criteria) {
-      $scope.criterias.push($scope.criteria)
-    }
-  }
+  $scope.getDistance = function(poi) {
+    $scope.choice.forEach(function(c) {
+      c.currentDistance = null;
+      console.log(c.distance);
+      for (var i = 0; i < c.distance.length; i++) {
+        if(c.distance[i].poi == poi) {
+          c.currentDistance = c.distance[i].distance;
+          console.log(c.currentDistance);
+        }
+      }
+    })
+  };
 
 })
 
 .controller('dashCtrl', function($scope, $state, Auth, loginService) {
   $scope.loggedIn = Auth.isLoggedIn();
   if($scope.loggedIn) {
-    $scope.user = Auth.currentUser;
+    $scope.user = Auth.getUser();
   } else {
     $scope.user = { email: '', password: ''};
   }

@@ -46,7 +46,25 @@ $offwhite: #C6D5C9;
 
 // SHOW ANALYSIS //
 .distance-data {
-  font-size: 10px
+  font-size: 10px;
+}
+.table-header {
+  text-align: center;
+  font-size: 14px;
+}
+
+.analysis-thumb {
+  width: 50px;
+  height: 50px;
+}
+
+.analysis-name {
+  max-width: 50px;
+  font-size: 10px;
+}
+
+.analysis-data {
+  font-align: center;
 }
 
 //NOTE MODAL

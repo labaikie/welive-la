@@ -54,13 +54,13 @@ angular.module('app.services', [])
 
 .factory('Auth', function($http, $q, $state, $window, AuthToken, nHService) {
   var auth = {
-    currentUser: {},
     login: function(user) {
       var authenticationUri = 'http://localhost:8080/api/user/authenticate' || 'http://ec2-54-191-169-152.us-west-2.compute.amazonaws.com:8080/api/user/authenticate'
       var login = $http.post(authenticationUri, {user: user}).success(function(data) {
         if(data.success) {
           AuthToken.setToken(data.token);
-          auth.currentUser = data.user
+          $window.localStorage.setItem('email', data.user.email);
+          $window.localStorage.setItem('password', data.user.password);
           return data;
         } else {
           return data;
@@ -70,6 +70,8 @@ angular.module('app.services', [])
     },
     logout: function() {
       AuthToken.setToken();
+      $window.localStorage.removeItem('email');
+      $window.localStorage.removeItem('password');
       $window.location.reload();
       $state.go('home');
     },
@@ -78,6 +80,12 @@ angular.module('app.services', [])
         return true;
       else
         return false;
+    },
+    getUser: function() {
+      var email = $window.localStorage.getItem('email')
+      var password = $window.localStorage.getItem('password')
+      var user = {email: email, password: password}
+      return user
     }
   }
   return auth
