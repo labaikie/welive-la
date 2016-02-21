@@ -133,7 +133,7 @@ angular.module('app.services', [])
             title: 'Sign-in Successful',
             template: 'Now you have access to more services'
           });
-          loginService.modal.remove()
+          loginService.modal.remove();
           // $state.go($state.current, {}, {reload: true, inherit: true})
         } else {
           $ionicPopup.alert({

@@ -232,12 +232,8 @@ angular.module('app.controllers', [])
 .controller('showAnalysisCtrl', function($scope, $http, Auth, $ionicModal, loginService, $state) {
   $scope.loggedIn = Auth.isLoggedIn();
   $scope.getUserApts = function(){
-    if($scope.loggedIn != true) {
-      var modalPromise = loginModal.initialize($scope);
-        modalPromise.then(function(modal) {
-          $scope.loginModal = modal;
-          $scope.loginModal.show();
-      })
+    if($scope.loggedIn == false) {
+      loginService.initialize($scope);
     } else {
       var email = Auth.currentUser.email;
       var listingsUri = 'http://localhost:8080/api/user/listings' || 'http://ec2-54-191-169-152.us-west-2.compute.amazonaws.com:8080/api/user/listings'
@@ -251,18 +247,14 @@ angular.module('app.controllers', [])
     }
   };
 
+  $scope.user = {email: '', password: ''};
   $scope.login = function() {
-    $scope.user = {email: '', password: ''};
-    Auth.login($scope.user).success(function(data) {
-      $scope.loginModal.remove()
-      $scope.listings = Auth.currentUser.listings;
-    })
+    loginService.login($scope.user)
   };
   $scope.goSignup = function() {
-    $scope.loginModal.hide()
-    $state.go('signup')
+    loginService.goSignup($scope)
   };
-  // $scope.listings = Auth.currentUser.listings;
+
   $scope.choice = [];
   $scope.poi = [];
 
