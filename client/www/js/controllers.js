@@ -217,10 +217,7 @@ angular.module('app.controllers', [])
     }
   };
 
-  $scope.user = {
-    email: '',
-    password: ''
-  };
+  $scope.user = { email: '', password: ''};
 
   $scope.login = function() {
     loginService.login($scope.user)
@@ -332,23 +329,28 @@ angular.module('app.controllers', [])
 
 })
 
-.controller('dashCtrl', function($scope, $http, Auth, $state, loginService, $q) {
+.controller('dashCtrl', function($scope, $state, Auth, loginService) {
   $scope.loggedIn = Auth.isLoggedIn();
-  $scope.login = function() {
-    var modalPromise = loginModal.initialize($scope);
-    modalPromise.then(function(modal) {
-      $scope.loginModal = modal;
-      $scope.loginModal.show();
-    })
-  };
-  $scope.goSignup = function(){
-    $scope.loginModal.hide()
-    $state.go('signup')
+  if($scope.loggedIn) {
+    $scope.user = Auth.currentUser;
+  } else {
+    $scope.user = { email: '', password: ''};
   }
-
+  $scope.goLogin = function() {
+    loginService.initialize($scope)
+  };
+  $scope.login = function() {
+    loginService.login($scope.user)
+    $state.go('tabsController.showSearch', {}, {reload: true, inherit: true})
+  };
+  $scope.goSignup = function() {
+    loginService.goSignup($scope)
+  };
+  $scope.signup = function(){
+    $state.go('signup')
+  };
   $scope.logout = function() {
-    Auth.logout();
-    $state.go('home');
+    Auth.logout()
   };
 })
 
@@ -359,7 +361,7 @@ angular.module('app.controllers', [])
     $http.post(newUserUri, {user: $scope.user}).success(function(data){
       if(data.success) {
         loginService.login($scope.user)
-        $state.go('tabsController.showSearch')
+        $state.go('tabsController.showSearch', {}, {reload: false})
       } else {
         $ionicPopup.alert({
           title: 'Sign up unsuccessful',

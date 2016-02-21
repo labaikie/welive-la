@@ -42,7 +42,8 @@ angular.module('app.routes', [])
       views: {
         'dash': {
           templateUrl: 'templates/dashboard.html',
-          controller: 'dashCtrl'
+          controller: 'dashCtrl',
+          cache: false
         }
       }
     })

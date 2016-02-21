@@ -1,15 +1,29 @@
-<ion-view view-title="Dashboard" name="dashboard-view">
+<ion-view view-title="Dashboard" name="dashboard-view" cache-view="false">
+  <div class="bar bar-header bar-positive">
+    <h1 class="title">Your Dashboard</h1>
+  </div>
   <ion-content class="padding">
-    <div class="row"><div class="col text-center">
-      <h3 class="title">Dashboard</h3>
-      <br><br><br>
-      <div ng-if="loggedIn">
-      <button class="button icon-left ion-log-out button-stable" ng-click="logout()">Log-out</button>
-      <br><br>
+    <div class="spacer" style="width 320px; height: 100px"></div>
+    <div class="row">
+      <div class="col text-center">
+        <div ng-show="loggedIn == false">
+          <div class="card">
+            <div class="item item-text-wrap">
+              Please log in or sign up for additional services
+            </div>
+          </div>
+          <button class="button button-full icon-left ion-log-in button-energized" ng-click="goLogin()">Log-in</button>
+          <button class="button button-full icon-left ion-clipboard button-energized" ng-click="signup()">Sign-up</button>
+        </div>
+        <div ng-show="loggedIn">
+          <div class="card">
+            <div class="item item-text-wrap">
+              Welcome {{user.email}}
+            </div>
+          </div>
+          <button class="button button-full icon-left ion-log-out button-stable" ng-click="logout()">Log-out</button>
+        </div>
       </div>
-      <div ng-if="!loggedIn">
-        <button class="button icon-left ion-log-in button-stable" ng-click="login()">Log-in</button>
-      </div>
-    </div></div>
+    </div>
   </ion-content>
 </ion-view>

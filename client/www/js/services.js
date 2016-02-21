@@ -52,7 +52,7 @@ angular.module('app.services', [])
   }
 })
 
-.factory('Auth', function($http, $q, AuthToken) {
+.factory('Auth', function($http, $q, $state, $window, AuthToken, nHService) {
   var auth = {
     currentUser: {},
     login: function(user) {
@@ -70,6 +70,8 @@ angular.module('app.services', [])
     },
     logout: function() {
       AuthToken.setToken();
+      $window.location.reload();
+      $state.go('home');
     },
     isLoggedIn: function() {
       if(AuthToken.getToken())
@@ -132,6 +134,7 @@ angular.module('app.services', [])
             template: 'Now you have access to more services'
           });
           loginService.modal.remove()
+          // $state.go($state.current, {}, {reload: true, inherit: true})
         } else {
           $ionicPopup.alert({
             title: 'Log-in Unsuccessful',
@@ -142,8 +145,12 @@ angular.module('app.services', [])
     },
     goSignup: function(scope) {
       var modal = loginService.modal;
-      modal.hide();
-      if(scope.modal) scope.modal.hide();
+      if(modal) {
+        modal.hide();
+        if(scope.modal) {
+          scope.modal.hide();
+        }
+      }
       $state.go('signup');
     }
   }
