@@ -47,9 +47,7 @@ module.exports = {
   },
 
   getListings: function(req, res) {
-    console.log('getting listings', res.header)
     User.findOne({email: req.body.email }, function(err, user) {
-      console.log(user)
       if(!err) res.json(user.listings)
     })
   },
@@ -64,8 +62,11 @@ module.exports = {
 
   },
 
-  logout : function(req, res) {
-    //destroy token???
+  addAnalysis: function(req, res) {
+    User.findOneAndUpdate({email: req.body.user.email}, {$addToSet: {analyses: req.body.analysis}},function(err, data) {
+        console.log('analysis saved');
+        if(!err) res.send(data.analyses)
+    })
   }
 
 }

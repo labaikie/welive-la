@@ -1,15 +1,15 @@
 <ion-modal-view>
   <ion-header-bar>
-    <h1 class="title">{{c.name}} Note</h1>
+    <h1 class="title">{{currentNote.name}} Note</h1>
   </ion-header-bar>
   <ion-content>
     <div class="list card">
       <form>
-      <input id="note">
+      <input ng-model="currentNote.userNote" id="note">
       </form>
       <div class="row">
-        <button class="col button button-small button-energized" ng-click="noteModal.remove()">Close</button>
-        <button class="col button button-small button-positive" ng-click="noteModal.remove()">Save</button>
+        <button class="col button button-small button-energized" ng-click="noteModal.hide()">Cancel</button>
+        <button class="col button button-small button-positive" ng-click="addNote(currentNote.userNote)">Save</button>
       </div>
     </div>
   </ion-content>

@@ -1,7 +1,7 @@
 <ion-view title="Show Analysis" cache-view="false">
     <ion-content overflow-scroll="true" padding="false" ng-init="getUserApts()">
         <div class="row">
-          <button class="button button-energized col" ng-click="openModal(chooseAptModal)">Choose Apartments</button>
+          <button class="button button-energized col" ng-click="chooseAptModal.show()">Choose Apartments</button>
         </div>
         <div class="list">
           <div class="item item-divider row">
@@ -24,7 +24,7 @@
             <div class="analysis-data col col-25">
               <img class="analysis-thumb" src="{{c.previewImage}}">
               <div class="analysis-name">{{c.name}}</div>
-              <button ng-click="noteModal.show()">Notes</button>
+              <button ng-click="openNote(c)">Notes</button>
             </div>
             <div class="analysis-data col">
               <div ng-if="c.currentDistance">
@@ -39,6 +39,9 @@
               <div># stars</div>
             </div>
           </div>
+        </div>
+        <div class="row">
+          <button class="button button-energized col" ng-click="saveAnalysis()">Save Analysis</button>
         </div>
     </ion-content>
 </ion-view>

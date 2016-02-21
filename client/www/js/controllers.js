@@ -269,12 +269,6 @@ angular.module('app.controllers', [])
       $scope.noteModal = modal;
     });
 
-  $scope.openModal = function(modal) {
-    modal.show()
-  };
-  $scope.closeModal = function(modal) {
-    modal.hide()
-  };
 
   $scope.choice = [];
   $scope.isChecked = false;
@@ -298,21 +292,44 @@ angular.module('app.controllers', [])
         }
       })
     })
-    $scope.closeModal(modal)
+    modal.hide();
   };
 
   $scope.getDistance = function(poi) {
     $scope.choice.forEach(function(c) {
       c.currentDistance = null;
-      console.log(c.distance);
       for (var i = 0; i < c.distance.length; i++) {
         if(c.distance[i].poi == poi) {
           c.currentDistance = c.distance[i].distance;
-          console.log(c.currentDistance);
         }
       }
     })
   };
+
+  $scope.openNote = function(current) {
+    $scope.noteModal.show()
+    $scope.currentNote = current;
+  };
+
+  $scope.addNote = function(note) {
+    $scope.noteModal.hide();
+  }
+
+  $scope.saveAnalysis = function() {
+    var user = Auth.getUser();
+    var analysis = {
+                    listings: $scope.choice
+                   };
+    var analysisUri = 'http://localhost:8080/api/user/analysis/add' || 'http://ec2-54-191-169-152.us-west-2.compute.amazonaws.com:8080/api/user/analysis/add'
+    $http({
+      method: 'POST',
+      url: analysisUri,
+      data: {user: user, analysis: analysis}
+    }).success(function(data) {
+      $scope.analyses = data;
+      console.log($scope.analyses);
+    })
+  }
 
 })
 
