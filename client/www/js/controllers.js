@@ -251,7 +251,8 @@ angular.module('app.controllers', [])
         data: {email: email}
       }).success(function(data) {
         $scope.analyses = data;
-        // $scope.choice = data[-1];
+        // console.log(data);
+        $scope.choice = data[-1];
       })
     }
   };
@@ -281,9 +282,14 @@ angular.module('app.controllers', [])
     });
 
 
-  $scope.choice = [];
+  // $scope.choice = [];
   $scope.isChecked = false;
   $scope.checkedOrNot = function (listing, isChecked, index) {
+    if($scope.choice) {
+      $scope.choice = $scope.choice;
+    } else {
+      $scope.choice = [];
+    }
     if (isChecked) {
         $scope.choice.push(listing);
     } else {
@@ -324,7 +330,7 @@ angular.module('app.controllers', [])
 
   $scope.addNote = function(note) {
     $scope.noteModal.hide();
-  }
+  };
 
   $scope.saveAnalysis = function() {
     var user = Auth.getUser();
