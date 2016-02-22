@@ -227,12 +227,13 @@ angular.module('app.controllers', [])
 
 })
 
-.controller('showAnalysisCtrl', function($scope, $http, Auth, $ionicModal, loginService, $state) {
+.controller('showAnalysisCtrl', function($scope, $http, Auth, $ionicModal, loginService, $state, $ionicPopup) {
   $scope.loggedIn = Auth.isLoggedIn();
   $scope.getUserApts = function(){
     if($scope.loggedIn == false) {
       loginService.initialize($scope);
     } else {
+      // if logged in, get user's current listings
       var email = Auth.getUser().email;
       var listingsUri = 'http://localhost:8080/api/user/listings' || 'http://ec2-54-191-169-152.us-west-2.compute.amazonaws.com:8080/api/user/listings'
       $http({
@@ -241,6 +242,16 @@ angular.module('app.controllers', [])
         data: {email: email}
       }).success(function(data) {
         $scope.listings = data;
+      })
+      // if logged in, also get user's past analyses
+      var analysesUri = 'http://localhost:8080/api/user/analyses' || 'http://ec2-54-191-169-152.us-west-2.compute.amazonaws.com:8080/api/user/analyses'
+      $http({
+        method: 'POST',
+        url: analysesUri,
+        data: {email: email}
+      }).success(function(data) {
+        $scope.analyses = data;
+        // $scope.choice = data[-1];
       })
     }
   };
@@ -327,7 +338,9 @@ angular.module('app.controllers', [])
       data: {user: user, analysis: analysis}
     }).success(function(data) {
       $scope.analyses = data;
-      console.log($scope.analyses);
+      $ionicPopup.alert({
+        title: 'Analysis Saved'
+      })
     })
   }
 

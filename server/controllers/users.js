@@ -67,6 +67,12 @@ module.exports = {
         console.log('analysis saved');
         if(!err) res.send(data.analyses)
     })
+  },
+
+  getAnalyses: function(req, res) {
+    User.findOne({email: req.body.email }, function(err, user) {
+      if(!err) res.json(user.analyses)
+    })
   }
 
 }

@@ -64,6 +64,8 @@ router.post('/api/user/listing/add', usersController.addListing)
 router.post('/api/user/listings', usersController.getListings)
 // save analysis
 router.post('/api/user/analysis/add', usersController.addAnalysis)
+// get analyses
+router.post('/api/user/analyses', usersController.getAnalyses)
 // delete a listing
 router.post('/api/user/listings/update', usersController.updateListings)
 

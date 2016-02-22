@@ -1,6 +1,7 @@
 <ion-view title="Show Analysis" cache-view="false">
     <ion-content overflow-scroll="true" padding="false" ng-init="getUserApts()">
         <div class="row">
+<!--           <button class="button button-positive col col-25" ng-if="analyses" ng-click="chooseAnalysisModal.show()">Past Analysis</button> -->
           <button class="button button-energized col" ng-click="chooseAptModal.show()">Choose Apartments</button>
         </div>
         <div class="list">
@@ -22,7 +23,7 @@
           </div>
           <div class="item row" ng-repeat="c in choice">
             <div class="analysis-data col col-25">
-              <img class="analysis-thumb" src="{{c.previewImage}}">
+              <a target="_blank" href="{{c.url}}"><img class="analysis-thumb" src="{{c.previewImage}}"></a>
               <div class="analysis-name">{{c.name}}</div>
               <button ng-click="openNote(c)">Notes</button>
             </div>

@@ -7,7 +7,6 @@ module.exports = {
   getApts : function(req, res, next) {
     var location   = req.query.location
     location = location.toLowerCase().replace(/ /g, '-').replace(/,/g, '')
-    console.log(location);
     var listingUrl = "http://www.apartments.com/apartments/" + location + "/";
     var listing    = {
                         uri: listingUrl,
