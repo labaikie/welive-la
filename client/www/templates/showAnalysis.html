@@ -29,15 +29,15 @@
             </div>
             <div class="analysis-data col">
               <div ng-if="c.currentDistance">
-              {{c.currentDistance.distance.text}}
-              {{c.currentDistance.duration.text}}
+                <div>{{c.currentDistance.distance.text}}</div>
+                <div>{{c.currentDistance.duration.text}}</div>
               </div>
             </div>
-            <div class="analysis-data col">
+            <div class="analysis-data col col-25">
               <div>{{c.rent}}</div>
             </div>
-            <div class="analysis-data col">
-              <div># stars</div>
+            <div class="analysis-data col col-25">
+              <div ng-if="c.rating">{{c.rating}}</div>
             </div>
           </div>
         </div>
