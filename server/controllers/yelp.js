@@ -26,10 +26,10 @@ module.exports = {
   getAptRating: function(req, res, next) {
     var apt = req.body.apt;
     // apt = apt.toLowerCase().replace(/ /g, '-')
-    yelp.search({term: apt, location: 'los-angeles', category_filter: 'apartment', limit: 1})
+    yelp.search({term: apt + ' apartment', location: 'los-angeles', limit: 1})
       .then(function(data) {
         console.log(data.businesses);
-        if(data) res.json(data.businesses[0].rating);
+        if(data.businesses) res.json(data.businesses[0].rating);
       })
       .catch(function(err) {
         console.log('getting error', err)

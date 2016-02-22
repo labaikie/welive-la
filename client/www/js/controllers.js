@@ -72,9 +72,11 @@ angular.module('app.controllers', [])
               // retrieve yelp review & append to obj
               var reviewUri = 'http://localhost:8080/apartment/rating' || 'http://ec2-54-191-169-152.us-west-2.compute.amazonaws.com:8080/apartment/rating'
               $http.post(reviewUri, {apt: marker.data.name, city: marker.data.city}).then(function(data) {
-                marker.data.rating = data.data
+                if(isNaN(data.data)==false) {
+                  marker.data.rating = data.data
+                }
                 $scope.currentApt = marker.data;
-                $scope.openModal();
+                $scope.openModal()
               })
             });
           })
