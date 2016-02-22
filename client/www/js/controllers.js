@@ -69,8 +69,13 @@ angular.module('app.controllers', [])
                 }
                 marker.data.distance.push(distanceObj)
               }
-              $scope.currentApt = marker.data;
-              $scope.openModal();
+              // retrieve yelp review & append to obj
+              var reviewUri = 'http://localhost:8080/apartment/rating' || 'http://ec2-54-191-169-152.us-west-2.compute.amazonaws.com:8080/apartment/rating'
+              $http.post(reviewUri, {apt: marker.data.name, city: marker.data.city}).then(function(data) {
+                marker.data.rating = data.data
+                $scope.currentApt = marker.data;
+                $scope.openModal();
+              })
             });
           })
         })

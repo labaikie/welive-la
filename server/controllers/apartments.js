@@ -30,6 +30,7 @@ module.exports = {
         if(name && url && address && avail == 'Available Now') {
           apt.name = name
           apt.url = url
+          apt.city = location
           apt.address = address
           apt.rent = rent
           apt.unit = unit

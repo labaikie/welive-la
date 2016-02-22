@@ -25,7 +25,7 @@ router.get('/api', function(req, res) {
 
 // apartments route
 router.get('/apartments', aptsController.getApts)
-router.get('/apartment/rating', yelpController.getAptRating)
+router.post('/apartment/rating', yelpController.getAptRating)
 
 // POI route
 router.get('/poi', yelpController.getPOI)
