@@ -24,7 +24,7 @@ angular.module('app.controllers', [])
   };
 })
 
-.controller('showSearchCtrl', function($scope, $http, $document, $q, nHService, $ionicModal, Auth, $state, loginService, $ionicPopup, $ionicLoading){
+.controller('showSearchCtrl', function($scope, $http, $document, $q, nHService, $ionicModal, Auth, $state, loginService, $ionicPopup, $ionicLoading) {
   $scope.currentNH = nHService.current;
   $scope.currentPOI = nHService.poi;
   $scope.apartment = {distance: null, data: null};
