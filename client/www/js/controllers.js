@@ -24,7 +24,7 @@ angular.module('app.controllers', [])
   };
 })
 
-.controller('showSearchCtrl', function($scope, $http, $document, $q, nHService, $ionicModal, Auth, $state, loginService, $ionicPopup){
+.controller('showSearchCtrl', function($scope, $http, $document, $q, nHService, $ionicModal, Auth, $state, loginService, $ionicPopup, $ionicLoading){
   $scope.currentNH = nHService.current;
   $scope.currentPOI = nHService.poi;
   $scope.apartment = {distance: null, data: null};
@@ -188,6 +188,8 @@ angular.module('app.controllers', [])
       console.log(err);
     })
   };
+
+  google.maps.event.addDomListener(window, 'load', $scope.setMap($scope.currentNH, $scope.currentPOI));
 
   // MODAL FOR SHOW APT
   $ionicModal.fromTemplateUrl('templates/preview-modal.html', {
