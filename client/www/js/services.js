@@ -55,7 +55,7 @@ angular.module('app.services', [])
 .factory('Auth', function($http, $q, $state, $window, AuthToken, nHService) {
   var auth = {
     login: function(user) {
-      var authenticationUri = 'http://localhost:8080/api/user/authenticate' || 'http://ec2-54-191-169-152.us-west-2.compute.amazonaws.com:8080/api/user/authenticate'
+      var authenticationUri = 'https://project-welive-la.herokuapp.com/api/user/authenticate' || 'http://localhost:8080/api/user/authenticate' || 'http://ec2-54-191-169-152.us-west-2.compute.amazonaws.com:8080/api/user/authenticate'
       var login = $http.post(authenticationUri, {user: user}).success(function(data) {
         if(data.success) {
           AuthToken.setToken(data.token);

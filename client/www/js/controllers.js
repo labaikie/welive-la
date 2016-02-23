@@ -70,7 +70,7 @@ angular.module('app.controllers', [])
                 marker.data.distance.push(distanceObj)
               }
               // retrieve yelp review & append to obj
-              var reviewUri = 'http://localhost:8080/apartment/rating' || 'http://ec2-54-191-169-152.us-west-2.compute.amazonaws.com:8080/apartment/rating'
+              var reviewUri = 'https://project-welive-la.herokuapp.com/apartment/rating' || 'http://localhost:8080/apartment/rating' || 'http://ec2-54-191-169-152.us-west-2.compute.amazonaws.com:8080/apartment/rating'
               $http.post(reviewUri, {apt: marker.data.name, city: marker.data.city}).then(function(data) {
                 if(isNaN(data.data)==false) {
                   marker.data.rating = data.data
@@ -168,13 +168,13 @@ angular.module('app.controllers', [])
 
   $scope.getMapData = function(location, poi, callback) {
     var result = {apartments:'', poi:''}
-    var aptUrl = 'http://localhost:8080/apartments' || 'http://ec2-54-191-169-152.us-west-2.compute.amazonaws.com:8080/apartments'
+    var aptUrl = 'https://project-welive-la.herokuapp.com/apartments' || 'http://localhost:8080/apartments' || 'http://ec2-54-191-169-152.us-west-2.compute.amazonaws.com:8080/apartments'
     var aptPromise = $http({
       method: 'GET',
       url: aptUrl,
       params: {location: location}
     })
-    var poiUrl = 'http://localhost:8080/poi' || 'http://ec2-54-191-169-152.us-west-2.compute.amazonaws.com:8080/poi'
+    var poiUrl = 'https://project-welive-la.herokuapp.com/poi' || 'http://localhost:8080/poi' || 'http://ec2-54-191-169-152.us-west-2.compute.amazonaws.com:8080/poi'
     var poiPromise = $http({
       method: 'GET',
       url: poiUrl,
@@ -207,7 +207,7 @@ angular.module('app.controllers', [])
   };
 
   $scope.addApt = function(apt) {
-    var addAptUri = 'http://localhost:8080/api/user/listing/add' || 'http://ec2-54-191-169-152.us-west-2.compute.amazonaws.com:8080/api/user/listing/add'
+    var addAptUri = 'https://project-welive-la.herokuapp.com/api/listing/add' || 'http://localhost:8080/api/user/listing/add' || 'http://ec2-54-191-169-152.us-west-2.compute.amazonaws.com:8080/api/user/listing/add'
     if(Auth.isLoggedIn()==false) {
       loginService.initialize($scope)
     } else {
@@ -244,7 +244,7 @@ angular.module('app.controllers', [])
     } else {
       // if logged in, get user's current listings
       var email = Auth.getUser().email;
-      var listingsUri = 'http://localhost:8080/api/user/listings' || 'http://ec2-54-191-169-152.us-west-2.compute.amazonaws.com:8080/api/user/listings'
+      var listingsUri = 'https://project-welive-la.herokuapp.com/api/user/listings' || 'http://localhost:8080/api/user/listings' ||  'http://ec2-54-191-169-152.us-west-2.compute.amazonaws.com:8080/api/user/listings'
       $http({
         method: 'POST',
         url: listingsUri,
@@ -253,7 +253,7 @@ angular.module('app.controllers', [])
         $scope.listings = data;
       })
       // if logged in, also get user's past analyses
-      var analysesUri = 'http://localhost:8080/api/user/analyses' || 'http://ec2-54-191-169-152.us-west-2.compute.amazonaws.com:8080/api/user/analyses'
+      var analysesUri = 'https://project-welive-la.herokuapp.com/api/user/analyses' || 'http://localhost:8080/api/user/analyses' || 'http://ec2-54-191-169-152.us-west-2.compute.amazonaws.com:8080/api/user/analyses'
       $http({
         method: 'POST',
         url: analysesUri,
@@ -346,7 +346,7 @@ angular.module('app.controllers', [])
     var analysis = {
                     listings: $scope.choice
                    };
-    var analysisUri = 'http://localhost:8080/api/user/analysis/add' || 'http://ec2-54-191-169-152.us-west-2.compute.amazonaws.com:8080/api/user/analysis/add'
+    var analysisUri = 'https://project-welive-la.herokuapp.com/api/user/analysis/add' || 'http://localhost:8080/api/user/analysis/add' || 'http://ec2-54-191-169-152.us-west-2.compute.amazonaws.com:8080/api/user/analysis/add'
     $http({
       method: 'POST',
       url: analysisUri,
@@ -389,7 +389,7 @@ angular.module('app.controllers', [])
 .controller('signupCtrl', function($scope, $state, $ionicPopup, $http, loginService) {
   $scope.user = { email: '', password: ''};
   $scope.signup = function() {
-    var newUserUri = 'http://localhost:8080/api/user/new' || 'http://ec2-54-191-169-152.us-west-2.compute.amazonaws.com:8080/api/user/new'
+    var newUserUri = 'https://project-welive-la.herokuapp.com/api/user/new' ||'http://localhost:8080/api/user/new' || 'http://ec2-54-191-169-152.us-west-2.compute.amazonaws.com:8080/api/user/new'
     $http.post(newUserUri, {user: $scope.user}).success(function(data){
       if(data.success) {
         loginService.login($scope.user)
