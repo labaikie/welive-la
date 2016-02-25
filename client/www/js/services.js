@@ -14,7 +14,7 @@ angular.module('app.services', [])
                       {name:'Cheviot Hills', la:true},
                       {name:'Chinatown', la:true},
                       {name:'Crenshaw', la:true},
-                      {name:'Downtown Los Angles', la:true},
+                      // {name:'Downtown Los Angles', la:true},
                       {name:'Eagle Rock', la:true},
                       {name:'East Hollywood', la:true},
                       {name:'Greater Culver City', la:true},
