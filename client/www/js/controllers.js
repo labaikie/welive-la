@@ -40,16 +40,48 @@ angular.module('app.controllers', [])
       $scope.poi = result.poi;
       // ADD GEOCODES TO APARTMENTS
       var Promises = [];
-      $scope.apartments.forEach(function(apt) {
-        var promise = geocode(apt.address).then(function(geocode){
-          apt.lat = geocode.lat
-          apt.lng = geocode.lng
-          return apt
-        })
-        Promises.push(promise);
-      });
-
+      // if more than 20 apartments, set time out...
+      // console.log($scope.apartments.length);
+      if($scope.apartments.length > 11) {
+        // console.log('more than 11')
+        for (var i = 0; i < 11; i++) {
+          regGeocoder($scope.apartments[i]);
+          function regGeocoder(a) {
+            var promise = geocode(a.address).then(function(geocode) {
+              a.lat = geocode.lat
+              a.lng = geocode.lng
+              return a
+            })
+            Promises.push(promise);
+          }
+        }
+        // for (var i = 11; i < $scope.apartments.length; i++) {
+        //   delayedGeocoder($scope.apartments[i]);
+        //   function delayedGeocoder(a) {
+        //     setTimeout(function(){
+        //       var promise = geocode(a.address).then(function(geocode) {
+        //         a.lat = geocode.lat
+        //         a.lng = geocode.lng
+        //         return a
+        //       })
+        //       Promises.push(promise);
+        //     }, 2500)
+        //   }
+        // }
+      } else {
+        // console.log('less than 11')
+        $scope.apartments.forEach(function(apt) {
+          var promise = geocode(apt.address).then(function(geocode){
+            apt.lat = geocode.lat
+            apt.lng = geocode.lng
+            return apt
+          })
+          Promises.push(promise);
+        });
+      }
       Promise.all(Promises).then(function(apts) {
+        // console.log(Promises);
+        // console.log(apts);
         $scope.apartments = apts
         $scope.apartments.forEach(function(apt) {
           var marker = createMarker(apt, true)
@@ -151,8 +183,11 @@ angular.module('app.controllers', [])
     function geocode(address) {
       var geocoder = new google.maps.Geocoder()
       return $q(function (resolve, reject) {
-        var url_addr = encodeURIComponent(address);
-        geocoder.geocode({address: address + location}, function(results, status) {
+        // var url_addr = encodeURIComponent(address);
+        // console.log(url_addr)
+        // console.log(address.address)
+        // console.log(address)
+        geocoder.geocode({address: address + ', ' + location}, function(results, status) {
           if (status == google.maps.GeocoderStatus.OK) {
             var lat = results[0].geometry.location.lat()
             var lng = results[0].geometry.location.lng()
@@ -207,7 +242,7 @@ angular.module('app.controllers', [])
   };
 
   $scope.addApt = function(apt) {
-    var addAptUri = 'https://project-welive-la.herokuapp.com/api/listing/add' || 'http://localhost:8080/api/user/listing/add' || 'http://ec2-54-191-169-152.us-west-2.compute.amazonaws.com:8080/api/user/listing/add'
+    var addAptUri = 'https://project-welive-la.herokuapp.com/api/user/listing/add' || 'http://localhost:8080/api/user/listing/add' || 'http://ec2-54-191-169-152.us-west-2.compute.amazonaws.com:8080/api/user/listing/add'
     if(Auth.isLoggedIn()==false) {
       loginService.initialize($scope)
     } else {

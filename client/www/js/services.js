@@ -10,7 +10,7 @@ angular.module('app.services', [])
                       {name:'Beverlywood', la:true},
                       {name:'Boyle Heights', la:true},
                       {name:'Brentwood', la:false},
-                      {name:'Canndu/Avalon Garden', la:true},
+                      // {name:'Canndu/Avalon Garden', la:true},
                       {name:'Cheviot Hills', la:true},
                       {name:'Chinatown', la:true},
                       {name:'Crenshaw', la:true},
