@@ -11,6 +11,7 @@
   <access origin="*"/>
   <access origin="http://maps.googleapis.com"/>
   <allow-intent href="https://maps.googleapis.com"/>
+  <allow-intent href="https://project-welive-la.herokuapp.com" />
   <allow-navigation href="*"/>
   <preference name="webviewbounce" value="false"/>
   <preference name="UIWebViewBounce" value="false"/>

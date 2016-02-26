@@ -89,7 +89,7 @@ angular.module('app.controllers', [])
           bounds.extend(marker.getPosition())
           marker.setMap(map);
           // SETTING EVENT LISTENERS TO MARKERS
-          marker.addListener('click', function() {
+          marker.addListener('mousedown', function() {
             // calculate distance & append to obj
             getDistance(marker.getPosition()).then(function(distance){
               marker.data.distance = []
