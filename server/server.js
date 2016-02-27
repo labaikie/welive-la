@@ -13,7 +13,7 @@ var config        = require('./config/config');
 //
 // CONFIGURATION
 //
-var port = process.env.PORT || 8080;
+var port = process.env.PORT || 8000;
 // connect to db
 mongoose.connect(config.database);
 // setting secret variable
