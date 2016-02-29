@@ -128,6 +128,16 @@ angular.module('app.controllers', [])
         $scope.markers.push(marker)
         bounds.extend(marker.getPosition())
         marker.setMap(map);
+        // ADD INFO WINDOW CLICK EVENT TO POI MARKERS
+        // Define Marker Info
+        var markerInfo = '<img src="'+marker.data.image_url+'" style="width: 50px; height: 50px"></img><a target="_blank" href="'+marker.data.mobile_url+'">Click for More Info</a><div>Name: ' +marker.data.name+ '</div><div>Category: ' +marker.data.categories[0][0]+ '</div><div>Address: ' +marker.data.location.address+'</div><div>Contact: ' +marker.data.phone+'</div><div>Yelp Rating: ' +marker.data.rating+'</div>'
+        // Add Event Listener to marker
+        marker.addListener('mousedown', function(){
+          var infowindow = new google.maps.InfoWindow({
+            content: markerInfo
+          });
+          infowindow.open(map, marker);
+        })
       });
       map.fitBounds(bounds);
     })
