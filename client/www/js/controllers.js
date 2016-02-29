@@ -193,10 +193,6 @@ angular.module('app.controllers', [])
     function geocode(address) {
       var geocoder = new google.maps.Geocoder()
       return $q(function (resolve, reject) {
-        // var url_addr = encodeURIComponent(address);
-        // console.log(url_addr)
-        // console.log(address.address)
-        // console.log(address)
         geocoder.geocode({address: address + ', ' + location}, function(results, status) {
           if (status == google.maps.GeocoderStatus.OK) {
             var lat = results[0].geometry.location.lat()
@@ -335,8 +331,6 @@ angular.module('app.controllers', [])
       $scope.noteModal = modal;
     });
 
-
-  // $scope.choice = [];
   $scope.isChecked = false;
   $scope.checkedOrNot = function (listing, isChecked, index) {
     if($scope.choice) {
