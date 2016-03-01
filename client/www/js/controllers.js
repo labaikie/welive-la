@@ -313,8 +313,8 @@ angular.module('app.controllers', [])
         data: {email: email}
       }).success(function(data) {
         $scope.analyses = data;
-        // console.log(data);
-        $scope.choice = data[-1];
+        console.log(data[-1]);
+        $scope.choice = data[-1].listings;
       })
     }
   };

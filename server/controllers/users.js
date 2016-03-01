@@ -65,13 +65,14 @@ module.exports = {
   addAnalysis: function(req, res) {
     User.findOneAndUpdate({email: req.body.user.email}, {$addToSet: {analyses: req.body.analysis}},function(err, data) {
         // console.log('analysis saved');
-        if(!err) res.send(data.analyses)
+        if(!err) res.send(data)
     })
   },
 
   getAnalyses: function(req, res) {
+    console.log(req.body.email)
     User.findOne({email: req.body.email }, function(err, user) {
-      if(!err) res.json(user.analyses)
+      if(!err) res.send(user.analyses)
     })
   }
 
