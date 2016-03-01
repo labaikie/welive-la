@@ -247,6 +247,13 @@ angular.module('app.controllers', [])
     $scope.modal.hide();
   };
 
+  $scope.openExternal = function(url) {
+   // Open in external browser
+  window.open(url,'_system','location=yes');
+    // Open in app browser
+  // window.open(url,'_blank');
+  }
+
   $scope.addApt = function(apt) {
     var addAptUri = 'https://project-welive-la.herokuapp.com/api/user/listing/add' || 'http://localhost:8080/api/user/listing/add' || 'http://ec2-54-191-169-152.us-west-2.compute.amazonaws.com:8080/api/user/listing/add'
     if(Auth.isLoggedIn()==false) {

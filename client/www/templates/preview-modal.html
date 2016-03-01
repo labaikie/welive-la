@@ -12,7 +12,7 @@
       <ion-list>
         <ion-item>Address: {{currentApt.address}}</ion-item>
         <ion-item ng-if="currentApt.rating">Yelp Rating: {{currentApt.rating}}</ion-item>
-        <ion-item><a class="subdued" target="_blank" href="{{currentApt.url}}">Click for Details</a></ion-item>
+        <ion-item><a class="subdued" href="#" ng-click="openExternal(currentApt.url)">Click for Details</a></ion-item>
         <ion-item>Last Updated: {{currentApt.lastUpdated}}</ion-item>
       </ion-list>
       <div class="row">
