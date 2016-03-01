@@ -54,11 +54,6 @@ angular.module('app.routes', [])
       controller: 'signupCtrl'
     })
 
-    .state('menu', {
-      url: '/side-menu',
-      abstract: true,
-      templateUrl: 'templates/menu.html'
-    })
 
 
   // if none of the above states are matched, use this as the fallback
