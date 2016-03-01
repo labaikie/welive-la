@@ -9120,6 +9120,18 @@ a.button {
   height: 100%;
   padding-bottom: 20px; }
 
+#restartSearch {
+  position: fixed;
+  top: 5px;
+  left: 85%;
+  z-index: 5; }
+
+#restartSearch > a {
+  text-decoration: none; }
+
+#restartSearch > a:hover {
+  cursor: pointer; }
+
 .distance-data {
   font-size: 10px; }
 
