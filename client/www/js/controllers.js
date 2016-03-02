@@ -248,7 +248,7 @@ angular.module('app.controllers', [])
   };
 
   $scope.reset = function() {
-    console.log('getting called')
+    // console.log('getting called')
     $state.go('home')
   };
 
@@ -312,9 +312,9 @@ angular.module('app.controllers', [])
         url: analysesUri,
         data: {email: email}
       }).success(function(data) {
-        $scope.analyses = data;
-        console.log(data[-1]);
-        $scope.choice = data[-1].listings;
+        $scope.analysis = data.pop();
+        // console.log(data[-1]);
+        $scope.choice = $scope.analysis.listings;
       })
     }
   };
