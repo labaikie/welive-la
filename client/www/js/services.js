@@ -111,7 +111,7 @@ angular.module('app.services', [])
       var token = AuthToken.getToken();
       if(token)
         config.headers['x-access-token'] = token;
-        // config.headers['Access-Control-Allow-Origin'] = '*';
+        // config.headers['Access-Control-Request-Headers'] = token;
       return config
     },
     responseError : function(res) {

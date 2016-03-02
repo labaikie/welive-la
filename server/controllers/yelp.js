@@ -16,10 +16,10 @@ module.exports = {
     var query = req.query.query
     yelp.search({term: query, location: location, limit: 10})
       .then(function(data) {
-        res.json(data.businesses);
+        res.send(data.businesses);
       })
       .catch(function(err) {
-        res.json(err)
+        res.send(err)
       })
   },
 
