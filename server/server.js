@@ -3,6 +3,8 @@
 //
 var express       = require('express');
 var app           = express();
+var dotenv        = require('dotenv');
+dotenv.config();
 var bodyParser    = require('body-parser');
 var morgan        = require('morgan');
 var mongoose      = require('mongoose');
